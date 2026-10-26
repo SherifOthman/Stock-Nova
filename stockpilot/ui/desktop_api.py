@@ -738,16 +738,19 @@ class DesktopBridgeAPI:
             pwd = (cred.get("secret") if cred else None) or Config.get_freepik_password()
 
         if not user or not pwd:
-            hint = "أدخل اسم المستخدم وكلمة المرور في الإعدادات أولاً."
+            hint = f"SFTP upload password is required only for direct automatic uploads. You can export batch CSVs manually anytime without a password, or configure credentials in Settings."
             self.db.record_platform_alert(
                 f"{platform.upper()} FTP",
                 str(host),
-                "MISSING_CREDENTIALS",
-                "بيانات الاتصال غير مكتملة",
+                "MISSING_UPLOAD_CREDENTIALS",
+                "SFTP Password not configured",
                 hint,
-                severity="warning",
+                severity="info",
             )
-            return json.dumps({"status": "error", "message": f"بيانات {platform.upper()} FTP غير مكتملة."})
+            return json.dumps({
+                "status": "notice",
+                "message": f"{platform.upper()} SFTP password is not configured. Direct auto-upload is paused. You can use manual 1-click CSV upload, or set password in Settings."
+            })
 
         try:
             ftp = ftplib.FTP()

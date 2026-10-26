@@ -1513,58 +1513,40 @@
         
         <!-- Step 1: AI Keys & Models -->
         <div style="border-bottom:1px solid var(--border); padding-bottom:14px;">
-          <strong style="font-size:13px; color:var(--text-main);">1. AI Studio API Key & Models</strong>
+          <strong style="font-size:13px; color:var(--text-main);">1. Google AI Studio Key</strong>
           <p style="font-size:11.5px; color:var(--text-muted); margin:2px 0 8px;">
-            Enter your Google AI Studio API Key. Give it an account nickname so you can identify which Google account owns it.
+            Enter your Google AI Studio API key and label. The engine auto-detects and binds to the optimal model automatically.
           </p>
-          <div class="grid-2" style="margin-bottom:8px;">
-            <div>
-              <label class="kpi-label">Account Nickname / Label</label>
-              <input type="text" id="qs-key-alias" class="sc-input" placeholder="e.g. Personal Account 01" value="Primary Google Key" />
-            </div>
-            <div>
-              <label class="kpi-label">AI Model</label>
-              <select id="qs-model-select" class="sc-select">
-                <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (Recommended)</option>
-                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
-              </select>
-            </div>
+          <div style="margin-bottom:8px;">
+            <label class="kpi-label">Account Nickname / Label</label>
+            <input type="text" id="qs-key-alias" class="sc-input" placeholder="e.g. Personal Gmail 01" value="Primary Google Key" />
           </div>
           <div>
             <label class="kpi-label">API Key</label>
             <div style="display:flex; gap:8px;">
               <input type="password" id="qs-api-key" class="sc-input" placeholder="Paste your AI Studio Key (AIzaSy...)" />
-              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testQuickSetupKey()" id="btn-qs-test" style="white-space:nowrap;">⚡ Test Key</button>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testQuickSetupKey()" id="btn-qs-test" style="white-space:nowrap;">⚡ Test & Auto-Detect</button>
             </div>
           </div>
           <span id="qs-key-feedback" style="font-size:11px; margin-top:4px; display:block;"></span>
         </div>
 
         <!-- Step 2: Stock Contributor Profiles -->
-        <div style="padding-top:4px;">
+        <div style="padding-top:8px;">
           <strong style="font-size:13px; color:var(--text-main);">2. Stock Contributor Profiles</strong>
           <p style="font-size:11.5px; color:var(--text-muted); margin:2px 0 8px;">
-            Adobe Stock ID is used for portfolio CSV mapping and tagging. FTP password is optional (only needed for direct automatic uploads). All credentials encrypted with Windows DPAPI.
+            Used for portfolio asset mapping and CSV exports. Passwords for direct automatic uploads will only be requested when you initiate live upload batches.
           </p>
           <div class="grid-2">
             <div>
-              <label class="kpi-label">Adobe Contributor ID / Username</label>
+              <label class="kpi-label">Adobe Stock Contributor ID / Username</label>
               <input type="text" id="qs-adobe-user" class="sc-input" placeholder="e.g. 213569280 or username" />
             </div>
             <div>
-              <label class="kpi-label">Adobe Contributor FTP Password <span style="font-weight:normal; color:var(--text-muted);">(Optional)</span></label>
-              <input type="password" id="qs-adobe-pass" class="sc-input" placeholder="Leave blank if uploading manually" />
-            </div>
-          </div>
-          <details style="margin-top:10px; font-size:11.5px; border:1px solid var(--border); border-radius:6px; padding:6px 10px; background:var(--bg-subtle);">
-            <summary style="cursor:pointer; font-weight:600; color:var(--text-muted);">+ Optional: Freepik Contributor Settings (Skip if only Adobe)</summary>
-            <div style="margin-top:8px;">
               <label class="kpi-label">Freepik Contributor Email</label>
               <input type="text" id="qs-freepik-user" class="sc-input" placeholder="contributor@example.com" />
             </div>
-          </details>
+          </div>
         </div>
 
       </div>
@@ -1586,31 +1568,20 @@
         <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeModal('modal-add-key')">✕</button>
       </div>
       <div class="sc-modal-body">
-        <div class="grid-2">
-          <div>
-            <label class="kpi-label">Key Nickname / Account Label</label>
-            <input type="text" id="input-key-alias" class="sc-input" placeholder="e.g. Personal_Gmail_01" />
-          </div>
-          <div>
-            <label class="kpi-label">Preferred Model</label>
-            <select id="input-key-model" class="sc-select">
-              <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash</option>
-              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-              <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
-            </select>
-          </div>
+        <div>
+          <label class="kpi-label">Key Nickname / Account Label</label>
+          <input type="text" id="input-key-alias" class="sc-input" placeholder="e.g. Personal_Gmail_01" />
         </div>
         <div>
           <label class="kpi-label">Gemini API Key</label>
           <div style="display:flex; gap:8px;">
             <input type="password" id="input-api-key" class="sc-input" placeholder="AIzaSy..." />
-            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testModalAddKey()" id="btn-modal-test-key" style="white-space:nowrap;">⚡ Test</button>
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testModalAddKey()" id="btn-modal-test-key" style="white-space:nowrap;">⚡ Test & Auto-Detect</button>
           </div>
           <span id="modal-key-feedback" style="font-size:11px; margin-top:4px; display:block;"></span>
         </div>
         <p style="font-size:11px; color:var(--text-muted); margin:0;">
-          Key will be encrypted using Windows DPAPI before being stored in SQLite.
+          The engine auto-detects the optimal model. Keys are encrypted locally using Windows DPAPI.
         </p>
       </div>
       <div class="sc-modal-footer">
@@ -2251,12 +2222,11 @@
 
     async function testQuickSetupKey() {
       const key = document.getElementById('qs-api-key').value.trim();
-      const model = document.getElementById('qs-model-select').value;
       const fb = document.getElementById('qs-key-feedback');
       if (!key) return alert('Please paste an API key first.');
-      fb.textContent = `Pinging Google AI Studio (${model})...`;
+      fb.textContent = 'Auto-detecting optimal Gemini production model...';
       fb.style.color = 'var(--text-muted)';
-      const res = await callBridge('test_api_key', key, model);
+      const res = await callBridge('test_api_key', key, '');
       if (res.status === 'success') {
         fb.textContent = `✓ ${res.message}`;
         fb.style.color = 'var(--emerald)';
@@ -2268,12 +2238,11 @@
 
     async function testModalAddKey() {
       const key = document.getElementById('input-api-key').value.trim();
-      const model = document.getElementById('input-key-model').value;
       const fb = document.getElementById('modal-key-feedback');
       if (!key) return alert('Please paste an API key first.');
-      fb.textContent = `Testing key against ${model}...`;
+      fb.textContent = 'Auto-detecting optimal Gemini production model...';
       fb.style.color = 'var(--text-muted)';
-      const res = await callBridge('test_api_key', key, model);
+      const res = await callBridge('test_api_key', key, '');
       if (res.status === 'success') {
         fb.textContent = `✓ ${res.message}`;
         fb.style.color = 'var(--emerald)';
@@ -2287,7 +2256,6 @@
       const alias = document.getElementById('qs-key-alias').value.trim() || 'Primary Google Key';
       const key = document.getElementById('qs-api-key').value.trim();
       const adobeUser = document.getElementById('qs-adobe-user').value.trim();
-      const adobePass = document.getElementById('qs-adobe-pass').value.trim();
       const freepikInput = document.getElementById('qs-freepik-user');
       const freepikUser = freepikInput ? freepikInput.value.trim() : '';
 
@@ -2295,7 +2263,7 @@
         await callBridge('save_api_key', alias, key);
       }
       if (adobeUser) {
-        await callBridge('save_ftp_credentials', adobeUser, adobePass, 'ftp.contributor.adobestock.com', 21);
+        await callBridge('save_ftp_credentials', adobeUser, '', 'ftp.contributor.adobestock.com', 21);
       }
       if (freepikUser) {
         await callBridge('save_freepik_credentials', freepikUser, '', 'standby');
