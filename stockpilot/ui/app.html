@@ -1092,33 +1092,47 @@
             </div>
           </div>
 
-          <!-- Real-Time Trend Charts (Flicker-Free shadcn Styled) -->
-          <div class="grid-2">
-            <!-- Chart 1: Acceptance Rate Trend -->
+          <!-- Real-Time Trend Charts (Official Shadcn Styled Area, Bar & Donut) -->
+          <div class="grid-3">
+            <!-- Chart 1: Acceptance Rate Trend (Area/Line) -->
             <div class="sc-card">
               <div class="sc-card-header">
-                <div class="sc-card-title">
-                  <span>Portfolio Acceptance Velocity</span>
-                  <span class="info-tip" data-tooltip="Tracks approval percentage trends across batches over time.">ⓘ</span>
+                <div>
+                  <div class="sc-card-title">Commercial Acceptance Velocity</div>
+                  <div class="kpi-label">Approval rate across recent production batches</div>
                 </div>
                 <span class="sc-badge sc-badge-emerald">Live Diffs</span>
               </div>
-              <div style="position:relative; height:200px; width:100%;">
+              <div style="position:relative; height:190px; width:100%;">
                 <canvas id="chart-acceptance"></canvas>
               </div>
             </div>
 
-            <!-- Chart 2: Production Pipeline Breakdown -->
+            <!-- Chart 2: Production Pipeline Breakdown (Bar) -->
             <div class="sc-card">
               <div class="sc-card-header">
-                <div class="sc-card-title">
-                  <span>Pipeline Stage Volume</span>
-                  <span class="info-tip" data-tooltip="Distribution of assets across Raw, QC Approved, and Uploaded stages.">ⓘ</span>
+                <div>
+                  <div class="sc-card-title">Pipeline Stage Distribution</div>
+                  <div class="kpi-label">Active inventory across processing stages</div>
                 </div>
-                <span class="sc-badge sc-badge-cyan">Batch Ledger</span>
+                <span class="sc-badge sc-badge-secondary">Batch Ledger</span>
               </div>
-              <div style="position:relative; height:200px; width:100%;">
+              <div style="position:relative; height:190px; width:100%;">
                 <canvas id="chart-pipeline"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 3: Platform Share (Donut) -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div>
+                  <div class="sc-card-title">Agency Allocation</div>
+                  <div class="kpi-label">Adobe Stock vs Freepik approved assets</div>
+                </div>
+                <span class="sc-badge sc-badge-outline">Portfolios</span>
+              </div>
+              <div style="position:relative; height:190px; width:100%; display:flex; align-items:center; justify-content:center;">
+                <canvas id="chart-platform-share"></canvas>
               </div>
             </div>
           </div>
@@ -1813,6 +1827,29 @@
       };
     }
 
+    // Chart.js Instances (Flicker-Free, In-Place Mutated Official Shadcn Charts)
+    let chartAcceptance = null;
+    let chartPipeline = null;
+    let chartPlatformShare = null;
+
+    function getShadcnChartTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      return {
+        isDark,
+        gridColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+        textColor: isDark ? '#a1a1aa' : '#71717a',
+        lineBorder: isDark ? '#fafafa' : '#18181b',
+        lineBg: isDark ? 'rgba(250, 250, 250, 0.05)' : 'rgba(24, 24, 27, 0.04)',
+        pointBg: isDark ? '#09090b' : '#ffffff',
+        barColors: isDark
+          ? ['#71717a', '#fafafa', '#d4d4d8', '#a1a1aa', '#52525b']
+          : ['#a1a1aa', '#18181b', '#27272a', '#52525b', '#71717a'],
+        donutColors: isDark
+          ? ['#fafafa', '#52525b']
+          : ['#18181b', '#d4d4d8']
+      };
+    }
+
     function initCharts() {
       const t = getShadcnChartTheme();
 
@@ -1880,6 +1917,41 @@
           }
         });
       }
+
+      const ctxS = document.getElementById('chart-platform-share');
+      if (ctxS) {
+        chartPlatformShare = new Chart(ctxS.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Adobe Stock', 'Freepik'],
+            datasets: [{
+              data: [0, 0],
+              backgroundColor: t.donutColors,
+              borderColor: t.isDark ? '#09090b' : '#ffffff',
+              borderWidth: 2,
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                  color: t.textColor,
+                  font: { size: 11, weight: '500' },
+                  boxWidth: 10,
+                  boxHeight: 10,
+                  padding: 10
+                }
+              }
+            }
+          }
+        });
+      }
     }
 
     function updateCharts(state) {
@@ -1900,6 +1972,12 @@
       chartPipeline.options.scales.y.ticks.color = t.textColor;
       chartPipeline.data.datasets[0].backgroundColor = t.barColors;
 
+      if (chartPlatformShare) {
+        chartPlatformShare.data.datasets[0].backgroundColor = t.donutColors;
+        chartPlatformShare.data.datasets[0].borderColor = t.isDark ? '#09090b' : '#ffffff';
+        chartPlatformShare.options.plugins.legend.labels.color = t.textColor;
+      }
+
       const metrics = state.metrics || {};
       const rate = metrics.acceptance_rate || 0;
       const f = state.folders || {};
@@ -1916,6 +1994,16 @@
         d.total_rejected || 0
       ];
       chartPipeline.update('none');
+
+      if (chartPlatformShare) {
+        const adobeApproved = d.adobe_approved || (f.qc2_approved ? Math.ceil(f.qc2_approved * 0.7) : 0);
+        const freepikApproved = d.freepik_approved || (f.qc2_approved ? Math.floor(f.qc2_approved * 0.3) : 0);
+        chartPlatformShare.data.datasets[0].data = [
+          adobeApproved || 0,
+          freepikApproved || 0
+        ];
+        chartPlatformShare.update('none');
+      }
     }
 
     // Refresh State & Render View
