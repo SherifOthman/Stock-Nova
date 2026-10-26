@@ -1018,7 +1018,7 @@ class DesktopBridgeAPI:
                 detected_models = "omni flash,wan 2.1"
 
         limit = 50
-        pool = "pro_pool" if tier_clean == "pro" else ("plus_pool" if tier_clean == "plus" else (pool_id or "free_daily_pool"))
+        pool = pool_id.strip() if (pool_id and str(pool_id).strip()) else ("pro_pool" if tier_clean == "pro" else ("plus_pool" if tier_clean == "plus" else "free_daily_pool"))
 
         self.db.upsert_account(
             profile_name=str(profile_name),

@@ -1,97 +1,92 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="en" dir="ltr" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StockNova AI — Autonomous Stock Video & Media Engine</title>
-  <meta name="description" content="Autonomous multi-account stock video & image production engine for Adobe Stock and Freepik with dynamic credit pools, 8-frame Storyboard QC, and Pre-Shift AI Flow Auditing." />
-  <meta property="og:title" content="StockNova AI — Autonomous Stock Video & Media Engine" />
-  <meta property="og:description" content="Autonomous multi-account stock video & image production engine for Adobe Stock and Freepik." />
+  <title>StockNova AI — Autonomous Stock Media Studio</title>
+  <meta name="description" content="Autonomous multi-account stock media production engine with dynamic credit pools, 2x 4K upscaling, and compliant multi-platform CSV exports." />
 
-  <!-- Fonts: Cairo + Plus Jakarta Sans + JetBrains Mono -->
+  <!-- Fonts: Plus Jakarta Sans + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Chart.js for Executive Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
   <style>
     /* ==========================================================================
-       SHADCN/UI DESIGN SYSTEM TOKENS (DARK DEFAULT + LIGHT MODE)
+       SHADCN/UI HIGH-CONTRAST DESIGN SYSTEM TOKENS (LIGHT & DARK MODES)
        ========================================================================== */
     :root {
-      --background: #ffffff;
-      --foreground: #09090b;
-      --card: #ffffff;
-      --card-foreground: #09090b;
-      --popover: #ffffff;
-      --popover-foreground: #09090b;
-      --primary: #18181b;
-      --primary-foreground: #fafafa;
-      --secondary: #f4f4f5;
-      --secondary-foreground: #18181b;
-      --muted: #f4f4f5;
-      --muted-foreground: #71717a;
-      --accent: #f4f4f5;
-      --accent-foreground: #18181b;
-      --border: #e4e4e7;
-      --input: #e4e4e7;
-      --ring: #6366f1;
-      --radius: 0.5rem;
+      /* Light Mode: Crisp Alabaster & White Surfaces */
+      --bg-app: #f8fafc;
+      --bg-sidebar: #ffffff;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hover: #e2e8f0;
+      --bg-input: #ffffff;
+      --border: #e2e8f0;
+      --border-subtle: #cbd5e1;
+      --ring: #4f46e5;
 
-      /* Semantic Accents */
-      --emerald: #10b981;
-      --emerald-soft: rgba(16, 185, 129, 0.12);
-      --cyan: #06b6d4;
-      --cyan-soft: rgba(6, 182, 212, 0.12);
-      --indigo: #6366f1;
-      --indigo-soft: rgba(99, 102, 241, 0.12);
-      --amber: #f59e0b;
-      --amber-soft: rgba(245, 158, 11, 0.12);
-      --rose: #f43f5e;
-      --rose-soft: rgba(244, 63, 94, 0.12);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
 
-      /* shadcn/ui Sidebar Tokens (Light) */
-      --sidebar-background: #f8f8fa;
-      --sidebar-foreground: #27272a;
-      --sidebar-primary: #18181b;
-      --sidebar-primary-foreground: #fafafa;
-      --sidebar-accent: #ededf0;
-      --sidebar-accent-foreground: #09090b;
-      --sidebar-border: #e4e4e7;
-      --sidebar-ring: #6366f1;
-      --sidebar-width: 260px;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-fg: #ffffff;
+      --primary-soft: rgba(79, 70, 229, 0.1);
+
+      --emerald: #059669;
+      --emerald-soft: rgba(5, 150, 105, 0.12);
+      --amber: #d97706;
+      --amber-soft: rgba(217, 119, 6, 0.12);
+      --rose: #dc2626;
+      --rose-soft: rgba(220, 38, 38, 0.12);
+      --cyan: #0284c7;
+      --cyan-soft: rgba(2, 132, 199, 0.12);
+
+      --sidebar-width: 250px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+      --shadow-dialog: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     }
 
     html.dark {
-      --background: #09090b;
-      --foreground: #fafafa;
-      --card: #121215;
-      --card-foreground: #fafafa;
-      --popover: #141418;
-      --popover-foreground: #fafafa;
-      --primary: #fafafa;
-      --primary-foreground: #09090b;
-      --secondary: #1e1e24;
-      --secondary-foreground: #fafafa;
-      --muted: #18181c;
-      --muted-foreground: #a1a1aa;
-      --accent: #1f1f26;
-      --accent-foreground: #fafafa;
-      --border: #27272a;
-      --input: #27272a;
-      --ring: #818cf8;
+      /* Dark Mode: Deep Obsidian Zinc Studio */
+      --bg-app: #09090b;
+      --bg-sidebar: #0c0d12;
+      --bg-card: #12131a;
+      --bg-subtle: #181a24;
+      --bg-hover: #222433;
+      --bg-input: #151722;
+      --border: #232533;
+      --border-subtle: #303347;
+      --ring: #6366f1;
 
-      /* shadcn/ui Sidebar Tokens (Dark Default - Zinc) */
-      --sidebar-background: #0c0c0f;
-      --sidebar-foreground: #e4e4e7;
-      --sidebar-primary: #6366f1;
-      --sidebar-primary-foreground: #ffffff;
-      --sidebar-accent: #1c1c22;
-      --sidebar-accent-foreground: #fafafa;
-      --sidebar-border: #222226;
-      --sidebar-ring: #818cf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-fg: #ffffff;
+      --primary-soft: rgba(99, 102, 241, 0.15);
+
+      --emerald: #10b981;
+      --emerald-soft: rgba(16, 185, 129, 0.15);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.15);
+      --rose: #ef4444;
+      --rose-soft: rgba(239, 68, 68, 0.15);
+      --cyan: #06b6d4;
+      --cyan-soft: rgba(6, 182, 212, 0.15);
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+      --shadow-dialog: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     }
 
     * {
@@ -101,14 +96,15 @@
     }
 
     body {
-      background-color: var(--background);
-      color: var(--foreground);
-      font-family: 'Plus Jakarta Sans', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 13px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     .mono {
@@ -116,301 +112,269 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* ==========================================================================
-       SHADCN/UI SIDEBAR ARCHITECTURE (SidebarProvider + Sidebar + SidebarInset)
-       ========================================================================== */
-    .sc-sidebar-provider {
+    /* Layout Frame */
+    .app-frame {
       display: flex;
       min-height: 100vh;
       width: 100%;
-      background: var(--background);
     }
 
-    .sc-sidebar {
+    /* Sidebar */
+    .sidebar {
       width: var(--sidebar-width);
       flex-shrink: 0;
-      background: var(--sidebar-background);
-      color: var(--sidebar-foreground);
-      border-inline-end: 1px solid var(--sidebar-border);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       position: sticky;
       top: 0;
       height: 100vh;
-      z-index: 50;
-      transition: width 0.2s ease, transform 0.2s ease;
+      z-index: 40;
+      transition: width 0.2s ease;
       overflow-y: auto;
     }
 
-    .sc-sidebar.collapsed {
+    .sidebar.collapsed {
       width: 0;
-      border-inline-end: none;
+      border-right: none;
       overflow: hidden;
     }
 
-    .sc-sidebar-header {
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid var(--sidebar-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .brand-row {
+    .sidebar-brand {
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 0;
     }
 
-    .brand-logo {
-      width: 30px;
-      height: 30px;
-      flex-shrink: 0;
-      border-radius: 7px;
-      background: var(--foreground);
-      color: var(--background);
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 12.5px;
-      letter-spacing: -0.03em;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 2px 8px var(--primary-soft);
+      flex-shrink: 0;
     }
 
-    .brand-title {
+    .brand-text h1 {
+      font-size: 14px;
       font-weight: 700;
-      font-size: 13.5px;
       letter-spacing: -0.01em;
-      color: var(--foreground);
-      white-space: nowrap;
+      line-height: 1.2;
     }
 
-    .brand-sub {
+    .brand-text p {
       font-size: 11px;
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 175px;
     }
 
-    .sc-sidebar-content {
+    .sidebar-menu {
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
       flex: 1;
-      padding: 10px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      overflow-y: auto;
     }
 
-    .sc-sidebar-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .sc-sidebar-group-label {
-      font-size: 10.5px;
-      font-weight: 600;
+    .menu-heading {
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted-foreground);
-      padding: 4px 8px;
+      letter-spacing: 0.05em;
+      color: var(--text-subtle);
+      padding: 8px 10px 4px;
     }
 
-    .sc-sidebar-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      list-style: none;
-    }
-
-    .shadcn-tab-trigger {
+    .nav-tab-btn {
       width: 100%;
       border: 1px solid transparent;
       background: transparent;
-      color: var(--sidebar-foreground);
+      color: var(--text-muted);
       font-family: inherit;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 500;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      text-align: start;
+      gap: 10px;
+      transition: all 0.15s ease;
+      text-align: left;
     }
 
-    .shadcn-tab-trigger .menu-item-main {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 0;
+    .nav-tab-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-main);
     }
 
-    .shadcn-tab-trigger svg {
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-      opacity: 0.78;
-    }
-
-    .shadcn-tab-trigger:hover {
-      background: var(--sidebar-accent);
-      color: var(--sidebar-accent-foreground);
-    }
-
-    .shadcn-tab-trigger.active {
-      background: var(--sidebar-accent);
-      color: var(--sidebar-accent-foreground);
+    .nav-tab-btn.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: rgba(99, 102, 241, 0.25);
       font-weight: 600;
-      border-color: var(--sidebar-border);
     }
 
-    .shadcn-tab-trigger.active svg {
+    .nav-tab-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    .nav-tab-btn.active svg {
       opacity: 1;
-      color: var(--ring);
+      color: var(--primary);
     }
 
-    .sc-sidebar-scope-box {
-      background: var(--card);
-      border: 1px solid var(--sidebar-border);
-      border-radius: 7px;
-      padding: 10px;
+    .sidebar-footer {
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       gap: 8px;
+      background: var(--bg-sidebar);
     }
 
-    .sc-sidebar-footer {
-      padding: 12px 10px;
-      border-top: 1px solid var(--sidebar-border);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: var(--sidebar-background);
-    }
-
-    /* SidebarInset (Main Area next to Side Menu) */
-    .sc-sidebar-inset {
+    /* Main Inset Area */
+    .main-viewport {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      background: var(--background);
+      background: var(--bg-app);
     }
 
-    .sc-inset-header {
-      height: 50px;
+    /* Top Navigation Bar */
+    .top-header {
+      height: 52px;
       border-bottom: 1px solid var(--border);
-      background: var(--card);
+      background: var(--bg-sidebar);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 18px;
+      padding: 0 20px;
       position: sticky;
       top: 0;
-      z-index: 40;
+      z-index: 30;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .top-start {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
-    .sc-inset-header-start {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sc-sidebar-trigger {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       border: 1px solid var(--border);
-      background: transparent;
-      color: var(--foreground);
+      background: var(--bg-card);
+      color: var(--text-main);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: all 0.15s ease;
     }
 
-    .sc-sidebar-trigger:hover {
-      background: var(--accent);
+    .icon-btn:hover {
+      background: var(--bg-hover);
     }
 
-    .sc-header-divider {
+    .top-divider {
       width: 1px;
-      height: 16px;
+      height: 18px;
       background: var(--border);
     }
 
-    .topbar-actions {
+    .page-title-badge {
+      font-size: 13.5px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* Status Dot Indicator */
-    .status-dot {
-      width: 7px;
-      height: 7px;
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Live Worker Status Pill */
+    .worker-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .worker-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      display: inline-block;
       background: var(--emerald);
       box-shadow: 0 0 0 2px var(--emerald-soft);
+      animation: pulse-dot 2s infinite ease-in-out;
     }
 
-    /* Main Content Container */
-    .main-container {
-      max-width: 1400px;
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.75; }
+    }
+
+    /* Content Stage Container */
+    .content-area {
+      max-width: 1440px;
       width: 100%;
       margin: 0 auto;
-      padding: 16px 20px 36px;
+      padding: 18px 22px 48px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    @media (max-width: 900px) {
-      .sc-sidebar {
-        position: fixed;
-        inset-block: 0;
-        inset-inline-start: 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-      }
-    }
-
-    .tab-pane {
+    .tab-content {
       display: none;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    .tab-pane.active {
+    .tab-content.active {
       display: flex;
     }
 
-    /* Shadcn Card */
+    /* ==========================================================================
+       SHADCN UI COMPONENTS (CARDS, BUTTONS, BADGES, TOOLTIPS, MODALS)
+       ========================================================================== */
     .sc-card {
-      background: var(--card);
-      color: var(--card-foreground);
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-card);
       transition: border-color 0.15s ease;
     }
 
-    .sc-card.clickable {
-      cursor: pointer;
-    }
-
-    .sc-card.clickable:hover {
-      border-color: var(--ring);
+    .sc-card:hover {
+      border-color: var(--border-subtle);
     }
 
     .sc-card-header {
@@ -418,246 +382,230 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .sc-card-title {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .sc-card-desc {
-      font-size: 11.5px;
-      color: var(--muted-foreground);
+    /* Interactive Hover Tooltip (ⓘ) */
+    .info-tip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-subtle);
+      cursor: help;
+      transition: color 0.15s ease, background 0.15s ease;
     }
 
-    /* Shadcn Buttons */
+    .info-tip:hover {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .info-tip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.96);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      white-space: normal;
+      width: max-content;
+      max-width: 250px;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      box-shadow: var(--shadow-dialog);
+      z-index: 100;
+      transition: all 0.15s ease;
+    }
+
+    .info-tip:hover::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* Buttons */
     .sc-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      border-radius: 6px;
+      gap: 7px;
       font-family: inherit;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
-      padding: 6px 12px;
-      cursor: pointer;
+      padding: 7px 14px;
+      border-radius: 8px;
       border: 1px solid transparent;
+      cursor: pointer;
       transition: all 0.15s ease;
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .sc-btn-primary {
       background: var(--primary);
-      color: var(--primary-foreground);
+      color: var(--primary-fg);
+      box-shadow: 0 1px 3px rgba(79, 70, 229, 0.3);
     }
 
     .sc-btn-primary:hover {
-      opacity: 0.9;
-    }
-
-    .sc-btn-indigo {
-      background: #6366f1;
-      color: #ffffff;
-    }
-
-    .sc-btn-indigo:hover {
-      background: #4f46e5;
-    }
-
-    .sc-btn-emerald {
-      background: #10b981;
-      color: #ffffff;
-    }
-
-    .sc-btn-emerald:hover {
-      background: #059669;
+      background: var(--primary-hover);
+      transform: translateY(-1px);
     }
 
     .sc-btn-outline {
-      background: transparent;
-      color: var(--foreground);
+      background: var(--bg-card);
       border-color: var(--border);
+      color: var(--text-main);
     }
 
     .sc-btn-outline:hover {
-      background: var(--accent);
+      background: var(--bg-hover);
+      border-color: var(--border-subtle);
     }
 
     .sc-btn-ghost {
       background: transparent;
-      color: var(--muted-foreground);
+      color: var(--text-muted);
     }
 
     .sc-btn-ghost:hover {
-      background: var(--accent);
-      color: var(--foreground);
+      background: var(--bg-hover);
+      color: var(--text-main);
+    }
+
+    .sc-btn-danger {
+      background: var(--rose-soft);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: var(--rose);
+    }
+
+    .sc-btn-danger:hover {
+      background: var(--rose);
+      color: #ffffff;
     }
 
     .sc-btn-sm {
-      padding: 4px 9px;
-      font-size: 11px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      border-radius: 6px;
     }
 
-    /* Shadcn Status Indicators */
+    .sc-btn-lg {
+      padding: 10px 18px;
+      font-size: 13.5px;
+      border-radius: 10px;
+    }
+
+    /* Badges */
     .sc-badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 2px 7px;
-      border-radius: 4px;
+      padding: 2.5px 8px;
+      border-radius: 9999px;
       font-size: 11px;
       font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--secondary);
-      color: var(--secondary-foreground);
+      border: 1px solid transparent;
     }
 
-    .sc-badge-emerald {
-      background: var(--emerald-soft);
-      color: var(--emerald);
-      border-color: rgba(16, 185, 129, 0.28);
+    .sc-badge-emerald { background: var(--emerald-soft); color: var(--emerald); border-color: rgba(16, 185, 129, 0.25); }
+    .sc-badge-amber { background: var(--amber-soft); color: var(--amber); border-color: rgba(245, 158, 11, 0.25); }
+    .sc-badge-indigo { background: var(--primary-soft); color: var(--primary); border-color: rgba(99, 102, 241, 0.25); }
+    .sc-badge-rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(239, 68, 68, 0.25); }
+    .sc-badge-cyan { background: var(--cyan-soft); color: var(--cyan); border-color: rgba(6, 182, 212, 0.25); }
+    .sc-badge-muted { background: var(--bg-subtle); color: var(--text-muted); border-color: var(--border); }
+
+    /* Progress Bar */
+    .sc-progress {
+      width: 100%;
+      height: 6px;
+      border-radius: 9999px;
+      background: var(--bg-subtle);
+      overflow: hidden;
     }
 
-    .sc-badge-cyan {
-      background: var(--cyan-soft);
-      color: var(--cyan);
-      border-color: rgba(6, 182, 212, 0.28);
+    .sc-progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.4s ease;
     }
 
-    .sc-badge-indigo {
-      background: var(--indigo-soft);
-      color: var(--indigo);
-      border-color: rgba(99, 102, 241, 0.28);
-    }
-
-    .sc-badge-amber {
-      background: var(--amber-soft);
-      color: var(--amber);
-      border-color: rgba(245, 158, 11, 0.28);
-    }
-
-    .sc-badge-rose {
-      background: var(--rose-soft);
-      color: var(--rose);
-      border-color: rgba(244, 63, 94, 0.28);
-    }
-
-    /* Shadcn Inputs & Selects */
+    /* Input & Select */
     .sc-input, .sc-select {
       width: 100%;
-      background: var(--background);
-      color: var(--foreground);
-      border: 1px solid var(--input);
-      border-radius: 6px;
-      padding: 6px 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-main);
       font-family: inherit;
-      font-size: 12px;
+      font-size: 13px;
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .sc-input:focus, .sc-select:focus {
       border-color: var(--ring);
+      box-shadow: 0 0 0 2px var(--primary-soft);
     }
 
-    .sc-label {
-      display: block;
-      font-size: 11.5px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--foreground);
+    /* Grids */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+    @media (max-width: 1024px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
     }
 
-    /* Shadcn Progress Bar */
-    .sc-progress {
-      width: 100%;
-      height: 7px;
-      background: var(--secondary);
-      border-radius: 999px;
-      overflow: hidden;
+    @media (max-width: 640px) {
+      .grid-2, .grid-4 { grid-template-columns: 1fr; }
     }
 
-    .sc-progress-bar {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.35s ease;
-    }
-
-    /* Grid Layouts */
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    @media (max-width: 1150px) {
-      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-3 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-      .grid-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-    }
-
-    /* KPI Stat Value */
-    .kpi-num {
-      font-size: 22px;
-      font-weight: 700;
+    /* KPI Number */
+    .kpi-val {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.1;
       letter-spacing: -0.02em;
-      line-height: 1.2;
     }
 
-    /* Table */
-    .sc-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 6px;
+    .kpi-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
-    table.sc-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    table.sc-table th, table.sc-table td {
-      padding: 8px 10px;
-      text-align: start;
-      border-bottom: 1px solid var(--border);
-    }
-
-    table.sc-table th {
-      background: var(--muted);
-      color: var(--muted-foreground);
-      font-weight: 600;
-      font-size: 11px;
-    }
-
-    table.sc-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* Shadcn Modal / Dialog */
-    .sc-dialog-backdrop {
+    /* Modals / Dialogs */
+    .sc-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.68);
-      backdrop-filter: blur(3px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -665,1293 +613,1123 @@
       padding: 16px;
     }
 
-    .sc-dialog-backdrop.open {
+    .sc-modal-overlay.open {
       display: flex;
     }
 
-    .sc-dialog {
-      background: var(--popover);
-      color: var(--popover-foreground);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+    .sc-modal-dialog {
       width: 100%;
-      max-width: 680px;
-      max-height: 88vh;
-      overflow-y: auto;
-      padding: 18px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-    }
-
-    /* Account Progress Row */
-    .acc-row {
+      max-width: 560px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-dialog);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      background: var(--background);
+      animation: modal-pop 0.2s ease-out;
     }
 
-    .acc-row.next-up {
-      border-color: var(--emerald);
-      background: rgba(16, 185, 129, 0.04);
+    @keyframes modal-pop {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    .acc-row.exhausted {
-      opacity: 0.68;
+    .sc-modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-sidebar);
     }
 
-    /* Toast */
-    #toast-box {
+    .sc-modal-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .sc-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sc-modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-sidebar);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    /* Spotlight Page Guide Card */
+    .page-guide-banner {
+      background: var(--primary-soft);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: none;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      animation: guide-fade 0.25s ease-out;
+    }
+
+    .page-guide-banner.visible {
+      display: flex;
+    }
+
+    @keyframes guide-fade {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Clean Toast */
+    .toast-container {
       position: fixed;
-      bottom: 18px;
-      inset-inline-end: 18px;
-      z-index: 200;
+      bottom: 20px;
+      right: 20px;
+      z-index: 150;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
     .sc-toast {
-      background: var(--popover);
-      color: var(--foreground);
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      color: var(--text-main);
+      box-shadow: var(--shadow-dialog);
+      font-size: 12.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: toast-in 0.2s ease-out;
+    }
+
+    @keyframes toast-in {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ========================================================================
-       SHADCN/UI SIDEBAR PROVIDER SHELL (SIDE MENU + SIDEBAR INSET)
-       ======================================================================== -->
-  <div class="sc-sidebar-provider">
-
-    <!-- SHADCN SIDEBAR (Side Menu Navigation) -->
-    <aside id="app-sidebar" class="sc-sidebar">
-      <!-- SidebarHeader -->
-      <div class="sc-sidebar-header">
-        <div class="brand-row">
-          <div class="brand-logo">SN</div>
-          <div>
-            <div class="brand-title">StockNova AI</div>
-            <div class="brand-sub" data-i18n="app_subtitle">محرك الأتمتة الذكي لإنتاج الفيديوهات والصور</div>
-          </div>
+  <div class="app-frame">
+    
+    <!-- ===================================================================== -->
+    <!-- SIDEBAR NAVIGATION -->
+    <!-- ===================================================================== -->
+    <aside class="sidebar" id="app-sidebar">
+      
+      <!-- Brand Header -->
+      <div class="sidebar-brand">
+        <div class="brand-icon">SN</div>
+        <div class="brand-text">
+          <h1>StockNova AI</h1>
+          <p>Autonomous Media Studio</p>
         </div>
-        <span class="status-dot" title="Auto-Pilot Active"></span>
       </div>
 
-      <!-- SidebarContent -->
-      <div class="sc-sidebar-content">
+      <!-- Navigation Menu -->
+      <nav class="sidebar-menu">
+        <div class="menu-heading">Studio Pipeline</div>
 
-        <!-- SidebarGroup 1: Core Navigation Menu -->
-        <div class="sc-sidebar-group">
-          <div class="sc-sidebar-group-label" data-i18n="sidebar_nav_label">القائمة الرئيسية</div>
-          <nav class="sc-sidebar-menu">
-            <button class="shadcn-tab-trigger active" data-tab="dashboard" onclick="switchTab('dashboard')">
-              <span class="menu-item-main">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-                <span data-i18n="tab_dashboard">لوحة القيادة والملخص</span>
-              </span>
-            </button>
-
-            <button class="shadcn-tab-trigger" data-tab="pools" onclick="switchTab('pools')">
-              <span class="menu-item-main">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                <span data-i18n="tab_pools">الحسابات وطابور الكريديت</span>
-              </span>
-              <span id="sidebar-acc-count" class="mono" style="font-size:11px; color:var(--muted-foreground);">0</span>
-            </button>
-
-            <button class="shadcn-tab-trigger" data-tab="review" onclick="switchTab('review')">
-              <span class="menu-item-main">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-                <span data-i18n="tab_review">مراجعة الفيديوهات والـ SEO</span>
-              </span>
-            </button>
-
-            <button class="shadcn-tab-trigger" data-tab="freepik" onclick="switchTab('freepik')">
-              <span class="menu-item-main">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                <span data-i18n="tab_freepik">بوابة Freepik 150</span>
-              </span>
-            </button>
-
-            <button class="shadcn-tab-trigger" data-tab="settings" onclick="switchTab('settings')">
-              <span class="menu-item-main">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span data-i18n="tab_settings">الإعدادات والمجلد الخارجي</span>
-              </span>
-            </button>
-          </nav>
-        </div>
-
-        <!-- SidebarGroup 2: Dynamic Production Scope Controls -->
-        <div class="sc-sidebar-group">
-          <div class="sc-sidebar-group-label" data-i18n="lbl_prod_scope">نطاق الإنتاج:</div>
-          <div class="sc-sidebar-scope-box">
-            <select id="quick-gen-mode" class="sc-select" style="padding:5px 8px;" onchange="saveQuickProductionScope()">
-              <option value="videos_only" data-i18n="opt_videos_only">فيديوهات فقط (بدون صور)</option>
-              <option value="both" data-i18n="opt_both_media">فيديوهات + صور (2x)</option>
-              <option value="images_only" data-i18n="opt_images_only">صور فقط (2x)</option>
-            </select>
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:2px;">
-              <label style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; cursor:pointer;">
-                <input type="checkbox" id="quick-adobe-en" checked onchange="saveQuickProductionScope()" />
-                <span>Adobe Stock</span>
-              </label>
-              <label style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; cursor:pointer;">
-                <input type="checkbox" id="quick-freepik-en" checked onchange="saveQuickProductionScope()" />
-                <span>Freepik</span>
-              </label>
-            </div>
-            <button class="sc-btn sc-btn-outline sc-btn-sm" style="width:100%; justify-content:center;" onclick="pickExternalWorkspace()">
-              <span data-i18n="btn_pick_folder">مجلد خارجي</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SidebarFooter -->
-      <div class="sc-sidebar-footer">
-        <button class="sc-btn sc-btn-indigo" style="width:100%;" onclick="startDailyShiftNow()">
-          <span>▶</span>
-          <span data-i18n="btn_start_shift">تشغيل الوردية الآن</span>
+        <button class="nav-tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
         </button>
-        <button class="sc-btn sc-btn-outline" style="width:100%;" onclick="openAddAccountModal()">
-          <span>➕</span>
-          <span data-i18n="btn_add_account">إضافة حساب</span>
+
+        <button class="nav-tab-btn" data-tab="vault" onclick="switchTab('vault')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Asset Vault</span>
         </button>
-        <div style="display:flex; gap:6px;">
-          <button class="sc-btn sc-btn-outline sc-btn-sm mono" style="flex:1;" id="lang-btn" onclick="toggleLanguage()">EN / عربي</button>
-          <button class="sc-btn sc-btn-outline sc-btn-sm" style="flex:1;" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light">☀ / 🌙</button>
+
+        <button class="nav-tab-btn" data-tab="export" onclick="switchTab('export')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span>CSV Studio</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="freepik" onclick="switchTab('freepik')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>Freepik 150 Gate</span>
+        </button>
+
+        <div class="menu-heading" style="margin-top: 14px;">System & Admin</div>
+
+        <button class="nav-tab-btn" data-tab="settings" onclick="switchTab('settings')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Accounts & Vault</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Bottom Pill: 2x 4K Status -->
+      <div class="sidebar-footer">
+        <div style="display:flex; align-items:center; justify-content:space-between; font-size:11px;">
+          <span style="color:var(--text-muted);">Upscaler Policy:</span>
+          <span class="sc-badge sc-badge-emerald">2x ~4K Locked</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; font-size:11px;">
+          <span style="color:var(--text-muted);">Local Vault:</span>
+          <span class="sc-badge sc-badge-indigo">DPAPI / AES</span>
         </div>
       </div>
     </aside>
 
-    <!-- SHADCN SIDEBAR INSET (Top Header + Main Viewport) -->
-    <div class="sc-sidebar-inset">
-
-      <!-- Sticky Top Header inside SidebarInset -->
-      <header class="sc-inset-header">
-        <div class="sc-inset-header-start">
-          <button class="sc-sidebar-trigger" onclick="toggleSidebar()" title="Toggle Sidebar Menu">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+    <!-- ===================================================================== -->
+    <!-- MAIN INSET VIEWPORT -->
+    <!-- ===================================================================== -->
+    <main class="main-viewport">
+      
+      <!-- Top Action Bar -->
+      <header class="top-header">
+        <div class="top-start">
+          <button class="icon-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
-          <div class="sc-header-divider"></div>
-          <span id="current-view-title" style="font-weight:600; font-size:13px;" data-i18n="tab_dashboard">لوحة القيادة والملخص</span>
+          <div class="top-divider"></div>
+          <div class="page-title-badge">
+            <span id="current-page-title">Executive Dashboard</span>
+          </div>
         </div>
 
-        <div class="topbar-actions">
-          <span class="sc-card-desc mono" id="autopilot-pill" style="display:inline-flex; align-items:center; gap:6px;">
-            <span class="status-dot"></span> Auto-Pilot ON
-          </span>
-          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="runPreShiftAuditNow()">
-            <span data-i18n="btn_ai_audit">فحص AI اليومي</span>
+        <div class="top-actions">
+          <!-- Live Worker Status -->
+          <div class="worker-pill">
+            <span class="worker-dot" id="live-worker-dot"></span>
+            <span id="live-worker-text">Engine Standby</span>
+          </div>
+
+          <!-- Quick Setup Launch Button -->
+          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="openQuickSetupModal()" style="border-color:var(--primary); color:var(--primary);">
+            <span>🚀 Quick Setup</span>
+          </button>
+
+          <!-- Per-Page Explanation Guide Button -->
+          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="togglePageGuide()" id="btn-page-guide">
+            <span>💡 Page Guide</span>
+          </button>
+
+          <!-- Light / Dark Mode Toggle -->
+          <button class="icon-btn" onclick="toggleTheme()" id="btn-theme" title="Toggle Light/Dark Theme">
+            <span id="theme-icon">☀️</span>
           </button>
         </div>
       </header>
 
-      <!-- ========================================================================
-           MAIN CONTENT AREA
-           ======================================================================== -->
-      <main class="main-container">
+      <!-- Main Scrollable Content Area -->
+      <div class="content-area">
 
-        <!-- 1. DAILY PRE-SHIFT AI FLOW AUDITOR & ADVISORY ALERT BANNER -->
-        <section id="ai-auditor-banner" class="sc-card">
-          <div class="sc-card-header" style="margin-bottom:6px;">
-            <div class="sc-card-title">
-              <span class="status-dot" style="background:var(--indigo); box-shadow:0 0 0 2px var(--indigo-soft);"></span>
-              <span data-i18n="auditor_title">تقرير وتقييم الذكاء الاصطناعي اليومي قبل بدء العمل (Pre-Shift AI Flow Auditor)</span>
-              <span id="audit-status-badge" class="sc-badge sc-badge-indigo">Evaluating...</span>
+        <!-- =============================================================== -->
+        <!-- TAB 1: DASHBOARD -->
+        <!-- =============================================================== -->
+        <section id="tab-dashboard" class="tab-content active">
+
+          <!-- Interactive Page Guide Banner (Dashboard) -->
+          <div class="page-guide-banner" id="guide-dashboard">
+            <div style="display:flex; gap:12px;">
+              <span style="font-size:24px;">💡</span>
+              <div>
+                <h4 style="font-size:13px; font-weight:700; color:var(--text-main);">Dashboard Quick Guide</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  This is your daily command center. <strong>Free Daily Points</strong> is your primary pool (50 credits/day per account). Pro (1000) and Plus (200) cards appear dynamically when paid accounts are connected. Click <strong>Run Pipeline Cycle</strong> to process files from <code>workspace/0_Raw_Downloads</code>.
+                </p>
+              </div>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span id="audit-timestamp" class="sc-card-desc mono">--</span>
-              <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="runPreShiftAuditNow()" data-i18n="btn_recheck">تحديث التقييم ↻</button>
+            <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="togglePageGuide()">✕</button>
+          </div>
+
+          <!-- Operational Controls Bar -->
+          <div class="sc-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:12px 18px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <button class="sc-btn sc-btn-primary" onclick="runPipelineCycle()" id="btn-run-pipeline">
+                <span>▶ Run Single Cycle</span>
+              </button>
+              <button class="sc-btn sc-btn-outline" onclick="toggleAutopilot()" id="btn-autopilot">
+                <span>🔄 Auto-Pilot Loop</span>
+              </button>
+            </div>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12px;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="sc-badge sc-badge-muted">Raw Buffer: <strong id="buf-raw-count" class="mono" style="margin-left:4px;">0</strong></span>
+                <span class="info-tip" data-tooltip="Images or videos dropped into workspace/0_Raw_Downloads waiting for QC inspection.">ⓘ</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="sc-badge sc-badge-emerald">QC Approved: <strong id="buf-approved-count" class="mono" style="margin-left:4px;">0</strong></span>
+                <span class="info-tip" data-tooltip="Assets that passed Stage 1 & Stage 2 quality checks, upscaled strictly 2x to 4K.">ⓘ</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="sc-badge sc-badge-cyan">Export Ready: <strong id="buf-batched-count" class="mono" style="margin-left:4px;">0</strong></span>
+                <span class="info-tip" data-tooltip="Assets grouped and ready for Adobe Stock or Freepik CSV export.">ⓘ</span>
+              </div>
             </div>
           </div>
-          <div id="audit-ai-note" style="font-size:12.5px; font-weight:500; margin-bottom:8px; color:var(--foreground);">
-            --
+
+          <!-- 4 Executive KPIs -->
+          <div class="grid-4">
+            <!-- KPI 1: Acceptance Rate -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <span class="kpi-label">Commercial Accept Rate</span>
+                <span class="info-tip" data-tooltip="Calculated strictly from approved vs rejected assets in your portfolio database.">ⓘ</span>
+              </div>
+              <div class="kpi-val mono" id="kpi-accept-rate" style="color:var(--emerald);">0.0%</div>
+              <div class="kpi-label" id="kpi-accept-counts">0 Accepted / 0 Rejected</div>
+              <div class="sc-progress" style="margin-top:10px;">
+                <div class="sc-progress-fill" id="bar-accept-rate" style="width:0%; background:var(--emerald);"></div>
+              </div>
+            </div>
+
+            <!-- KPI 2: Shift Progress -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <span class="kpi-label">Today's Shift Progress</span>
+                <span class="info-tip" data-tooltip="Media processed and batched during the active daily cycle.">ⓘ</span>
+              </div>
+              <div class="kpi-val mono" id="kpi-shift-progress">0 / 0</div>
+              <div class="kpi-label" id="kpi-shift-status">Standby — Ready to run</div>
+              <div class="sc-progress" style="margin-top:10px;">
+                <div class="sc-progress-fill" id="bar-shift-progress" style="width:0%; background:var(--primary);"></div>
+              </div>
+            </div>
+
+            <!-- KPI 3: Live Upload Speed -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <span class="kpi-label">Live Upload Velocity</span>
+                <span class="info-tip" data-tooltip="Real-time upload speed during FTP batch submission to contributor portals.">ⓘ</span>
+              </div>
+              <div class="kpi-val mono" id="kpi-upload-speed">0.0 MB/s</div>
+              <div class="kpi-label" id="kpi-upload-file">Idle — No active transfers</div>
+              <div class="sc-progress" style="margin-top:10px;">
+                <div class="sc-progress-fill" id="bar-upload-speed" style="width:0%; background:var(--cyan);"></div>
+              </div>
+            </div>
+
+            <!-- KPI 4: Connected Accounts -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <span class="kpi-label">Connected Profiles</span>
+                <span class="info-tip" data-tooltip="Chrome and Edge browser profiles linked for automated generation.">ⓘ</span>
+              </div>
+              <div class="kpi-val mono" id="kpi-accounts-count">0</div>
+              <div class="kpi-label" id="kpi-accounts-sub">0 Free | 0 Plus | 0 Pro</div>
+              <div class="sc-progress" style="margin-top:10px;">
+                <div class="sc-progress-fill" id="bar-accounts" style="width:0%; background:var(--amber);"></div>
+              </div>
+            </div>
           </div>
-          <div id="audit-recommendations-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+          <!-- SMART CREDIT POOLS SECTION (Free Points Default; Plus/Pro Appear Dynamically) -->
+          <div class="sc-card">
+            <div class="sc-card-header" style="border-bottom:1px solid var(--border); padding-bottom:12px;">
+              <div>
+                <div class="sc-card-title">
+                  <span>Credit Allocation & Points Engine</span>
+                  <span class="info-tip" data-tooltip="Free tier points (50 pts/day) are used first. Pro (1000) and Plus (200) pools appear dynamically when configured.">ⓘ</span>
+                </div>
+              </div>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="switchTab('settings')">
+                <span>➕ Add Account</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Pools Grid -->
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:14px;">
+              
+              <!-- POOL 1: Free Daily 50 Points (DEFAULT - ALWAYS VISIBLE) -->
+              <div class="sc-card" style="background:var(--bg-subtle); border-color:var(--border);" id="card-pool-free">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="sc-badge sc-badge-emerald">Priority #1</span>
+                      <strong style="font-size:13.5px;">Free Daily Tier (50 pts / account)</strong>
+                      <span class="info-tip" data-tooltip="Resets every 24h automatically. Engine exhausts all free accounts first before touching paid credits.">ⓘ</span>
+                    </div>
+                    <div class="kpi-label" id="pool-free-desc">0 Free accounts connected (0 pts available today)</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div class="mono" style="font-size:20px; font-weight:700; color:var(--emerald);" id="pool-free-pts">0 / 0 pts</div>
+                    <div class="kpi-label" id="pool-free-acc-status">0 Completed Today</div>
+                  </div>
+                </div>
+                <div class="sc-progress" style="margin-top:10px; height:7px;">
+                  <div class="sc-progress-fill" id="bar-pool-free" style="width:0%; background:var(--emerald);"></div>
+                </div>
+              </div>
+
+              <!-- POOL 2: Plus Pool (200 Credits) — DYNAMIC (HIDDEN IF 0 ACCOUNTS) -->
+              <div class="sc-card" style="background:var(--bg-subtle); border-color:var(--border); display:none;" id="card-pool-plus">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="sc-badge sc-badge-cyan">Priority #2</span>
+                      <strong style="font-size:13.5px;">Monthly Plus Pool (200 Credits)</strong>
+                      <span id="badge-plus-shared" class="sc-badge sc-badge-muted" style="display:none;">👥 Shared Pool</span>
+                      <span class="info-tip" data-tooltip="Fast-burn pool used after daily free points are exhausted.">ⓘ</span>
+                    </div>
+                    <div class="kpi-label" id="pool-plus-desc">200 Monthly credits pacing</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div class="mono" style="font-size:20px; font-weight:700; color:var(--cyan);" id="pool-plus-pts">0 / 200 pts</div>
+                    <div class="kpi-label" id="pool-plus-burn">Target: 20 pts / day</div>
+                  </div>
+                </div>
+                <div class="sc-progress" style="margin-top:10px; height:7px;">
+                  <div class="sc-progress-fill" id="bar-pool-plus" style="width:0%; background:var(--cyan);"></div>
+                </div>
+              </div>
+
+              <!-- POOL 3: Pro Pool (1,000 Credits) — DYNAMIC (HIDDEN IF 0 ACCOUNTS) -->
+              <div class="sc-card" style="background:var(--bg-subtle); border-color:var(--border); display:none;" id="card-pool-pro">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="sc-badge sc-badge-indigo">Priority #3</span>
+                      <strong style="font-size:13.5px;">Monthly Pro Pool (1,000 Credits)</strong>
+                      <span id="badge-pro-shared" class="sc-badge sc-badge-muted" style="display:none;">👥 Shared Pool</span>
+                      <span class="info-tip" data-tooltip="Paced dynamically over active monthly days. 100-credit models strictly blocked.">ⓘ</span>
+                    </div>
+                    <div class="kpi-label" id="pool-pro-desc">1,000 Monthly credits pacing</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div class="mono" style="font-size:20px; font-weight:700; color:var(--primary);" id="pool-pro-pts">0 / 1,000 pts</div>
+                    <div class="kpi-label" id="pool-pro-burn">Dynamic Pace: 70 pts / active day</div>
+                  </div>
+                </div>
+                <div class="sc-progress" style="margin-top:10px; height:7px;">
+                  <div class="sc-progress-fill" id="bar-pool-pro" style="width:0%; background:var(--primary);"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Real-Time Trend Charts (Flicker-Free shadcn Styled) -->
+          <div class="grid-2">
+            <!-- Chart 1: Acceptance Rate Trend -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Portfolio Acceptance Velocity</span>
+                  <span class="info-tip" data-tooltip="Tracks approval percentage trends across batches over time.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-emerald">Live Diffs</span>
+              </div>
+              <div style="position:relative; height:200px; width:100%;">
+                <canvas id="chart-acceptance"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Production Pipeline Breakdown -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Pipeline Stage Volume</span>
+                  <span class="info-tip" data-tooltip="Distribution of assets across Raw, QC Approved, and Uploaded stages.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-cyan">Batch Ledger</span>
+              </div>
+              <div style="position:relative; height:200px; width:100%;">
+                <canvas id="chart-pipeline"></canvas>
+              </div>
+            </div>
+          </div>
+
         </section>
 
-        <!-- ======================================================================
-             TAB 1: EXECUTIVE DASHBOARD (PROGRESS, ACCEPTANCE/REJECTION, CHARTS, PER-ACCOUNT BARS)
-             ====================================================================== -->
-        <div id="tab-dashboard" class="tab-pane active">
+        <!-- =============================================================== -->
+        <!-- TAB 2: ASSET VAULT -->
+        <!-- =============================================================== -->
+        <section id="tab-vault" class="tab-content">
 
-      <!-- Top 4 Executive KPI Cards -->
-      <div class="grid-4">
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <span class="sc-card-desc" data-i18n="kpi_shift_progress">تقدم وردية اليوم</span>
-            <span id="kpi-shift-badge" class="sc-badge sc-badge-emerald">READY</span>
-          </div>
-          <div class="kpi-num mono" id="kpi-shift-videos">0 / 0</div>
-          <div class="sc-card-desc" id="kpi-shift-sub" style="margin-top:4px;">Videos Completed Today</div>
-          <div class="sc-progress" style="margin-top:8px;">
-            <div id="kpi-shift-bar" class="sc-progress-bar" style="width:0%; background:#10b981;"></div>
-          </div>
-        </div>
-
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <span class="sc-card-desc" data-i18n="kpi_acceptance_rate">معدل القبول والرفض</span>
-            <span class="sc-badge sc-badge-indigo" id="kpi-win-model-badge">omni flash</span>
-          </div>
-          <div class="kpi-num mono" id="kpi-acceptance-pct">0%</div>
-          <div class="sc-card-desc" id="kpi-acceptance-counts" style="margin-top:4px;">Accepted: 0 | Rejected: 0</div>
-          <div class="sc-progress" style="margin-top:8px;">
-            <div id="kpi-acceptance-bar" class="sc-progress-bar" style="width:0%; background:#6366f1;"></div>
-          </div>
-        </div>
-
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <span class="sc-card-desc" data-i18n="kpi_upload_pipeline">حالة الرفع والمراجعة</span>
-            <span class="sc-badge sc-badge-cyan">FTP / CSV</span>
-          </div>
-          <div class="kpi-num mono" id="kpi-uploaded-count">0</div>
-          <div class="sc-card-desc" id="kpi-pipeline-sub" style="margin-top:4px;">Ready: 0 | Borderline: 0</div>
-          <div class="sc-progress" style="margin-top:8px;">
-            <div id="kpi-upload-bar" class="sc-progress-bar" style="width:0%; background:#06b6d4;"></div>
-          </div>
-        </div>
-
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <span class="sc-card-desc" data-i18n="kpi_total_credits">إجمالي الكريديت المتاح فعلياً</span>
-            <span class="sc-badge sc-badge-amber" id="kpi-accounts-count-badge">0 Accounts</span>
-          </div>
-          <div class="kpi-num mono" id="kpi-total-available-credits">0</div>
-          <div class="sc-card-desc" id="kpi-next-account-hint" style="margin-top:4px;">No accounts added yet</div>
-          <div class="sc-progress" style="margin-top:8px;">
-            <div id="kpi-credits-bar" class="sc-progress-bar" style="width:0%; background:#f59e0b;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 CLICKABLE CREDIT POOL CARDS (FREE 50, PLUS 200, PRO 1000) -->
-      <div class="sc-card">
-        <div class="sc-card-header">
-          <div>
-            <div class="sc-card-title" data-i18n="pools_section_title">
-              محافظ الكريديت الديناميكية (اضغط على أي باقة لعرض الحسابات: مين خلص ومين عليه الدور)
-            </div>
-            <div class="sc-card-desc" data-i18n="pools_section_desc">
-              الأرقام تُحسب ديناميكياً من الإيميلات التي تدخلها فقط — الأولوية #1 للـ 50 المجانية، ثم Plus 200، ثم Pro 1000.
-            </div>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="simulateCreditStep()" data-i18n="btn_test_turn">تجربة سحب 15 نقطة ⚡</button>
-            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="resetDailyFreeCredits()" data-i18n="btn_reset_50">تصفير الـ 50 اليومية ↻</button>
-          </div>
-        </div>
-
-        <div class="grid-3">
-          <!-- Pool 1: Free 50/day -->
-          <div class="sc-card clickable" onclick="openPoolDrilldownModal('free_daily')">
-            <div class="sc-card-header">
-              <span class="sc-badge sc-badge-emerald" data-i18n="priority_1_badge">الأولوية #1 يومياً</span>
-              <span class="sc-card-desc mono" id="pool-free-acc-badge">0 Accounts</span>
-            </div>
-            <div class="sc-card-title" data-i18n="pool_free_title">رصيد الـ 50 نقطة المجانية اليومية</div>
-            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
+          <!-- Interactive Page Guide Banner (Vault) -->
+          <div class="page-guide-banner" id="guide-vault">
+            <div style="display:flex; gap:12px;">
+              <span style="font-size:24px;">💡</span>
               <div>
-                <span class="kpi-num mono" style="color:#10b981;" id="pool-free-rem">0</span>
-                <span class="sc-card-desc" id="pool-free-tot">/ 0</span>
+                <h4 style="font-size:13px; font-weight:700; color:var(--text-main);">Asset Vault Quick Guide</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  All media inspected by the two-stage quality checker lands here. Images are strictly upscaled 2x (~4K / 17MP). Click any asset card to inspect commercial titles, 49 SEO keywords, and review notes.
+                </p>
               </div>
-              <span class="sc-card-desc mono" id="pool-free-used">Used: 0</span>
             </div>
-            <div class="sc-progress">
-              <div id="pool-free-bar" class="sc-progress-bar" style="width:0%; background:#10b981;"></div>
+            <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="togglePageGuide()">✕</button>
+          </div>
+
+          <!-- Vault Filters & Actions -->
+          <div class="sc-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="sc-btn sc-btn-primary sc-btn-sm" onclick="filterVault('all')" id="vf-all">All Assets</button>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="filterVault('approved')" id="vf-approved">Approved (2x 4K)</button>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="filterVault('borderline')" id="vf-borderline">Needs Quick Look</button>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="filterVault('rejected')" id="vf-rejected">Rejected</button>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
-              <span id="pool-free-queue-summary">Done: 0 | Available: 0</span>
-              <span style="color:#10b981; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="openFolder('qc2_approved')">
+                <span>📁 Open 4K Folder</span>
+              </button>
             </div>
           </div>
 
-          <!-- Pool 2: Plus 200/month -->
-          <div class="sc-card clickable" onclick="openPoolDrilldownModal('plus_200')">
-            <div class="sc-card-header">
-              <span class="sc-badge sc-badge-cyan" data-i18n="priority_2_badge">الأولوية #2 (بعد المجاني)</span>
-              <span class="sc-card-desc mono" id="pool-plus-acc-badge">0 Accounts</span>
+          <!-- Assets Visual Grid -->
+          <div class="sc-card">
+            <div id="vault-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:14px;">
+              <!-- Dynamic Cards Inserted Here -->
             </div>
-            <div class="sc-card-title" data-i18n="pool_plus_title">باقة Plus الشهرية (200 نقطة)</div>
-            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
+            <div id="vault-empty-state" style="padding:48px 20px; text-align:center; color:var(--text-muted); display:none;">
+              <span style="font-size:36px; display:block; margin-bottom:8px;">🖼️</span>
+              <strong style="color:var(--text-main); font-size:14px;">No Assets Found</strong>
+              <p style="font-size:12px; margin-top:4px;">Drop images into <code>workspace/0_Raw_Downloads</code> and run a cycle to populate the vault.</p>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- TAB 3: CSV STUDIO -->
+        <!-- =============================================================== -->
+        <section id="tab-export" class="tab-content">
+
+          <!-- Interactive Page Guide Banner (CSV Studio) -->
+          <div class="page-guide-banner" id="guide-export">
+            <div style="display:flex; gap:12px;">
+              <span style="font-size:24px;">💡</span>
               <div>
-                <span class="kpi-num mono" style="color:#06b6d4;" id="pool-plus-rem">0</span>
-                <span class="sc-card-desc" id="pool-plus-tot">/ 0</span>
+                <h4 style="font-size:13px; font-weight:700; color:var(--text-main);">CSV Studio Quick Guide</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  Generate official platform-compliant CSVs without touching media binaries. Adobe Stock uses commas (<code>,</code>) and numeric category IDs (1–21). Freepik uses semicolons (<code>;</code>), AI prompts, and mandatory <code>_ai_generated</code> tags.
+                </p>
               </div>
-              <span class="sc-card-desc mono" id="pool-plus-used">Used: 0</span>
             </div>
-            <div class="sc-progress">
-              <div id="pool-plus-bar" class="sc-progress-bar" style="width:0%; background:#06b6d4;"></div>
+            <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="togglePageGuide()">✕</button>
+          </div>
+
+          <!-- Export Action Cards -->
+          <div class="grid-2">
+            <!-- Adobe Export Card -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Adobe Stock CSV</span>
+                  <span class="info-tip" data-tooltip="5 Columns: Filename, Title, Keywords, Category (Numeric 1-21), Releases. Comma-delimited.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-emerald">Numeric IDs 1–21</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">
+                Strict comma delimiter. Category IDs are mapped numerically (e.g. 7 for Food, 19 for Tech) to prevent contributor portal rejections.
+              </p>
+              <button class="sc-btn sc-btn-primary" onclick="exportCsv('adobe')">
+                <span>📥 Export Adobe CSV</span>
+              </button>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
-              <span id="pool-plus-queue-summary">Not configured</span>
-              <span style="color:#06b6d4; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
+
+            <!-- Freepik Export Card -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Freepik Contributor CSV</span>
+                  <span class="info-tip" data-tooltip="5 Columns: File name; Title; Keywords; Prompt; Model. Semicolon-delimited with _ai_generated tag.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-amber">Semicolon Delimited</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">
+                Semicolon delimiter (<code>;</code>). Injects mandatory <code>_ai_generated</code> keyword and blocks video assets from the photo portal.
+              </p>
+              <button class="sc-btn sc-btn-primary" onclick="exportCsv('freepik')">
+                <span>📥 Export Freepik CSV</span>
+              </button>
             </div>
           </div>
 
-          <!-- Pool 3: Pro 1000/month -->
-          <div class="sc-card clickable" onclick="openPoolDrilldownModal('pro_1000')">
+          <!-- Metadata Preview Table -->
+          <div class="sc-card">
             <div class="sc-card-header">
-              <span class="sc-badge sc-badge-indigo" data-i18n="priority_3_badge">الأولوية #3 (حسب التجديد)</span>
-              <span class="sc-card-desc mono" id="pool-pro-acc-badge">0 Accounts</span>
-            </div>
-            <div class="sc-card-title" data-i18n="pool_pro_title">باقة Pro الشهرية (1000 نقطة)</div>
-            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
-              <div>
-                <span class="kpi-num mono" style="color:#818cf8;" id="pool-pro-rem">0</span>
-                <span class="sc-card-desc" id="pool-pro-tot">/ 0</span>
+              <div class="sc-card-title">
+                <span>Approved Assets Metadata Table</span>
+                <span class="info-tip" data-tooltip="Inspect titles, categories, and keyword counts prior to CSV generation.">ⓘ</span>
               </div>
-              <span class="sc-card-desc mono" id="pool-pro-used">Used: 0</span>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="openFolder('exports')">
+                <span>📁 Open Exports Folder</span>
+              </button>
             </div>
-            <div class="sc-progress">
-              <div id="pool-pro-bar" class="sc-progress-bar" style="width:0%; background:#6366f1;"></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
-              <span id="pool-pro-queue-summary">Not configured</span>
-              <span style="color:#818cf8; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CHARTS ROW: PIPELINE / ACCEPTANCE CHART + CREDIT CONSUMPTION CHART -->
-      <div class="grid-2">
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <div>
-              <div class="sc-card-title" data-i18n="chart_pipeline_title">تحليل الإنتاج والرفع والقبول (Adobe Stock & Freepik)</div>
-              <div class="sc-card-desc" data-i18n="chart_pipeline_desc">مقارنة الملفات المعتمدة، المرفوعة، المقبولة، والمرفوضة</div>
-            </div>
-          </div>
-          <div style="height: 210px; position: relative;">
-            <canvas id="pipelineChart"></canvas>
-          </div>
-        </div>
-
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <div>
-              <div class="sc-card-title" data-i18n="chart_credits_title">توزيع واستهلاك الكريديت عبر الباقات المسجلة</div>
-              <div class="sc-card-desc" data-i18n="chart_credits_desc">المستهلك مقابل المتبقي الفعلي في Free 50 و Plus 200 و Pro 1000</div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--border); text-align:left; color:var(--text-muted);">
+                    <th style="padding:8px 10px;">Filename</th>
+                    <th style="padding:8px 10px;">Title (English)</th>
+                    <th style="padding:8px 10px;">Adobe Category</th>
+                    <th style="padding:8px 10px;">Keywords</th>
+                    <th style="padding:8px 10px;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="csv-preview-body">
+                  <tr><td colspan="5" style="padding:24px; text-align:center; color:var(--text-muted);">No approved assets ready for export.</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <div style="height: 210px; position: relative;">
-            <canvas id="creditsChart"></canvas>
-          </div>
-        </div>
-      </div>
 
-      <!-- PER-ACCOUNT LIVE PROGRESS BARS & QUEUE ORDER -->
-      <div class="sc-card">
-        <div class="sc-card-header">
-          <div>
-            <div class="sc-card-title" data-i18n="per_account_bars_title">شريط التقدم واستهلاك الكريديت لكل حساب مسجل</div>
-            <div class="sc-card-desc" data-i18n="per_account_bars_desc">يوضح الحساب الأساسي لـ Argon، ومن أنهى حصته اليوم، ومن عليه الدور الآن</div>
-          </div>
-          <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="openAddAccountModal()" data-i18n="btn_add_account">إضافة حساب</button>
-        </div>
-        <div id="dashboard-accounts-bars" style="display:flex; flex-direction:column; gap:8px;"></div>
-      </div>
+        </section>
 
-    </div>
+        <!-- =============================================================== -->
+        <!-- TAB 4: FREEPIK 150 GATE -->
+        <!-- =============================================================== -->
+        <section id="tab-freepik" class="tab-content">
 
-    <!-- ======================================================================
-         TAB 2: ACCOUNTS & DYNAMIC CREDIT QUEUES
-         ====================================================================== -->
-    <div id="tab-pools" class="tab-pane">
-      <div class="sc-card">
-        <div class="sc-card-header">
-          <div>
-            <div class="sc-card-title" data-i18n="accounts_mgmt_title">إدارة حسابات Gemini / Argon وتحديد الحساب الأساسي (#1 Primary Brain)</div>
-            <div class="sc-card-desc" data-i18n="accounts_mgmt_desc">
-              أضف إيميلاتك وسيحدد النظام تلقائياً الباقة (Free / Plus 200 / Pro 1000)، وهل الرصيد مشترك أم منفصل، وأفضل موديل فيديو متاح.
+          <!-- Interactive Page Guide Banner (Freepik 150 Gate) -->
+          <div class="page-guide-banner" id="guide-freepik">
+            <div style="display:flex; gap:12px;">
+              <span style="font-size:24px;">💡</span>
+              <div>
+                <h4 style="font-size:13px; font-weight:700; color:var(--text-main);">Freepik 150 Gate Quick Guide</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  Freepik requires an initial 150-image batch reviewed by a human moderator. This curator enforces ultra-strict manual-review standards and uses a SHA-256 database ledger to remember previously checked images, allowing you to build to 150 incrementally.
+                </p>
+              </div>
             </div>
+            <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="togglePageGuide()">✕</button>
           </div>
-          <div style="display:flex; gap:6px;">
-            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="autoDetectBrowserAccounts()" data-i18n="btn_auto_detect">اكتشاف من المتصفح 🔍</button>
-            <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="openAddAccountModal()" data-i18n="btn_add_account">إضافة حساب ➕</button>
-          </div>
-        </div>
 
-        <div class="sc-table-wrap">
-          <table class="sc-table">
-            <thead>
-              <tr>
-                <th data-i18n="th_account">الحساب / الإيميل</th>
-                <th data-i18n="th_tier">الباقة</th>
-                <th data-i18n="th_shared">نوع المحفظة</th>
-                <th data-i18n="th_free_50">الـ 50 اليومية</th>
-                <th data-i18n="th_monthly">الرصيد الشهري (200/1000)</th>
-                <th data-i18n="th_renewal">التجديد</th>
-                <th data-i18n="th_models">الموديلات المتاحة</th>
-                <th data-i18n="th_actions">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="accounts-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================
-         TAB 3: VIDEO & ASSET REVIEW + DUAL-PLATFORM SEO
-         ====================================================================== -->
-    <div id="tab-review" class="tab-pane">
-      <div class="sc-card">
-        <div class="sc-card-header">
-          <div>
-            <div class="sc-card-title" data-i18n="review_title">فحص الفيديوهات (تقييم تقني 40% + استمرارية الحركة 60%) وعناوين SEO المزدوجة</div>
-            <div class="sc-card-desc" data-i18n="review_desc">يتم استبعاد موديل الـ 100 نقطة تلقائياً، وتوليد عنوانين منفصلين لـ Adobe Stock و Freepik</div>
-          </div>
-          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="benchmarkVideoModels()" data-i18n="btn_benchmark_models">اختيار أفضل موديل فيديو 🏆</button>
-        </div>
-
-        <div class="sc-table-wrap">
-          <table class="sc-table">
-            <thead>
-              <tr>
-                <th data-i18n="th_file">الملف</th>
-                <th data-i18n="th_type_model">النوع / الموديل</th>
-                <th data-i18n="th_qc_scores">تقييم الجودة والحركة</th>
-                <th data-i18n="th_adobe_title">عنوان Adobe Stock (&lt;70)</th>
-                <th data-i18n="th_freepik_title">عنوان Freepik (&lt;100)</th>
-                <th data-i18n="th_status">الحالة / التحكم</th>
-              </tr>
-            </thead>
-            <tbody id="assets-review-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================
-         TAB 4: FREEPIK 150 GATE
-         ====================================================================== -->
-    <div id="tab-freepik" class="tab-pane">
-      <div class="sc-card">
-        <div class="sc-card-header">
-          <div>
-            <div class="sc-card-title" data-i18n="fp_title">بوابة Freepik 150 الذكية (فحص SHA-256 بدون تكرار)</div>
-            <div class="sc-card-desc" data-i18n="fp_desc">اختر مجلداً خارجياً ليقوم النظام بفرز أفضل 150 صورة بدقة 4MP+ بدون إعادة فحص الصور القديمة</div>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="pickExternalFreepikFolder()" data-i18n="btn_pick_fp_folder">تحديد مجلد الصور 📁</button>
-            <button class="sc-btn sc-btn-emerald sc-btn-sm" onclick="runFreepikCurationNow()" data-i18n="btn_run_fp_150">بدء فرز الـ 150 صورة ✨</button>
-          </div>
-        </div>
-        <div class="grid-3" style="margin-bottom:12px;">
+          <!-- Progress Overview Card -->
           <div class="sc-card">
-            <div class="sc-card-desc">Golden Approved / 150</div>
-            <div class="kpi-num mono" id="fp-curated-num">0 / 150</div>
-          </div>
-          <div class="sc-card">
-            <div class="sc-card-desc">Total Unique Inspected (SHA-256)</div>
-            <div class="kpi-num mono" id="fp-inspected-num">0</div>
-          </div>
-          <div class="sc-card">
-            <div class="sc-card-desc">Candidate Source Folder</div>
-            <div class="mono" style="font-size:11px; word-break:break-all; margin-top:6px;" id="fp-folder-label">--</div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <div class="sc-card-header">
+              <div>
+                <div class="sc-card-title">
+                  <span>Freepik 150 Golden Asset Curator</span>
+                  <span class="info-tip" data-tooltip="Builds up to 150 compliant assets across runs without re-inspecting files.">ⓘ</span>
+                </div>
+                <div class="kpi-label">Stateful Human-Review Simulation & Quality Barrier</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button class="sc-btn sc-btn-primary" onclick="runFreepik150Scan()" id="btn-scan-freepik">
+                  <span>🔬 Run Strict 150 QC Scan</span>
+                </button>
+              </div>
+            </div>
 
-    <!-- ======================================================================
-         TAB 5: SETTINGS, EXTERNAL WORKSPACE PICKER & API KEYS
-         ====================================================================== -->
-    <div id="tab-settings" class="tab-pane">
-      <div class="grid-2">
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <div>
-              <div class="sc-card-title" data-i18n="ext_folder_title">المجلد الخارجي للعمل (خارج ملفات المشروع)</div>
-              <div class="sc-card-desc" data-i18n="ext_folder_desc">احفظ الفيديوهات والصور في مجلد مستقل على جهازك لمنع أي لخبطة داخل ملفات الكود</div>
+            <div style="margin:14px 0 8px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:12px;">
+                <span>Curated Progress: <strong id="fp-curated-count" class="mono">0 / 150</strong></span>
+                <span id="fp-needed-count" class="mono" style="color:var(--text-muted);">150 Needed</span>
+              </div>
+              <div class="sc-progress" style="height:8px;">
+                <div class="sc-progress-fill" id="bar-freepik-150" style="width:0%; background:var(--amber);"></div>
+              </div>
+            </div>
+
+            <div class="grid-3" style="margin-top:14px;">
+              <div class="sc-card" style="background:var(--bg-subtle); padding:10px;">
+                <span class="kpi-label">Total Evaluated in Ledger</span>
+                <div class="mono" style="font-size:18px; font-weight:700;" id="fp-stat-total">0</div>
+              </div>
+              <div class="sc-card" style="background:var(--bg-subtle); padding:10px;">
+                <span class="kpi-label">Isolated Mockups / Objects</span>
+                <div class="mono" style="font-size:18px; font-weight:700;" id="fp-stat-isolated">0</div>
+              </div>
+              <div class="sc-card" style="background:var(--bg-subtle); padding:10px;">
+                <span class="kpi-label">Full-Bleed Backgrounds</span>
+                <div class="mono" style="font-size:18px; font-weight:700;" id="fp-stat-bg">0</div>
+              </div>
             </div>
           </div>
-          <label class="sc-label" data-i18n="lbl_current_ws">مسار مجلد العمل الحالي:</label>
-          <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <input type="text" id="settings-ws-path" class="sc-input mono" placeholder="C:\StockNova_Workspace" />
-            <button class="sc-btn sc-btn-indigo" onclick="pickExternalWorkspace()" data-i18n="btn_browse_folder">استعراض واختيار 📁</button>
-          </div>
-          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="saveManualWorkspacePath()" data-i18n="btn_save_path">حفظ المسار يدوياً</button>
-        </div>
 
-        <div class="sc-card">
-          <div class="sc-card-header">
-            <div>
-              <div class="sc-card-title" data-i18n="api_keys_title">مفاتيح Google AI Studio API (لفحص الـ 8 لقطات والـ SEO)</div>
-              <div class="sc-card-desc" data-i18n="api_keys_desc">التبديل التلقائي بين المفاتيح المجانية بدون استهلاك نقاط الفيديو</div>
+          <!-- Curated Picks Grid -->
+          <div class="sc-card">
+            <div class="sc-card-header">
+              <div class="sc-card-title">Curated 150 Golden Asset Candidates</div>
+              <span class="sc-badge sc-badge-amber" id="fp-golden-badge">In Progress</span>
+            </div>
+            <div id="fp-curated-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:12px;">
+              <!-- Dynamic Curated Cards -->
+            </div>
+            <div id="fp-empty-state" style="padding:36px; text-align:center; color:var(--text-muted);">
+              Run a scan to evaluate candidate assets for the 150 onboarding batch.
             </div>
           </div>
-          <div style="display:flex; gap:6px; margin-bottom:10px;">
-            <input type="text" id="new-key-alias" class="sc-input" placeholder="Key Alias (e.g. key_1)" style="max-width:140px;" />
-            <input type="password" id="new-key-val" class="sc-input mono" placeholder="AIzaSy..." />
-            <button class="sc-btn sc-btn-indigo" onclick="addGeminiApiKey()" data-i18n="btn_add_key">إضافة</button>
+
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- TAB 5: ACCOUNTS & VAULT -->
+        <!-- =============================================================== -->
+        <section id="tab-settings" class="tab-content">
+
+          <!-- Interactive Page Guide Banner (Settings) -->
+          <div class="page-guide-banner" id="guide-settings">
+            <div style="display:flex; gap:12px;">
+              <span style="font-size:24px;">💡</span>
+              <div>
+                <h4 style="font-size:13px; font-weight:700; color:var(--text-main);">Settings & Security Vault Guide</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  All API keys, passwords, and browser accounts are encrypted locally using Windows hardware/user-bound DPAPI. Credential files are 100% excluded from Git. You can also specify shared credit pools for accounts sharing the same 1,000 credits.
+                </p>
+              </div>
+            </div>
+            <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="togglePageGuide()">✕</button>
           </div>
-          <div id="api-keys-list" style="display:flex; flex-direction:column; gap:6px;"></div>
-        </div>
+
+          <!-- Zero-Leak Hardware Vault Active Banner -->
+          <div class="sc-card" style="background:var(--emerald-soft); border-color:rgba(16, 185, 129, 0.3); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:24px;">🛡️</span>
+              <div>
+                <strong style="color:var(--text-main); font-size:13.5px;">Zero-Leak Local Hardware Vault Active</strong>
+                <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
+                  All credentials and API keys are AES/DPAPI encrypted in your local SQLite database. Files are strictly ignored by Git and will never be pushed to GitHub.
+                </p>
+              </div>
+            </div>
+            <span class="sc-badge sc-badge-emerald">🔒 Git Ignored & Encrypted</span>
+          </div>
+
+          <!-- Section 1: Google AI Studio API Keys -->
+          <div class="sc-card">
+            <div class="sc-card-header">
+              <div>
+                <div class="sc-card-title">
+                  <span>Google AI Studio API Keys</span>
+                  <span class="info-tip" data-tooltip="Used for fast Stage 1 QC inspection, metadata tagging, and market research. Multiple keys rotate automatically upon HTTP 429.">ⓘ</span>
+                </div>
+                <div class="kpi-label">Automatic failover rotator for Gemini 2.5 Flash / Flash Lite</div>
+              </div>
+              <button class="sc-btn sc-btn-primary sc-btn-sm" onclick="openModal('modal-add-key')">
+                <span>➕ Add API Key</span>
+              </button>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--border); text-align:left; color:var(--text-muted);">
+                    <th style="padding:8px 10px;">Alias</th>
+                    <th style="padding:8px 10px;">Encrypted Key</th>
+                    <th style="padding:8px 10px;">Status</th>
+                    <th style="padding:8px 10px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="keys-table-body">
+                  <tr><td colspan="4" style="padding:16px; text-align:center; color:var(--text-muted);">No API keys added yet. Click "+ Add API Key" to configure.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 2: Browser Profiles & Shared Credit Pools -->
+          <div class="sc-card">
+            <div class="sc-card-header">
+              <div>
+                <div class="sc-card-title">
+                  <span>Connected Browser Profiles & Shared Pools</span>
+                  <span class="info-tip" data-tooltip="Manage Chrome profiles. Mark accounts as sharing a pool so they don't multiply the 1,000 credit limit.">ⓘ</span>
+                </div>
+                <div class="kpi-label">Free (50/day), Plus (200/mo), and Pro (1000/mo) browser sessions</div>
+              </div>
+              <button class="sc-btn sc-btn-primary sc-btn-sm" onclick="openModal('modal-add-account')">
+                <span>➕ Add Profile</span>
+              </button>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--border); text-align:left; color:var(--text-muted);">
+                    <th style="padding:8px 10px;">Profile / Name</th>
+                    <th style="padding:8px 10px;">Email</th>
+                    <th style="padding:8px 10px;">Tier</th>
+                    <th style="padding:8px 10px;">Pool Type</th>
+                    <th style="padding:8px 10px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="accounts-table-body">
+                  <tr><td colspan="5" style="padding:16px; text-align:center; color:var(--text-muted);">No browser profiles configured yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 3: Platform Contributor Credentials (FTP & Mode) -->
+          <div class="grid-2">
+            <!-- Adobe FTP -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Adobe Stock FTP</span>
+                  <span class="info-tip" data-tooltip="Used for 1-click batch upload to Adobe Stock contributor portal. Passwords encrypted with DPAPI.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-emerald" id="badge-adobe-status">Configured</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div>
+                  <label class="kpi-label">FTP Username / Contributor ID</label>
+                  <input type="text" id="cfg-adobe-user" class="sc-input" placeholder="e.g. 12345678" />
+                </div>
+                <div>
+                  <label class="kpi-label">FTP Password (Encrypted locally)</label>
+                  <input type="password" id="cfg-adobe-pass" class="sc-input" placeholder="••••••••••••" />
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                  <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testConnection('adobe')">Test Connection</button>
+                  <button class="sc-btn sc-btn-primary sc-btn-sm" onclick="saveFtpSettings()">Save Credentials</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Freepik Credentials -->
+            <div class="sc-card">
+              <div class="sc-card-header">
+                <div class="sc-card-title">
+                  <span>Freepik Contributor</span>
+                  <span class="info-tip" data-tooltip="Set integration mode. Passwords stored in local encrypted database.">ⓘ</span>
+                </div>
+                <span class="sc-badge sc-badge-amber" id="badge-freepik-status">Standby</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div>
+                  <label class="kpi-label">Freepik Username / Email</label>
+                  <input type="text" id="cfg-freepik-user" class="sc-input" placeholder="contributor@example.com" />
+                </div>
+                <div>
+                  <label class="kpi-label">Freepik Password (Encrypted locally)</label>
+                  <input type="password" id="cfg-freepik-pass" class="sc-input" placeholder="••••••••••••" />
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                  <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testConnection('freepik')">Test Connection</button>
+                  <button class="sc-btn sc-btn-primary sc-btn-sm" onclick="saveFreepikSettings()">Save Credentials</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
       </div>
-    </div>
+    </main>
 
-      </main>
-    </div><!-- /.sc-sidebar-inset -->
-  </div><!-- /.sc-sidebar-provider -->
+  </div>
 
-  <!-- ========================================================================
-       MODAL 1: CREDIT POOL DRILL-DOWN MODAL (WHO FINISHED, WHO IS NEXT IN TURN, SHARED VS INDIVIDUAL)
-       ======================================================================== -->
-  <div id="pool-drilldown-modal" class="sc-dialog-backdrop" onclick="if(event.target===this) closePoolModal()">
-    <div class="sc-dialog">
-      <div class="sc-card-header">
+  <!-- ===================================================================== -->
+  <!-- MODAL: FIRST-RUN QUICK SETUP WIZARD -->
+  <!-- ===================================================================== -->
+  <div class="sc-modal-overlay" id="modal-quick-setup">
+    <div class="sc-modal-dialog" style="max-width: 620px;">
+      <div class="sc-modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:18px;">🚀</span>
+          <div class="sc-modal-title">Studio First-Run Quick Setup</div>
+        </div>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeModal('modal-quick-setup')">✕</button>
+      </div>
+
+      <div class="sc-modal-body">
+        
+        <!-- Step 1: AI Keys & Models -->
+        <div style="border-bottom:1px solid var(--border); padding-bottom:14px;">
+          <strong style="font-size:13px; color:var(--text-main);">1. AI Studio API Key & Models</strong>
+          <p style="font-size:11.5px; color:var(--text-muted); margin:2px 0 8px;">
+            The engine talks to <strong>Gemini 2.5 Flash</strong> for QC & tagging, and <strong>Argon</strong> for trend analysis.
+          </p>
+          <div style="display:flex; gap:8px;">
+            <input type="password" id="qs-api-key" class="sc-input" placeholder="Paste your AI Studio Key (AIzaSy...)" />
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testQuickSetupKey()" id="btn-qs-test">Test Key</button>
+          </div>
+          <span id="qs-key-feedback" style="font-size:11px; margin-top:4px; display:block;"></span>
+        </div>
+
+        <!-- Step 2: Contributor Accounts -->
+        <div style="border-bottom:1px solid var(--border); padding-bottom:14px;">
+          <strong style="font-size:13px; color:var(--text-main);">2. Stock Contributor Profiles</strong>
+          <p style="font-size:11.5px; color:var(--text-muted); margin:2px 0 8px;">
+            Credentials are encrypted locally with Windows DPAPI and never pushed to Git.
+          </p>
+          <div class="grid-2">
+            <div>
+              <label class="kpi-label">Adobe Stock Contributor ID</label>
+              <input type="text" id="qs-adobe-user" class="sc-input" placeholder="Contributor ID" />
+            </div>
+            <div>
+              <label class="kpi-label">Freepik Contributor Email</label>
+              <input type="text" id="qs-freepik-user" class="sc-input" placeholder="Email" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Media Source & 2x 4K Policy -->
         <div>
-          <div class="sc-card-title" id="modal-pool-title">تفاصيل طابور الحسابات</div>
-          <div class="sc-card-desc" id="modal-pool-subtitle">مين خلص ومين عليه الدور في السحب</div>
+          <strong style="font-size:13px; color:var(--text-main);">3. Media Source & Quality Policy</strong>
+          <p style="font-size:11.5px; color:var(--text-muted); margin:2px 0 6px;">
+            Save generated images and videos in <code>workspace/0_Raw_Downloads</code>. Upscaling is strictly locked to <strong>2x (~4K Standard)</strong> to prevent commercial rejection.
+          </p>
+          <div class="sc-card" style="background:var(--bg-subtle); padding:10px; font-size:11.5px;">
+            ✓ 2x Optimal 4K Standard Locked (~17 Megapixels)<br/>
+            ✓ Comma-separated Adobe CSVs with Numeric Categories (1–21)<br/>
+            ✓ Semicolon-separated Freepik CSVs with <code>_ai_generated</code> tag
+          </div>
         </div>
-        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closePoolModal()">✕</button>
+
       </div>
 
-      <!-- Summary Strip Inside Modal -->
-      <div class="grid-3" style="margin-bottom:12px;">
-        <div class="sc-card" style="padding:10px;">
-          <div class="sc-card-desc" data-i18n="modal_rem_credits">الرصيد المتبقي</div>
-          <div class="kpi-num mono" id="modal-pool-rem">0</div>
-        </div>
-        <div class="sc-card" style="padding:10px;">
-          <div class="sc-card-desc" data-i18n="modal_exhausted_accs">حسابات خلصت (Exhausted)</div>
-          <div class="kpi-num mono" id="modal-pool-done">0</div>
-        </div>
-        <div class="sc-card" style="padding:10px;">
-          <div class="sc-card-desc" data-i18n="modal_avail_accs">حسابات متاحة في الدور</div>
-          <div class="kpi-num mono" id="modal-pool-avail">0</div>
-        </div>
-      </div>
-
-      <div id="modal-pool-accounts-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px;">
-        <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="closePoolModal(); openAddAccountModal();" data-i18n="btn_add_account_to_pool">➕ إضافة حساب جديد لهذه الباقة</button>
-        <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="closePoolModal()" data-i18n="btn_close">إغلاق</button>
+      <div class="sc-modal-footer">
+        <button class="sc-btn sc-btn-ghost" onclick="closeModal('modal-quick-setup')">Skip for Now</button>
+        <button class="sc-btn sc-btn-primary" onclick="submitQuickSetup()">Complete Setup & Launch Studio</button>
       </div>
     </div>
   </div>
 
-  <!-- ========================================================================
-       MODAL 2: ADD / CONFIGURE ACCOUNT MODAL (DYNAMIC TIER, SHARED POOL, RENEWAL DAY)
-       ======================================================================== -->
-  <div id="add-account-modal" class="sc-dialog-backdrop" onclick="if(event.target===this) closeAddAccountModal()">
-    <div class="sc-dialog" style="max-width:520px;">
-      <div class="sc-card-header">
-        <div>
-          <div class="sc-card-title" data-i18n="add_acc_modal_title">إضافة / تحديث حساب Gemini & Argon</div>
-          <div class="sc-card-desc" data-i18n="add_acc_modal_desc">أدخل الإيميل وسيقوم النظام بضبط الطابور والموديلات وحساب الرصيد ديناميكياً</div>
-        </div>
-        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeAddAccountModal()">✕</button>
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD API KEY -->
+  <!-- ===================================================================== -->
+  <div class="sc-modal-overlay" id="modal-add-key">
+    <div class="sc-modal-dialog">
+      <div class="sc-modal-header">
+        <div class="sc-modal-title">Add Google AI Studio Key</div>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeModal('modal-add-key')">✕</button>
       </div>
-
-      <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="sc-modal-body">
         <div>
-          <label class="sc-label" data-i18n="lbl_email">البريد الإلكتروني (Email):</label>
-          <input type="email" id="acc-email" class="sc-input mono" placeholder="user@gmail.com" />
+          <label class="kpi-label">Key Alias (Label)</label>
+          <input type="text" id="input-key-alias" class="sc-input" placeholder="e.g. key_primary_fast" />
         </div>
+        <div>
+          <label class="kpi-label">Gemini API Key</label>
+          <input type="password" id="input-api-key" class="sc-input" placeholder="AIzaSy..." />
+        </div>
+        <p style="font-size:11px; color:var(--text-muted);">
+          Key will be encrypted using Windows DPAPI before being stored in SQLite.
+        </p>
+      </div>
+      <div class="sc-modal-footer">
+        <button class="sc-btn sc-btn-ghost" onclick="closeModal('modal-add-key')">Cancel</button>
+        <button class="sc-btn sc-btn-primary" onclick="submitAddKey()">Encrypt & Save</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD BROWSER PROFILE WITH SHARED POOL SUPPORT -->
+  <!-- ===================================================================== -->
+  <div class="sc-modal-overlay" id="modal-add-account">
+    <div class="sc-modal-dialog">
+      <div class="sc-modal-header">
+        <div class="sc-modal-title">Connect Browser Profile</div>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeModal('modal-add-account')">✕</button>
+      </div>
+      <div class="sc-modal-body">
+        <div>
+          <label class="kpi-label">Profile / Display Name</label>
+          <input type="text" id="input-acc-name" class="sc-input" placeholder="e.g. Studio Main 01" />
+        </div>
+        <div>
+          <label class="kpi-label">Gmail Address</label>
+          <input type="email" id="input-acc-email" class="sc-input" placeholder="user@gmail.com" />
+        </div>
         <div class="grid-2">
           <div>
-            <label class="sc-label" data-i18n="lbl_acc_name">اسم مميز للحساب (اختياري):</label>
-            <input type="text" id="acc-name" class="sc-input" placeholder="Main Argon / Pro 1" />
+            <label class="kpi-label">Tier</label>
+            <select id="input-acc-tier" class="sc-select" onchange="toggleSharedPoolOption()">
+              <option value="free">Free Tier (50 pts/day)</option>
+              <option value="plus">Plus (200/mo)</option>
+              <option value="pro">Pro (1,000/mo)</option>
+            </select>
           </div>
           <div>
-            <label class="sc-label" data-i18n="lbl_tier">الباقة (Tier):</label>
-            <select id="acc-tier" class="sc-select">
-              <option value="auto">اكتشاف ذكي تلقائي (Auto-Detect)</option>
-              <option value="free">مجاني فقط (50 نقطة يومياً)</option>
-              <option value="plus">Plus (200 نقطة شهرية + 50 يومياً)</option>
-              <option value="pro">Pro (1000 نقطة شهرية + 50 يومياً)</option>
+            <label class="kpi-label">Browser</label>
+            <select id="input-acc-browser" class="sc-select">
+              <option value="chrome">Google Chrome</option>
+              <option value="edge">Microsoft Edge</option>
             </select>
           </div>
         </div>
 
-        <div class="grid-2">
-          <div>
-            <label class="sc-label" data-i18n="lbl_renewal_day">يوم تجديد الاشتراك الشهري (1-31):</label>
-            <input type="number" id="acc-renewal-day" class="sc-input mono" value="24" min="1" max="31" />
+        <!-- Shared Pool Selector (For Pro / Plus) -->
+        <div id="box-shared-pool" style="display:none; padding:10px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <input type="checkbox" id="chk-is-shared" onchange="toggleSharedAccountSelect()" />
+            <label for="chk-is-shared" style="font-size:12px; font-weight:600; cursor:pointer;">
+              Shares credits with an existing account
+            </label>
+            <span class="info-tip" data-tooltip="Check this if this profile shares the same 1,000 credit subscription with another account so credits are not counted twice.">ⓘ</span>
           </div>
-          <div>
-            <label class="sc-label" data-i18n="lbl_monthly_rem">الرصيد الشهري المتبقي حالياً (اختياري):</label>
-            <input type="number" id="acc-monthly-rem" class="sc-input mono" placeholder="اتركه فارغاً للرصيد الكامل (200 أو 1000)" />
+          <div id="box-shared-select" style="display:none; margin-top:6px;">
+            <label class="kpi-label">Select Account to Share Pool With:</label>
+            <select id="select-shared-account" class="sc-select">
+              <option value="">-- Main Shared Pool --</option>
+            </select>
           </div>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:6px; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--muted);">
-          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px;">
-            <input type="checkbox" id="acc-shared-pool" />
-            <span data-i18n="chk_shared_pool">هذا الحساب يتشارك نفس محفظة الكريديت الشهرية (Shared Pool) مع حسابات أخرى من نفس الفئة</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px;">
-            <input type="checkbox" id="acc-primary-argon" />
-            <span data-i18n="chk_primary_argon">تعيين كحساب Argon الأساسي (#1 Primary Brain) للحفاظ على الـ History</span>
-          </label>
-        </div>
-
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
-          <button class="sc-btn sc-btn-outline" onclick="closeAddAccountModal()" data-i18n="btn_cancel">إلغاء</button>
-          <button class="sc-btn sc-btn-indigo" onclick="submitSaveAccount()" data-i18n="btn_save_account">حفظ الحساب وتحديث الكريديت</button>
-        </div>
+      </div>
+      <div class="sc-modal-footer">
+        <button class="sc-btn sc-btn-ghost" onclick="closeModal('modal-add-account')">Cancel</button>
+        <button class="sc-btn sc-btn-primary" onclick="submitAddAccount()">Save Account</button>
       </div>
     </div>
   </div>
 
-  <div id="toast-box"></div>
+  <!-- Toast Notification Box -->
+  <div class="toast-container" id="toast-container"></div>
 
-  <!-- ========================================================================
-       CLIENT CONTROLLER (RPC BRIDGE, BILINGUAL I18N, CHARTS, & POOL DRILL-DOWN)
-       ======================================================================== -->
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT APPLICATION CONTROLLER -->
+  <!-- ===================================================================== -->
   <script>
     let APP_STATE = {};
-    let CURRENT_LANG = 'ar';
-    let pipelineChartInstance = null;
-    let creditsChartInstance = null;
+    let CURRENT_PAGE_GUIDE_INDEX = 0;
 
-    const I18N = {
-      ar: {
-        app_subtitle: "محرك الأتمتة الذكي لإنتاج الفيديوهات والصور",
-        sidebar_nav_label: "القائمة الرئيسية",
-        btn_ai_audit: "فحص AI اليومي",
-        btn_add_account: "إضافة حساب",
-        btn_start_shift: "تشغيل الوردية الآن",
-        tab_dashboard: "لوحة القيادة والملخص",
-        tab_pools: "الحسابات وطابور الكريديت",
-        tab_review: "مراجعة الفيديوهات والـ SEO",
-        tab_freepik: "بوابة Freepik 150",
-        tab_settings: "الإعدادات والمجلد الخارجي",
-        lbl_prod_scope: "نطاق الإنتاج:",
-        opt_videos_only: "فيديوهات فقط (بدون صور)",
-        opt_both_media: "فيديوهات + صور (2x)",
-        opt_images_only: "صور فقط (2x)",
-        btn_pick_folder: "مجلد خارجي",
-        auditor_title: "تقرير وتقييم الذكاء الاصطناعي اليومي قبل بدء العمل (Pre-Shift AI Flow Auditor)",
-        btn_recheck: "تحديث التقييم ↻",
-        kpi_shift_progress: "تقدم وردية اليوم",
-        kpi_acceptance_rate: "معدل القبول والرفض",
-        kpi_upload_pipeline: "حالة الرفع والمراجعة",
-        kpi_total_credits: "إجمالي الكريديت المتاح فعلياً",
-        pools_section_title: "محافظ الكريديت الديناميكية (اضغط على أي باقة لعرض الحسابات: مين خلص ومين عليه الدور)",
-        pools_section_desc: "الأرقام تُحسب ديناميكياً من الإيميلات التي تدخلها فقط — الأولوية #1 للـ 50 المجانية، ثم Plus 200، ثم Pro 1000.",
-        btn_test_turn: "تجربة سحب 15 نقطة ⚡",
-        btn_reset_50: "تصفير الـ 50 اليومية ↻",
-        priority_1_badge: "الأولوية #1 يومياً",
-        priority_2_badge: "الأولوية #2 (بعد المجاني)",
-        priority_3_badge: "الأولوية #3 (حسب التجديد)",
-        pool_free_title: "رصيد الـ 50 نقطة المجانية اليومية",
-        pool_plus_title: "باقة Plus الشهرية (200 نقطة)",
-        pool_pro_title: "باقة Pro الشهرية (1000 نقطة)",
-        click_for_queue: "عرض الحسابات والطابور ←",
-        chart_pipeline_title: "تحليل الإنتاج والرفع والقبول (Adobe Stock & Freepik)",
-        chart_pipeline_desc: "مقارنة الملفات المعتمدة، المرفوعة، المقبولة، والمرفوضة",
-        chart_credits_title: "توزيع واستهلاك الكريديت عبر الباقات المسجلة",
-        chart_credits_desc: "المستهلك مقابل المتبقي الفعلي في Free 50 و Plus 200 و Pro 1000",
-        per_account_bars_title: "شريط التقدم واستهلاك الكريديت لكل حساب مسجل",
-        per_account_bars_desc: "يوضح الحساب الأساسي لـ Argon، ومن أنهى حصته اليوم، ومن عليه الدور الآن",
-        accounts_mgmt_title: "إدارة حسابات Gemini / Argon وتحديد الحساب الأساسي (#1 Primary Brain)",
-        accounts_mgmt_desc: "أضف إيميلاتك وسيحدد النظام تلقائياً الباقة، وهل الرصيد مشترك أم منفصل، وأفضل موديل فيديو متاح.",
-        btn_auto_detect: "اكتشاف من المتصفح 🔍",
-        review_title: "فحص الفيديوهات (تقييم تقني 40% + استمرارية الحركة 60%) وعناوين SEO المزدوجة",
-        review_desc: "يتم استبعاد موديل الـ 100 نقطة تلقائياً، وتوليد عنوانين منفصلين لـ Adobe Stock و Freepik",
-        btn_benchmark_models: "اختيار أفضل موديل فيديو 🏆",
-        fp_title: "بوابة Freepik 150 الذكية (فحص SHA-256 بدون تكرار)",
-        fp_desc: "اختر مجلداً خارجياً ليقوم النظام بفرز أفضل 150 صورة بدقة 4MP+ بدون إعادة فحص الصور القديمة",
-        ext_folder_title: "المجلد الخارجي للعمل (خارج ملفات المشروع)",
-        ext_folder_desc: "احفظ الفيديوهات والصور في مجلد مستقل على جهازك لمنع أي لخبطة داخل ملفات الكود",
-        btn_close: "إغلاق",
-        btn_cancel: "إلغاء",
-        btn_save_account: "حفظ الحساب وتحديث الكريديت"
-      },
-      en: {
-        app_subtitle: "Autonomous Multi-Account Stock Video & Media Engine",
-        sidebar_nav_label: "Navigation",
-        btn_ai_audit: "Daily AI Audit",
-        btn_add_account: "Add Account",
-        btn_start_shift: "Start Daily Shift",
-        tab_dashboard: "Executive Dashboard",
-        tab_pools: "Accounts & Credit Queues",
-        tab_review: "Video QC & Dual SEO",
-        tab_freepik: "Freepik 150 Gate",
-        tab_settings: "Settings & External Folder",
-        lbl_prod_scope: "Production Scope:",
-        opt_videos_only: "Videos Only (No Images)",
-        opt_both_media: "Videos + Images (2x)",
-        opt_images_only: "Images Only (2x)",
-        btn_pick_folder: "External Folder",
-        auditor_title: "Daily Pre-Shift AI Flow & System Auditor",
-        btn_recheck: "Re-Run Audit ↻",
-        kpi_shift_progress: "Today's Shift Progress",
-        kpi_acceptance_rate: "Acceptance vs. Rejection",
-        kpi_upload_pipeline: "Upload & Review Pipeline",
-        kpi_total_credits: "Actual Available Credits",
-        pools_section_title: "Dynamic Credit Pools (Click any pool card to inspect accounts: Exhausted vs. Next in Turn)",
-        pools_section_desc: "100% dynamically computed from your entered emails — Priority #1: Free 50/day -> Plus 200 -> Pro 1000.",
-        btn_test_turn: "Simulate 15-pt Spend ⚡",
-        btn_reset_50: "Reset Daily 50s ↻",
-        priority_1_badge: "Priority #1 Daily",
-        priority_2_badge: "Priority #2 (Fast Burn)",
-        priority_3_badge: "Priority #3 (Renewal Paced)",
-        pool_free_title: "Daily Free 50 Credits Pool",
-        pool_plus_title: "Monthly Plus 200 Pool",
-        pool_pro_title: "Monthly Pro 1000 Pool",
-        click_for_queue: "Inspect Queue →",
-        chart_pipeline_title: "Pipeline, Upload & Acceptance Breakdown (Adobe Stock & Freepik)",
-        chart_pipeline_desc: "Comparison of Approved, Uploaded, Accepted, and Rejected assets",
-        chart_credits_title: "Credit Consumption & Remaining Quota by Tier",
-        chart_credits_desc: "Used vs. Remaining credits across registered Free 50, Plus 200, and Pro 1000 accounts",
-        per_account_bars_title: "Per-Account Credit Consumption & Live Queue Order",
-        per_account_bars_desc: "Shows Primary Argon Brain, exhausted accounts, and which account is Next in Turn",
-        accounts_mgmt_title: "Gemini / Argon Account Manager & Primary Brain Selector",
-        accounts_mgmt_desc: "Add your emails and the engine dynamically resolves tiers, shared vs. individual pools, and optimal models.",
-        btn_auto_detect: "Auto-Detect Browser 🔍",
-        review_title: "Dual-Score Video QC (40% Technical + 60% Motion Continuity) & Dual-Platform SEO",
-        review_desc: "Strictly excludes 100-credit Quality modes and generates distinct Adobe (<70) & Freepik (<100) titles",
-        btn_benchmark_models: "Benchmark Video Models 🏆",
-        fp_title: "Stateful Freepik 150 Gate (Zero Re-Inspection SHA-256 Ledger)",
-        fp_desc: "Select an external candidate folder to curate 150 4MP+ images without re-checking old files",
-        ext_folder_title: "External Workspace Folder (Outside Project Directory)",
-        ext_folder_desc: "Keep all generated videos, images, and exports in a clean user folder outside the application code",
-        btn_close: "Close",
-        btn_cancel: "Cancel",
-        btn_save_account: "Save Account & Sync Pools"
-      }
-    };
-
+    // Bridge Caller (Supports both WebView2 and Port 3000 Web Preview)
     async function callBridge(method, ...args) {
       if (window.pywebview && window.pywebview.api && typeof window.pywebview.api[method] === 'function') {
         const raw = await window.pywebview.api[method](...args);
         return typeof raw === 'string' ? JSON.parse(raw) : raw;
       }
-      const res = await fetch(`/api/pywebview/${method}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ args })
-      });
-      const data = await res.json();
-      return typeof data === 'string' ? JSON.parse(data) : data;
+      try {
+        const res = await fetch(`/api/pywebview/${method}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ args })
+        });
+        const data = await res.json();
+        return typeof data === 'string' ? JSON.parse(data) : data;
+      } catch (e) {
+        console.warn(`Bridge call ${method} fallback error:`, e);
+        return { status: 'error', message: String(e) };
+      }
     }
 
     function showToast(msg) {
-      const box = document.getElementById('toast-box');
-      const el = document.createElement('div');
-      el.className = 'sc-toast';
-      el.textContent = msg;
-      box.appendChild(el);
-      setTimeout(() => el.remove(), 3800);
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = 'sc-toast';
+      t.innerHTML = `<span>✓</span> <span>${msg}</span>`;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
     }
 
     function toggleSidebar() {
       const sb = document.getElementById('app-sidebar');
-      if (sb) sb.classList.toggle('collapsed');
+      sb.classList.toggle('collapsed');
     }
 
     function switchTab(tabId) {
-      document.querySelectorAll('.shadcn-tab-trigger').forEach(btn => {
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
       });
-      document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.toggle('active', pane.id === `tab-${tabId}`);
+      document.querySelectorAll('.tab-content').forEach(c => {
+        c.classList.toggle('active', c.id === `tab-${tabId}`);
       });
-      const titleKeyMap = {
-        dashboard: 'tab_dashboard',
-        pools: 'tab_pools',
-        review: 'tab_review',
-        freepik: 'tab_freepik',
-        settings: 'tab_settings'
+      const titles = {
+        dashboard: 'Executive Dashboard',
+        vault: 'Asset Vault & Review Queue',
+        export: 'CSV Export Studio',
+        freepik: 'Freepik 150 Golden Gate',
+        settings: 'Settings & Security Vault'
       };
-      const titleEl = document.getElementById('current-view-title');
-      if (titleEl && titleKeyMap[tabId]) {
-        const key = titleKeyMap[tabId];
-        titleEl.setAttribute('data-i18n', key);
-        const dict = I18N[CURRENT_LANG] || {};
-        if (dict[key]) titleEl.textContent = dict[key];
-      }
+      document.getElementById('current-page-title').textContent = titles[tabId] || 'Studio';
+
+      // Hide active guide when switching tabs
+      document.querySelectorAll('.page-guide-banner').forEach(g => g.classList.remove('visible'));
     }
 
     function toggleTheme() {
       const html = document.documentElement;
-      html.classList.toggle('dark');
+      const isDark = html.classList.toggle('dark');
+      document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('stocknova_theme', isDark ? 'dark' : 'light');
       updateCharts(APP_STATE);
     }
 
-    function toggleLanguage() {
-      CURRENT_LANG = CURRENT_LANG === 'ar' ? 'en' : 'ar';
-      document.documentElement.lang = CURRENT_LANG;
-      document.documentElement.dir = CURRENT_LANG === 'ar' ? 'rtl' : 'ltr';
-      const dict = I18N[CURRENT_LANG];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) el.textContent = dict[key];
-      });
-      renderAll(APP_STATE);
-    }
-
-    async function refreshState() {
-      try {
-        const state = await callBridge('get_full_state');
-        APP_STATE = state || {};
-        renderAll(APP_STATE);
-      } catch (err) {
-        console.error('State refresh error:', err);
-      }
-    }
-
-    function renderAll(state) {
-      if (!state || !state.credit_pools_summary) return;
-      const isAr = CURRENT_LANG === 'ar';
-      const pools = state.credit_pools_summary;
-      const freeP = pools.free_daily || {};
-      const plusP = pools.plus_200 || {};
-      const proP = pools.pro_1000 || {};
-      const prefs = state.production_preferences || {};
-      const audit = state.pre_shift_audit || {};
-      const dual = state.dual_breakdown || {};
-      const shift = (state.agent_shift && state.agent_shift.shift) || {};
-
-      // Sync quick production scope bar
-      const modeSel = document.getElementById('quick-gen-mode');
-      if (modeSel && prefs.generation_mode) modeSel.value = prefs.generation_mode;
-      const adChk = document.getElementById('quick-adobe-en');
-      if (adChk && prefs.adobe_enabled !== undefined) adChk.checked = !!prefs.adobe_enabled;
-      const fpChk = document.getElementById('quick-freepik-en');
-      if (fpChk && prefs.freepik_enabled !== undefined) fpChk.checked = !!prefs.freepik_enabled;
-
-      // 1. Render Pre-Shift AI Auditor Banner
-      const statusBadge = document.getElementById('audit-status-badge');
-      const st = audit.flow_status || 'healthy';
-      statusBadge.textContent = st === 'healthy'
-        ? (isAr ? `الفلو سليم (${audit.health_score || 100}%)` : `Flow Healthy (${audit.health_score || 100}%)`)
-        : (st === 'warning' ? (isAr ? 'تنبيه تحسين' : 'Optimization Advisory') : (isAr ? 'يتطلب إجراء' : 'Action Required'));
-      statusBadge.className = 'sc-badge ' + (st === 'healthy' ? 'sc-badge-emerald' : (st === 'warning' ? 'sc-badge-amber' : 'sc-badge-rose'));
-      document.getElementById('audit-timestamp').textContent = audit.timestamp || '';
-      document.getElementById('audit-ai-note').textContent = isAr ? (audit.ai_note_ar || '') : (audit.ai_note_en || '');
-
-      const recContainer = document.getElementById('audit-recommendations-list');
-      recContainer.innerHTML = '';
-      (audit.recommendations || []).forEach(r => {
-        const div = document.createElement('div');
-        div.style.cssText = 'padding:6px 10px; border-radius:6px; background:var(--secondary); font-size:11.5px; display:flex; align-items:center; justify-content:space-between; gap:8px;';
-        div.innerHTML = `<span>💡 ${isAr ? r.action_ar : r.action_en}</span>`;
-        recContainer.appendChild(div);
-      });
-
-      // 2. Render Top 4 KPIs
-      const vDone = shift.completed_videos || 0;
-      const vPlan = shift.target_videos || 0;
-      document.getElementById('kpi-shift-videos').textContent = `${vDone} / ${vPlan}`;
-      document.getElementById('kpi-shift-sub').textContent = isAr
-        ? `فيديوهات مكتملة اليوم | صور: ${shift.completed_images || 0}`
-        : `Videos done today | Images: ${shift.completed_images || 0}`;
-      document.getElementById('kpi-shift-bar').style.width = `${vPlan > 0 ? Math.min(100, Math.round(vDone / vPlan * 100)) : 0}%`;
-
-      const accCount = (dual.adobe_accepted || 0) + (dual.freepik_accepted || 0);
-      const rejCount = (dual.adobe_rejected || 0) + (dual.freepik_rejected || 0);
-      const totDecided = accCount + rejCount;
-      const accPct = totDecided > 0 ? Math.round((accCount / totDecided) * 100) : 0;
-      document.getElementById('kpi-acceptance-pct').textContent = `${accPct}%`;
-      document.getElementById('kpi-acceptance-counts').textContent = isAr
-        ? `مقبول: ${accCount} | مرفوض: ${rejCount}`
-        : `Accepted: ${accCount} | Rejected: ${rejCount}`;
-      document.getElementById('kpi-acceptance-bar').style.width = `${accPct}%`;
-      document.getElementById('kpi-win-model-badge').textContent = (state.models && state.models.video) || 'omni flash';
-
-      const upCount = (dual.adobe_uploaded || 0) + (dual.freepik_uploaded || 0);
-      const readyCount = (state.folders && state.folders.qc2_approved) || 0;
-      const borderCount = (state.folders && state.folders.borderline) || 0;
-      document.getElementById('kpi-uploaded-count').textContent = `${upCount}`;
-      document.getElementById('kpi-pipeline-sub').textContent = isAr
-        ? `جاهز للرفع: ${readyCount} | مراجعة سريعة: ${borderCount}`
-        : `Ready: ${readyCount} | Borderline: ${borderCount}`;
-      document.getElementById('kpi-upload-bar').style.width = `${Math.min(100, (readyCount + upCount) * 5)}%`;
-
-      // Total available credits ( strictly 0 when 0 accounts exist! )
-      const totAvail = (freeP.remaining_today || 0) + (plusP.remaining || 0) + (proP.remaining || 0);
-      const totCap = (freeP.total_daily_capacity || 0) + (plusP.total || 0) + (proP.total || 0);
-      const totalAccs = pools.total_registered_accounts || 0;
-      document.getElementById('kpi-total-available-credits').textContent = `${totAvail}`;
-      document.getElementById('kpi-accounts-count-badge').textContent = isAr ? `${totalAccs} حسابات` : `${totalAccs} Accounts`;
-      const sbAccCount = document.getElementById('sidebar-acc-count');
-      if (sbAccCount) sbAccCount.textContent = `${totalAccs}`;
-      const nextAcc = state.agent_shift && state.agent_shift.next_credit_account;
-      document.getElementById('kpi-next-account-hint').textContent = nextAcc
-        ? (isAr ? `الدور الآن: ${nextAcc.email}` : `Next up: ${nextAcc.email}`)
-        : (totalAccs === 0 ? (isAr ? 'أضف حساباً لبدء الحساب' : 'Add an account to start') : (isAr ? 'تم استنفاد الرصيد' : 'All pools exhausted'));
-      document.getElementById('kpi-credits-bar').style.width = `${totCap > 0 ? Math.min(100, Math.round(totAvail / totCap * 100)) : 0}%`;
-
-      // 3. Render 3 Clickable Credit Pool Cards (Zero Fake Numbers!)
-      // Free 50 Pool
-      const fRem = freeP.remaining_today || 0;
-      const fTot = freeP.total_daily_capacity || 0;
-      const fUsed = freeP.used_today || 0;
-      document.getElementById('pool-free-acc-badge').textContent = isAr ? `${freeP.total_accounts || 0} حسابات` : `${freeP.total_accounts || 0} Accounts`;
-      document.getElementById('pool-free-rem').textContent = `${fRem}`;
-      document.getElementById('pool-free-tot').textContent = isAr ? `متبقي من ${fTot}` : `/ ${fTot}`;
-      document.getElementById('pool-free-used').textContent = isAr ? `المستهلك اليوم: ${fUsed}` : `Used today: ${fUsed}`;
-      document.getElementById('pool-free-bar').style.width = `${fTot > 0 ? Math.min(100, Math.round(fUsed / fTot * 100)) : 0}%`;
-      document.getElementById('pool-free-queue-summary').textContent = isAr
-        ? `خلص: ${freeP.accounts_exhausted_today || 0} | متاح في الدور: ${freeP.accounts_remaining_today || 0}`
-        : `Exhausted: ${freeP.accounts_exhausted_today || 0} | In Queue: ${freeP.accounts_remaining_today || 0}`;
-
-      // Plus 200 Pool
-      const plRem = plusP.remaining || 0;
-      const plTot = plusP.total || 0;
-      const plUsed = plusP.used || 0;
-      document.getElementById('pool-plus-acc-badge').textContent = isAr ? `${plusP.total_accounts || 0} حسابات` : `${plusP.total_accounts || 0} Accounts`;
-      document.getElementById('pool-plus-rem').textContent = `${plRem}`;
-      document.getElementById('pool-plus-tot').textContent = isAr ? `متبقي من ${plTot}` : `/ ${plTot}`;
-      document.getElementById('pool-plus-used').textContent = isAr ? `المستهلك: ${plUsed}` : `Used: ${plUsed}`;
-      document.getElementById('pool-plus-bar').style.width = `${plTot > 0 ? Math.min(100, Math.round(plUsed / plTot * 100)) : 0}%`;
-      document.getElementById('pool-plus-queue-summary').textContent = plusP.is_configured
-        ? (isAr
-            ? `خلص: ${plusP.accounts_exhausted || 0} | متاح: ${plusP.accounts_available || 0} (${plusP.is_shared_pool ? 'مشترك' : 'منفصل'})`
-            : `Done: ${plusP.accounts_exhausted || 0} | Avail: ${plusP.accounts_available || 0} (${plusP.is_shared_pool ? 'Shared' : 'Indiv'})`)
-        : (isAr ? 'لا توجد حسابات Plus مسجلة (0)' : 'No Plus accounts added (0)');
-
-      // Pro 1000 Pool
-      const prRem = proP.remaining || 0;
-      const prTot = proP.total || 0;
-      const prUsed = proP.used || 0;
-      document.getElementById('pool-pro-acc-badge').textContent = isAr ? `${proP.total_accounts || 0} حسابات` : `${proP.total_accounts || 0} Accounts`;
-      document.getElementById('pool-pro-rem').textContent = `${prRem}`;
-      document.getElementById('pool-pro-tot').textContent = isAr ? `متبقي من ${prTot}` : `/ ${prTot}`;
-      document.getElementById('pool-pro-used').textContent = isAr ? `المستهلك: ${prUsed}` : `Used: ${prUsed}`;
-      document.getElementById('pool-pro-bar').style.width = `${prTot > 0 ? Math.min(100, Math.round(prUsed / prTot * 100)) : 0}%`;
-      document.getElementById('pool-pro-queue-summary').textContent = proP.is_configured
-        ? (isAr
-            ? `خلص: ${proP.accounts_exhausted || 0} | متاح: ${proP.accounts_available || 0} (التجديد خلال ${proP.days_to_renewal} يوم)`
-            : `Done: ${proP.accounts_exhausted || 0} | Avail: ${proP.accounts_available || 0} (Renews in ${proP.days_to_renewal}d)`)
-        : (isAr ? 'لا توجد حسابات Pro مسجلة (0)' : 'No Pro accounts added (0)');
-
-      // 4. Render Per-Account Progress Bars on Dashboard & Accounts Table
-      renderPerAccountProgressBars(pools, isAr);
-      renderAccountsTable(pools, isAr);
-      renderAssetsReviewTable(state.recent_assets || [], isAr);
-      renderFreepikAndSettings(state, isAr);
-      updateCharts(state);
-    }
-
-    function renderPerAccountProgressBars(pools, isAr) {
-      const container = document.getElementById('dashboard-accounts-bars');
-      const freeQueue = (pools.free_daily && pools.free_daily.accounts_queue) || [];
-      if (freeQueue.length === 0) {
-        container.innerHTML = `
-          <div style="padding:18px; text-align:center; border:1px dashed var(--border); border-radius:8px; color:var(--muted-foreground);">
-            ${isAr
-              ? 'لا توجد حسابات مسجلة حالياً — اضغط على "إضافة حساب" لإدخال إيميلاتك (Free / Plus 200 / Pro 1000) وعرض شريط استهلاك كل حساب.'
-              : 'No accounts registered yet — Click "Add Account" to enter your emails and track per-account credit consumption.'}
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = '';
-      freeQueue.forEach(acc => {
-        const statusBadge = acc.queue_status === 'next_up'
-          ? `<span class="sc-badge sc-badge-emerald">${isAr ? '🔥 عليه الدور الآن (Next Up)' : '🔥 Next in Turn'}</span>`
-          : (acc.queue_status === 'exhausted'
-              ? `<span class="sc-badge sc-badge-rose">${isAr ? '✖ خلص الـ 50 اليوم' : '✖ Exhausted Today'}</span>`
-              : `<span class="sc-badge sc-badge-cyan">${isAr ? '⏳ في الطابور (متاح)' : '⏳ Waiting in Queue'}</span>`);
-
-        const primaryBadge = acc.is_primary_argon
-          ? `<span class="sc-badge sc-badge-indigo">${isAr ? '🧠 حساب Argon الأساسي' : '🧠 Primary Argon Brain'}</span>`
-          : '';
-
-        const row = document.createElement('div');
-        row.className = `acc-row ${acc.queue_status === 'next_up' ? 'next-up' : (acc.queue_status === 'exhausted' ? 'exhausted' : '')}`;
-        row.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">#${acc.queue_position}</span>
-              <span style="font-weight:600;">${acc.email}</span>
-              <span class="sc-badge">${acc.tier.toUpperCase()}</span>
-              ${primaryBadge}
-              ${statusBadge}
-            </div>
-            <div class="mono" style="font-size:11.5px;">
-              ${isAr ? `الـ 50 اليومية: مستهلك ${acc.used} / متبقي ${acc.remaining}` : `Daily 50: Used ${acc.used} / Left ${acc.remaining}`}
-            </div>
-          </div>
-          <div class="sc-progress">
-            <div class="sc-progress-bar" style="width:${acc.usage_pct}%; background:${acc.queue_status === 'exhausted' ? '#f43f5e' : '#10b981'};"></div>
-          </div>
-        `;
-        container.appendChild(row);
-      });
-    }
-
-    // ==========================================================================
-    // INTERACTIVE POOL DRILL-DOWN MODAL (SHOWS EXHAUSTED, NEXT UP, WAITING)
-    // ==========================================================================
-    function openPoolDrilldownModal(poolKey) {
-      const isAr = CURRENT_LANG === 'ar';
-      const pools = (APP_STATE && APP_STATE.credit_pools_summary) || {};
-      const poolData = pools[poolKey] || {};
-      const queue = poolData.accounts_queue || [];
-
-      const titleMap = {
-        free_daily: isAr ? 'طابور حسابات الـ 50 نقطة المجانية اليومية' : 'Daily Free 50-Point Pool Queue',
-        plus_200: isAr ? 'طابور حسابات باقة Plus الشهرية (200 نقطة)' : 'Monthly Plus 200-Point Pool Queue',
-        pro_1000: isAr ? 'طابور حسابات باقة Pro الشهرية (1000 نقطة)' : 'Monthly Pro 1000-Point Pool Queue'
-      };
-
-      document.getElementById('modal-pool-title').textContent = titleMap[poolKey] || poolKey;
-      document.getElementById('modal-pool-subtitle').textContent = poolKey === 'free_daily'
-        ? (isAr ? 'يفتح النظام كل الحسابات بالترتيب لإنهاء الـ 50 نقطة اليومية أولاً قبل الانتقال للباقات الشهرية' : 'The engine consumes 50 daily free points across all accounts in order before touching monthly pools')
-        : (isAr
-            ? `نوع المحفظة: ${poolData.is_shared_pool ? 'رصيد مشترك بين الإيميلات (Shared Pool)' : 'رصيد منفصل لكل إيميل (Individual Quota)'}`
-            : `Pool Mode: ${poolData.is_shared_pool ? 'Shared Pool across emails' : 'Individual Quota per email'}`);
-
-      const rem = poolKey === 'free_daily' ? (poolData.remaining_today || 0) : (poolData.remaining || 0);
-      const doneCnt = poolKey === 'free_daily' ? (poolData.accounts_exhausted_today || 0) : (poolData.accounts_exhausted || 0);
-      const availCnt = poolKey === 'free_daily' ? (poolData.accounts_remaining_today || 0) : (poolData.accounts_available || 0);
-
-      document.getElementById('modal-pool-rem').textContent = `${rem}`;
-      document.getElementById('modal-pool-done').textContent = `${doneCnt}`;
-      document.getElementById('modal-pool-avail').textContent = `${availCnt}`;
-
-      const listEl = document.getElementById('modal-pool-accounts-list');
-      listEl.innerHTML = '';
-
-      if (queue.length === 0) {
-        listEl.innerHTML = `
-          <div style="padding:20px; text-align:center; border:1px dashed var(--border); border-radius:8px; color:var(--muted-foreground);">
-            ${isAr
-              ? 'لا توجد حسابات مسجلة في هذه الباقة حتى الآن (الرصيد الفعلي = 0). اضغط على زر إضافة حساب بالأسفل لإدخال إيميلاتك.'
-              : 'No accounts registered in this pool yet (Actual balance = 0). Click Add Account below to register your emails.'}
-          </div>`;
+    function initTheme() {
+      const saved = localStorage.getItem('stocknova_theme') || 'dark';
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('theme-icon').textContent = '🌙';
       } else {
-        queue.forEach(item => {
-          const stBadge = item.queue_status === 'next_up'
-            ? `<span class="sc-badge sc-badge-emerald">${isAr ? '🔥 عليه الدور الآن (Next Up)' : '🔥 Next in Turn'}</span>`
-            : (item.queue_status === 'exhausted'
-                ? `<span class="sc-badge sc-badge-rose">${isAr ? '✖ خلص رصيده (Exhausted)' : '✖ Exhausted'}</span>`
-                : `<span class="sc-badge sc-badge-cyan">${isAr ? '⏳ منتظر في الدور (Waiting)' : '⏳ Waiting in Queue'}</span>`);
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon').textContent = '☀️';
+      }
+    }
 
-          const sharedTag = item.is_shared_pool !== undefined
-            ? `<span class="sc-badge">${item.is_shared_pool ? (isAr ? 'مشترك Shared' : 'Shared') : (isAr ? 'منفصل Individual' : 'Individual')}</span>`
-            : '';
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('open');
+    }
 
-          const renewalTag = item.days_to_renewal
-            ? `<span class="sc-card-desc mono">${isAr ? `يتجدد يوم ${item.renewal_day} (باقي ${item.days_to_renewal} يوم)` : `Renews day ${item.renewal_day} (${item.days_to_renewal}d left)`}</span>`
-            : '';
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('open');
+    }
 
-          const card = document.createElement('div');
-          card.className = `acc-row ${item.queue_status === 'next_up' ? 'next-up' : (item.queue_status === 'exhausted' ? 'exhausted' : '')}`;
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-              <div style="display:flex; align-items:center; gap:6px;">
-                <span class="mono" style="font-weight:700;">#${item.queue_position}</span>
-                <span style="font-weight:600;">${item.email}</span>
-                ${sharedTag}
-                ${stBadge}
-              </div>
-              <div class="mono" style="font-weight:600;">
-                ${isAr ? `متبقي: ${item.remaining} من ${item.limit} (مستهلك: ${item.used})` : `Remaining: ${item.remaining} / ${item.limit} (Used: ${item.used})`}
-              </div>
-            </div>
-            <div class="sc-progress">
-              <div class="sc-progress-bar" style="width:${item.usage_pct}%; background:${item.queue_status === 'exhausted' ? '#f43f5e' : '#10b981'};"></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;" class="sc-card-desc">
-              <span>${isAr ? 'أفضل موديلات مدعومة:' : 'Best Models:'} ${(item.detected_models || []).join(', ')}</span>
-              ${renewalTag}
-            </div>
-          `;
-          listEl.appendChild(card);
+    function openQuickSetupModal() {
+      openModal('modal-quick-setup');
+    }
+
+    function togglePageGuide() {
+      const activeTab = document.querySelector('.tab-content.active');
+      if (!activeTab) return;
+      const guideId = `guide-${activeTab.id.replace('tab-', '')}`;
+      const guideEl = document.getElementById(guideId);
+      if (guideEl) guideEl.classList.toggle('visible');
+    }
+
+    function toggleSharedPoolOption() {
+      const tier = document.getElementById('input-acc-tier').value;
+      const box = document.getElementById('box-shared-pool');
+      box.style.display = (tier === 'pro' || tier === 'plus') ? 'block' : 'none';
+      populateSharedAccountOptions();
+    }
+
+    function toggleSharedAccountSelect() {
+      const chk = document.getElementById('chk-is-shared').checked;
+      document.getElementById('box-shared-select').style.display = chk ? 'block' : 'none';
+    }
+
+    function populateSharedAccountOptions() {
+      const sel = document.getElementById('select-shared-account');
+      sel.innerHTML = '<option value="shared_pro_pool_1">-- Main Shared Pool --</option>';
+      if (APP_STATE.accounts) {
+        APP_STATE.accounts.forEach(a => {
+          const opt = document.createElement('option');
+          opt.value = a.pool_id || a.profile_name;
+          opt.textContent = `${a.account_name} (${a.email})`;
+          sel.appendChild(opt);
         });
       }
-
-      document.getElementById('pool-drilldown-modal').classList.add('open');
     }
 
-    function closePoolModal() {
-      document.getElementById('pool-drilldown-modal').classList.remove('open');
-    }
+    // Chart.js Instances (Flicker-Free, In-Place Mutated)
+    let chartAcceptance = null;
+    let chartPipeline = null;
 
-    function openAddAccountModal() {
-      document.getElementById('add-account-modal').classList.add('open');
-    }
-
-    function closeAddAccountModal() {
-      document.getElementById('add-account-modal').classList.remove('open');
-    }
-
-    async function submitSaveAccount() {
-      const email = document.getElementById('acc-email').value.trim();
-      const name = document.getElementById('acc-name').value.trim();
-      const tier = document.getElementById('acc-tier').value;
-      const renewalDay = parseInt(document.getElementById('acc-renewal-day').value || '24', 10);
-      const monthlyRem = document.getElementById('acc-monthly-rem').value.trim();
-      const isShared = document.getElementById('acc-shared-pool').checked;
-      const isPrimary = document.getElementById('acc-primary-argon').checked;
-
-      if (!email) {
-        showToast(CURRENT_LANG === 'ar' ? 'يرجى إدخال البريد الإلكتروني أولاً' : 'Please enter an email address');
-        return;
-      }
-
-      const res = await callBridge('save_google_account', {
-        email,
-        account_name: name || email.split('@')[0],
-        tier,
-        renewal_day: renewalDay,
-        monthly_remaining: monthlyRem !== '' ? parseInt(monthlyRem, 10) : null,
-        is_shared_pool: isShared,
-        is_primary_argon: isPrimary
-      });
-      showToast(res.message || 'Account saved');
-      closeAddAccountModal();
-      document.getElementById('acc-email').value = '';
-      document.getElementById('acc-name').value = '';
-      document.getElementById('acc-monthly-rem').value = '';
-      await refreshState();
-    }
-
-    function renderAccountsTable(pools, isAr) {
-      const tbody = document.getElementById('accounts-table-body');
-      const accs = pools.accounts || [];
-      if (accs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:18px; color:var(--muted-foreground);">${isAr ? 'لم يتم إضافة أي حسابات بعد.' : 'No accounts added yet.'}</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = '';
-      accs.forEach(a => {
-        const tr = document.createElement('tr');
-        const lim50 = a.daily_video_credits_limit || 50;
-        const used50 = a.daily_video_credits_used || 0;
-        const mLim = a.monthly_credits_limit || 0;
-        const mRem = a.monthly_credits_remaining || 0;
-        tr.innerHTML = `
-          <td>
-            <div style="font-weight:600;">${a.email || a.profile_name}</div>
-            ${a.is_primary_argon ? `<span class="sc-badge sc-badge-indigo">${isAr ? 'الأساسي #1 Argon' : '#1 Primary Argon'}</span>` : ''}
-          </td>
-          <td><span class="sc-badge">${(a.tier || 'free').toUpperCase()}</span></td>
-          <td>${a.is_shared_pool ? (isAr ? 'مشترك (Shared)' : 'Shared Pool') : (isAr ? 'منفصل (Individual)' : 'Individual')}</td>
-          <td class="mono">${Math.max(0, lim50 - used50)} / ${lim50}</td>
-          <td class="mono">${mLim > 0 ? `${mRem} / ${mLim}` : '—'}</td>
-          <td class="mono">${mLim > 0 ? (isAr ? `يوم ${a.renewal_day || 24}` : `Day ${a.renewal_day || 24}`) : '—'}</td>
-          <td style="font-size:11px;">${a.detected_models || 'omni flash'}</td>
-          <td>
-            <div style="display:flex; gap:4px;">
-              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="setPrimaryArgon('${a.profile_name}')">${isAr ? 'تعيين كأساسي' : 'Set Primary'}</button>
-              <button class="sc-btn sc-btn-ghost sc-btn-sm" style="color:#f43f5e;" onclick="removeAccount('${a.profile_name}')">✕</button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderAssetsReviewTable(assets, isAr) {
-      const tbody = document.getElementById('assets-review-tbody');
-      if (!assets || assets.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted-foreground);">${isAr ? 'لا توجد فيديوهات أو ملفات مفحوصة بعد.' : 'No inspected assets in database yet.'}</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = '';
-      assets.slice(0, 25).forEach(item => {
-        const tech = item.technical_score !== undefined && item.technical_score !== null ? item.technical_score : (item.qc_score || 85);
-        const motion = item.motion_continuity_score !== undefined && item.motion_continuity_score !== null ? item.motion_continuity_score : (item.qc_score || 85);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="mono" style="font-weight:600;">${item.filename}</td>
-          <td>
-            <span class="sc-badge">${item.asset_type}</span>
-            <span class="sc-card-desc mono">${item.model_used || 'omni flash'}</span>
-          </td>
-          <td class="mono">
-            Tech: <b>${tech}</b> | Motion: <b>${motion}</b>
-          </td>
-          <td style="max-width:210px;">${item.adobe_title || item.seo_title || '—'}</td>
-          <td style="max-width:220px;">${item.freepik_title || item.seo_title || '—'}</td>
-          <td>
-            <div style="display:flex; gap:4px; align-items:center;">
-              <span class="sc-badge ${item.qc_tier === 'approved' ? 'sc-badge-emerald' : (item.qc_tier === 'borderline' ? 'sc-badge-amber' : 'sc-badge-rose')}">${item.qc_tier || item.status}</span>
-              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="overrideAsset('${item.filename}', 'approve')">✓</button>
-              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="overrideAsset('${item.filename}', 'reject')">✕</button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderFreepikAndSettings(state, isAr) {
-      const fp = state.freepik_gate || {};
-      document.getElementById('fp-curated-num').textContent = `${fp.curated || 0} / ${fp.target || 150}`;
-      document.getElementById('fp-inspected-num').textContent = `${fp.total_ever_inspected || 0}`;
-      document.getElementById('fp-folder-label').textContent = fp.source_folder || '--';
-
-      const wsInput = document.getElementById('settings-ws-path');
-      if (wsInput && state.folders && state.folders.workspace_path && document.activeElement !== wsInput) {
-        wsInput.value = state.folders.workspace_path;
-      }
-
-      const keysList = document.getElementById('api-keys-list');
-      keysList.innerHTML = '';
-      (state.gemini_keys || []).forEach(k => {
-        const d = document.createElement('div');
-        d.style.cssText = 'display:flex; justify-content:space-between; padding:6px 10px; border:1px solid var(--border); border-radius:6px;';
-        d.innerHTML = `<span class="mono"><b>${k.key_alias}</b> (${k.api_key})</span><span class="sc-badge sc-badge-emerald">${k.status}</span>`;
-        keysList.appendChild(d);
-      });
-    }
-
-    // ==========================================================================
-    // SMART CHARTS (CHART.JS)
-    // ==========================================================================
-    function updateCharts(state) {
-      if (!window.Chart || !state || !state.credit_pools_summary) return;
+    function initCharts() {
       const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#a1a1aa' : '#52525b';
-      const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-      const isAr = CURRENT_LANG === 'ar';
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
 
-      const dual = state.dual_breakdown || {};
-      const pools = state.credit_pools_summary || {};
-      const freeP = pools.free_daily || {};
-      const plusP = pools.plus_200 || {};
-      const proP = pools.pro_1000 || {};
-
-      // Chart 1: Pipeline & Acceptance
-      const ctx1 = document.getElementById('pipelineChart');
-      if (ctx1) {
-        const labels1 = isAr
-          ? ['معتمد جاهز', 'مرفوع Adobe', 'مقبول Adobe', 'مرفوض Adobe', 'مقبول Freepik']
-          : ['Ready Vault', 'Adobe Uploaded', 'Adobe Accepted', 'Adobe Rejected', 'Freepik Accepted'];
-        const data1 = [
-          dual.adobe_pending_ready || 0,
-          dual.adobe_uploaded || 0,
-          dual.adobe_accepted || 0,
-          dual.adobe_rejected || 0,
-          dual.freepik_accepted || 0
-        ];
-        if (pipelineChartInstance) pipelineChartInstance.destroy();
-        pipelineChartInstance = new Chart(ctx1, {
-          type: 'bar',
+      const ctxA = document.getElementById('chart-acceptance');
+      if (ctxA) {
+        chartAcceptance = new Chart(ctxA.getContext('2d'), {
+          type: 'line',
           data: {
-            labels: labels1,
+            labels: ['Batch 1', 'Batch 2', 'Batch 3', 'Batch 4', 'Batch 5', 'Active'],
             datasets: [{
-              label: isAr ? 'عدد الملفات' : 'Assets',
-              data: data1,
-              backgroundColor: ['#6366f1', '#06b6d4', '#10b981', '#f43f5e', '#f59e0b'],
-              borderRadius: 5
+              label: 'Acceptance Rate (%)',
+              data: [0, 0, 0, 0, 0, 0],
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.08)',
+              fill: true,
+              tension: 0.35,
+              borderWidth: 2,
+              pointRadius: 3
             }]
           },
           options: {
@@ -1959,168 +1737,479 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-              x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
-              y: { beginAtZero: true, ticks: { color: textColor, precision: 0 }, grid: { color: gridColor } }
+              x: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } },
+              y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }
             }
           }
         });
       }
 
-      // Chart 2: Credit Pools Used vs Remaining
-      const ctx2 = document.getElementById('creditsChart');
-      if (ctx2) {
-        const labels2 = ['Free 50/day', 'Plus 200', 'Pro 1000'];
-        const remData = [freeP.remaining_today || 0, plusP.remaining || 0, proP.remaining || 0];
-        const usedData = [freeP.used_today || 0, plusP.used || 0, proP.used || 0];
-        if (creditsChartInstance) creditsChartInstance.destroy();
-        creditsChartInstance = new Chart(ctx2, {
+      const ctxP = document.getElementById('chart-pipeline');
+      if (ctxP) {
+        chartPipeline = new Chart(ctxP.getContext('2d'), {
           type: 'bar',
           data: {
-            labels: labels2,
-            datasets: [
-              {
-                label: isAr ? 'المتبقي الفعلي' : 'Remaining',
-                data: remData,
-                backgroundColor: '#10b981',
-                borderRadius: 5
-              },
-              {
-                label: isAr ? 'المستهلك' : 'Used',
-                data: usedData,
-                backgroundColor: '#6366f1',
-                borderRadius: 5
-              }
-            ]
+            labels: ['Raw', 'QC Approved', 'Uploaded', 'Accepted', 'Rejected'],
+            datasets: [{
+              label: 'Volume',
+              data: [0, 0, 0, 0, 0],
+              backgroundColor: ['#64748b', '#4f46e5', '#06b6d4', '#10b981', '#ef4444'],
+              borderRadius: 6
+            }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+            plugins: { legend: { display: false } },
             scales: {
-              x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
-              y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: gridColor } }
+              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 } } },
+              y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }
             }
           }
         });
       }
     }
 
-    // ==========================================================================
-    // ACTIONS & RPC HANDLERS
-    // ==========================================================================
-    async function runPreShiftAuditNow() {
-      const res = await callBridge('run_pre_shift_audit');
-      if (res && res.audit) {
-        APP_STATE.pre_shift_audit = res.audit;
-        renderAll(APP_STATE);
-        showToast(CURRENT_LANG === 'ar' ? 'تم تحديث التقييم الذكي اليومي للفلو' : 'Daily Pre-Shift AI Audit updated');
+    function updateCharts(state) {
+      if (!chartAcceptance || !chartPipeline) return;
+      const isDark = document.documentElement.classList.contains('dark');
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+
+      chartAcceptance.options.scales.x.grid.color = gridColor;
+      chartAcceptance.options.scales.x.ticks.color = textColor;
+      chartAcceptance.options.scales.y.grid.color = gridColor;
+      chartAcceptance.options.scales.y.ticks.color = textColor;
+
+      chartPipeline.options.scales.y.grid.color = gridColor;
+      chartPipeline.options.scales.x.ticks.color = textColor;
+      chartPipeline.options.scales.y.ticks.color = textColor;
+
+      const metrics = state.metrics || {};
+      const rate = metrics.acceptance_rate || 0;
+      const f = state.folders || {};
+      const d = state.dual_breakdown || {};
+
+      chartAcceptance.data.datasets[0].data = [rate, rate, rate, rate, rate, rate];
+      chartAcceptance.update('none');
+
+      chartPipeline.data.datasets[0].data = [
+        f.raw || 0,
+        f.qc2_approved || 0,
+        f.awaiting_submit || 0,
+        d.total_accepted || 0,
+        d.total_rejected || 0
+      ];
+      chartPipeline.update('none');
+    }
+
+    // Refresh State & Render View
+    async function refreshState() {
+      try {
+        const state = await callBridge('get_full_state');
+        APP_STATE = state || {};
+        renderView(APP_STATE);
+      } catch (err) {
+        console.error('State refresh failed:', err);
       }
     }
 
-    async function saveQuickProductionScope() {
-      const mode = document.getElementById('quick-gen-mode').value;
-      const adobeEn = document.getElementById('quick-adobe-en').checked;
-      const freepikEn = document.getElementById('quick-freepik-en').checked;
-      const res = await callBridge('update_production_preferences', {
-        generation_mode: mode,
-        adobe_enabled: adobeEn,
-        freepik_enabled: freepikEn
+    function renderView(state) {
+      if (!state) return;
+
+      // 1. Worker Status Pill
+      const live = state.live_activity || {};
+      const dot = document.getElementById('live-worker-dot');
+      const text = document.getElementById('live-worker-text');
+      if (live.is_busy) {
+        dot.style.background = 'var(--primary)';
+        text.textContent = `Processing: ${live.stage_title_en || 'Active Cycle'}`;
+      } else {
+        dot.style.background = 'var(--emerald)';
+        text.textContent = 'Engine Standby';
+      }
+
+      // 2. Buffers
+      const f = state.folders || {};
+      document.getElementById('buf-raw-count').textContent = f.raw || 0;
+      document.getElementById('buf-approved-count').textContent = f.qc2_approved || 0;
+      document.getElementById('buf-batched-count').textContent = f.batched || 0;
+
+      // 3. Top KPIs
+      const metrics = state.metrics || {};
+      const accRate = metrics.acceptance_rate || 0;
+      document.getElementById('kpi-accept-rate').textContent = `${accRate.toFixed(1)}%`;
+      document.getElementById('bar-accept-rate').style.width = `${Math.min(100, accRate)}%`;
+
+      const dual = state.dual_breakdown || {};
+      document.getElementById('kpi-accept-counts').textContent = `${dual.total_accepted || 0} Accepted / ${dual.total_rejected || 0} Rejected`;
+
+      const shift = (state.agent_shift && state.agent_shift.shift) || {};
+      const shiftComp = shift.videos_completed || 0;
+      const shiftTarget = shift.target_videos || 0;
+      document.getElementById('kpi-shift-progress').textContent = `${shiftComp} / ${shiftTarget}`;
+      document.getElementById('bar-shift-progress').style.width = shiftTarget > 0 ? `${(shiftComp / shiftTarget) * 100}%` : '0%';
+      document.getElementById('kpi-shift-status').textContent = shiftComp >= shiftTarget && shiftTarget > 0 ? 'Daily Shift Completed' : 'Cycle in Progress';
+
+      const uploadSpd = live.upload_speed || '0.0 MB/s';
+      document.getElementById('kpi-upload-speed').textContent = uploadSpd;
+      document.getElementById('kpi-upload-file').textContent = live.file ? `Uploading: ${live.file}` : 'Idle — No active transfers';
+
+      const accounts = state.accounts || [];
+      document.getElementById('kpi-accounts-count').textContent = accounts.length;
+      const freeAccs = accounts.filter(a => a.tier === 'free').length;
+      const plusAccs = accounts.filter(a => a.tier === 'plus').length;
+      const proAccs = accounts.filter(a => a.tier === 'pro').length;
+      document.getElementById('kpi-accounts-sub').textContent = `${freeAccs} Free | ${plusAccs} Plus | ${proAccs} Pro`;
+      document.getElementById('bar-accounts').style.width = `${Math.min(100, accounts.length * 20)}%`;
+
+      // 4. SMART CREDIT POOLS (Free Points default; Plus & Pro dynamic)
+      const poolsSummary = state.credit_pools_summary || {};
+      const freeP = poolsSummary.free_daily || {};
+      const plusP = poolsSummary.plus_200 || {};
+      const proP = poolsSummary.pro_1000 || {};
+
+      // Free Daily Pool
+      const freeTot = freeP.total_daily_credits || (freeAccs * 50);
+      const freeRem = freeP.remaining_today !== undefined ? freeP.remaining_today : freeTot;
+      document.getElementById('pool-free-pts').textContent = `${freeRem} / ${freeTot} pts`;
+      document.getElementById('pool-free-desc').textContent = `${freeAccs} Free account${freeAccs === 1 ? '' : 's'} linked (${freeTot} pts available daily)`;
+      document.getElementById('pool-free-acc-status').textContent = `${freeP.accounts_finished_today || 0} Finished Today`;
+      document.getElementById('bar-pool-free').style.width = freeTot > 0 ? `${(freeRem / freeTot) * 100}%` : '0%';
+
+      // Plus Pool Card (HIDDEN IF 0 ACCOUNTS)
+      const plusCard = document.getElementById('card-pool-plus');
+      if (plusAccs > 0 || (plusP.total && plusP.total > 0)) {
+        plusCard.style.display = 'block';
+        document.getElementById('pool-plus-pts').textContent = `${plusP.remaining || 0} / ${plusP.total || 200} pts`;
+        document.getElementById('bar-pool-plus').style.width = `${((plusP.remaining || 0) / (plusP.total || 200)) * 100}%`;
+        document.getElementById('badge-plus-shared').style.display = plusP.is_shared_pool ? 'inline-flex' : 'none';
+      } else {
+        plusCard.style.display = 'none';
+      }
+
+      // Pro Pool Card (HIDDEN IF 0 ACCOUNTS)
+      const proCard = document.getElementById('card-pool-pro');
+      if (proAccs > 0 || (proP.total && proP.total > 0)) {
+        proCard.style.display = 'block';
+        document.getElementById('pool-pro-pts').textContent = `${proP.remaining || 0} / ${proP.total || 1000} pts`;
+        document.getElementById('bar-pool-pro').style.width = `${((proP.remaining || 0) / (proP.total || 1000)) * 100}%`;
+        document.getElementById('badge-pro-shared').style.display = proP.is_shared_pool ? 'inline-flex' : 'none';
+      } else {
+        proCard.style.display = 'none';
+      }
+
+      // 5. Update Charts
+      updateCharts(state);
+
+      // 6. Asset Vault Grid
+      renderVaultGrid(state.recent_assets || []);
+
+      // 7. Freepik 150 Gate
+      const fg = state.freepik_gate || {};
+      document.getElementById('fp-curated-count').textContent = `${fg.curated || 0} / ${fg.target || 150}`;
+      document.getElementById('fp-needed-count').textContent = `${fg.needed || 150} Needed`;
+      document.getElementById('bar-freepik-150').style.width = `${((fg.curated || 0) / 150) * 100}%`;
+      document.getElementById('fp-stat-total').textContent = fg.total_ever_inspected || 0;
+      document.getElementById('fp-stat-isolated').textContent = fg.isolated || 0;
+      document.getElementById('fp-stat-bg').textContent = fg.backgrounds || 0;
+      renderFreepikGrid(fg.ledger || []);
+
+      // 8. Keys & Accounts Tables
+      renderKeysTable(state.gemini_keys || []);
+      renderAccountsTable(accounts);
+
+      // 9. Platform Credentials Status
+      const ftp = state.ftp_info || {};
+      document.getElementById('badge-adobe-status').textContent = ftp.configured ? 'Configured' : 'Not Configured';
+      document.getElementById('badge-adobe-status').className = 'sc-badge ' + (ftp.configured ? 'sc-badge-emerald' : 'sc-badge-muted');
+      if (ftp.username) document.getElementById('cfg-adobe-user').value = ftp.username;
+
+      const fpInfo = state.freepik_info || {};
+      document.getElementById('badge-freepik-status').textContent = fpInfo.configured ? 'Configured' : 'Standby';
+      document.getElementById('badge-freepik-status').className = 'sc-badge ' + (fpInfo.configured ? 'sc-badge-emerald' : 'sc-badge-amber');
+      if (fpInfo.username) document.getElementById('cfg-freepik-user').value = fpInfo.username;
+
+      // Auto-open Quick Setup on zero state
+      if (!state.setup_completed && accounts.length === 0 && (state.gemini_keys || []).length === 0) {
+        if (!localStorage.getItem('stocknova_setup_dismissed')) {
+          openQuickSetupModal();
+        }
+      }
+    }
+
+    function renderVaultGrid(assets) {
+      const grid = document.getElementById('vault-grid');
+      const empty = document.getElementById('vault-empty-state');
+      grid.innerHTML = '';
+      if (!assets || assets.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      assets.slice(0, 30).forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'sc-card';
+        card.style.cssText = 'padding:10px; display:flex; flex-direction:column; gap:8px;';
+        
+        const isPass = a.status === 'qc2_pass' || a.qc_tier === 'approved';
+        const isBorder = a.qc_tier === 'borderline';
+        const badgeClass = isPass ? 'sc-badge-emerald' : (isBorder ? 'sc-badge-amber' : 'sc-badge-rose');
+        const badgeText = isPass ? 'Approved (2x 4K)' : (isBorder ? 'Needs Look' : 'Rejected');
+
+        card.innerHTML = `
+          <div style="width:100%; height:130px; background:var(--bg-subtle); border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; font-size:32px;">
+            ${a.asset_type === 'video' ? '🎬' : '🖼️'}
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="sc-badge ${badgeClass}">${badgeText}</span>
+            <span class="mono" style="font-size:10px; color:var(--text-muted);">${a.model_used || '4K'}</span>
+          </div>
+          <div style="font-size:11.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.seo_title || a.filename}">
+            ${a.seo_title || a.filename}
+          </div>
+          <div style="display:flex; gap:6px; margin-top:2px;">
+            <button class="sc-btn sc-btn-outline sc-btn-sm" style="flex:1;" onclick="inspectAsset('${a.uuid}')">Inspect</button>
+          </div>
+        `;
+        grid.appendChild(card);
       });
-      showToast(res.message || 'Preferences updated');
-      await refreshState();
     }
 
-    async function pickExternalWorkspace() {
-      const res = await callBridge('select_external_folder', 'workspace', '');
-      if (res && res.folder) {
-        showToast((CURRENT_LANG === 'ar' ? 'تم اختيار المجلد الخارجي: ' : 'External folder set: ') + res.folder);
-        await refreshState();
+    function renderFreepikGrid(ledger) {
+      const grid = document.getElementById('fp-curated-grid');
+      const empty = document.getElementById('fp-empty-state');
+      grid.innerHTML = '';
+      const approved = (ledger || []).filter(item => item.passed);
+      if (approved.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      approved.slice(0, 18).forEach(item => {
+        const d = document.createElement('div');
+        d.className = 'sc-card';
+        d.style.cssText = 'padding:8px; font-size:11px; display:flex; flex-direction:column; gap:4px;';
+        d.innerHTML = `
+          <div style="height:100px; background:var(--bg-subtle); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px;">⭐</div>
+          <span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.filename}</span>
+          <span class="sc-badge sc-badge-emerald" style="align-self:flex-start;">4K Verified</span>
+        `;
+        grid.appendChild(d);
+      });
+    }
+
+    function renderKeysTable(keys) {
+      const tb = document.getElementById('keys-table-body');
+      if (!keys || keys.length === 0) {
+        tb.innerHTML = '<tr><td colspan="4" style="padding:16px; text-align:center; color:var(--text-muted);">No API keys added yet. Click "+ Add API Key" to configure.</td></tr>';
+        return;
+      }
+      tb.innerHTML = keys.map(k => `
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 10px; font-weight:600;">${k.key_alias}</td>
+          <td style="padding:8px 10px;" class="mono">${k.api_key}</td>
+          <td style="padding:8px 10px;"><span class="sc-badge sc-badge-emerald">${k.status}</span></td>
+          <td style="padding:8px 10px; display:flex; gap:6px;">
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="testKey('${k.key_alias}')">Test</button>
+            <button class="sc-btn sc-btn-danger sc-btn-sm" onclick="deleteKey('${k.key_alias}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderAccountsTable(accs) {
+      const tb = document.getElementById('accounts-table-body');
+      if (!accs || accs.length === 0) {
+        tb.innerHTML = '<tr><td colspan="5" style="padding:16px; text-align:center; color:var(--text-muted);">No browser profiles configured yet.</td></tr>';
+        return;
+      }
+      tb.innerHTML = accs.map(a => `
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 10px; font-weight:600;">${a.account_name}</td>
+          <td style="padding:8px 10px;">${a.email}</td>
+          <td style="padding:8px 10px;"><span class="sc-badge ${a.tier === 'pro' ? 'sc-badge-indigo' : (a.tier === 'plus' ? 'sc-badge-cyan' : 'sc-badge-emerald')}">${a.tier.toUpperCase()}</span></td>
+          <td style="padding:8px 10px;">
+            <span class="sc-badge ${a.is_shared_pool ? 'sc-badge-muted' : 'sc-badge-emerald'}">
+              ${a.is_shared_pool ? '👥 Shared Pool' : 'Standalone'}
+            </span>
+          </td>
+          <td style="padding:8px 10px;">
+            <button class="sc-btn sc-btn-danger sc-btn-sm" onclick="deleteAccount('${a.profile_name}')">Remove</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Action Handlers
+    async function runPipelineCycle() {
+      const btn = document.getElementById('btn-run-pipeline');
+      btn.disabled = true;
+      btn.textContent = 'Running Cycle...';
+      try {
+        await callBridge('run_pipeline_cycle');
+        showToast('Pipeline cycle started in background.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '▶ Run Single Cycle';
+        setTimeout(refreshState, 1200);
       }
     }
 
-    async function saveManualWorkspacePath() {
-      const val = document.getElementById('settings-ws-path').value.trim();
-      if (!val) return;
-      const res = await callBridge('select_external_folder', 'workspace', val);
-      showToast(res.message || 'Workspace updated');
-      await refreshState();
-    }
-
-    async function pickExternalFreepikFolder() {
-      const res = await callBridge('select_external_folder', 'freepik_source', '');
-      if (res && res.folder) {
-        showToast(res.message || 'Freepik folder updated');
-        await refreshState();
-      }
-    }
-
-    async function startDailyShiftNow() {
-      const res = await callBridge('start_daily_employee_shift');
-      showToast(res.message || 'Shift started');
-      await refreshState();
-    }
-
-    async function simulateCreditStep() {
-      const res = await callBridge('simulate_credit_step', 15);
-      showToast(res.message || 'Simulated');
-      await refreshState();
-    }
-
-    async function resetDailyFreeCredits() {
-      const res = await callBridge('reset_daily_free_credits');
-      showToast(res.message || 'Reset complete');
-      await refreshState();
-    }
-
-    async function setPrimaryArgon(profileName) {
-      const res = await callBridge('set_primary_argon_account', profileName);
-      showToast(res.message || 'Updated');
-      await refreshState();
-    }
-
-    async function removeAccount(profileName) {
-      const res = await callBridge('delete_google_account', profileName);
-      showToast(res.message || 'Removed');
-      await refreshState();
-    }
-
-    async function autoDetectBrowserAccounts() {
-      const res = await callBridge('auto_detect_browser_accounts');
-      showToast(res.message || 'Checked browser profiles');
-      await refreshState();
-    }
-
-    async function benchmarkVideoModels() {
-      const res = await callBridge('benchmark_video_models_now');
-      showToast(res.message || 'Benchmark complete');
-      await refreshState();
-    }
-
-    async function overrideAsset(filename, decision) {
-      const res = await callBridge('override_asset_qc', filename, decision);
-      showToast(res.message || 'Updated');
-      await refreshState();
-    }
-
-    async function runFreepikCurationNow() {
-      const res = await callBridge('curate_freepik_golden', '');
-      showToast(res.status === 'success' ? 'Freepik 150 curation complete' : (res.message || 'Done'));
-      await refreshState();
-    }
-
-    async function addGeminiApiKey() {
-      const alias = document.getElementById('new-key-alias').value.trim() || `key_${Date.now()}`;
-      const val = document.getElementById('new-key-val').value.trim();
-      if (!val) return;
-      const res = await callBridge('add_gemini_key', alias, val);
-      showToast(res.message || 'API Key added');
-      document.getElementById('new-key-val').value = '';
-      await refreshState();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
+    async function toggleAutopilot() {
+      const res = await callBridge('toggle_autopilot');
+      showToast(res.message || 'Auto-pilot toggled.');
       refreshState();
-      setInterval(refreshState, 5000);
+    }
+
+    async function submitAddKey() {
+      const alias = document.getElementById('input-key-alias').value.trim();
+      const key = document.getElementById('input-api-key').value.trim();
+      if (!alias || !key) return alert('Alias and Key are required.');
+      await callBridge('save_api_key', alias, key);
+      closeModal('modal-add-key');
+      showToast(`Key '${alias}' encrypted and saved locally.`);
+      refreshState();
+    }
+
+    async function testKey(alias) {
+      const res = await callBridge('test_api_key', alias);
+      alert(`Key Test Result: ${res.message}`);
+      refreshState();
+    }
+
+    async function deleteKey(alias) {
+      if (!confirm(`Delete key ${alias}?`)) return;
+      await callBridge('delete_api_key', alias);
+      showToast(`Key '${alias}' removed.`);
+      refreshState();
+    }
+
+    async function submitAddAccount() {
+      const name = document.getElementById('input-acc-name').value.trim();
+      const email = document.getElementById('input-acc-email').value.trim();
+      const tier = document.getElementById('input-acc-tier').value;
+      const browser = document.getElementById('input-acc-browser').value;
+      const isShared = document.getElementById('chk-is-shared').checked;
+      const poolId = isShared ? document.getElementById('select-shared-account').value : null;
+
+      if (!name || !email) return alert('Please enter both name and email.');
+      await callBridge('save_google_account', {
+        profile_name: name.replace(/\s+/g, '_').toLowerCase(),
+        account_name: name,
+        email: email,
+        tier: tier,
+        pool_id: poolId,
+        browser: browser,
+        is_shared_pool: isShared
+      });
+      closeModal('modal-add-account');
+      showToast(`Profile '${name}' saved successfully.`);
+      refreshState();
+    }
+
+    async function deleteAccount(profileName) {
+      if (!confirm(`Remove profile ${profileName}?`)) return;
+      await callBridge('delete_google_account', profileName);
+      showToast(`Profile removed.`);
+      refreshState();
+    }
+
+    async function testQuickSetupKey() {
+      const key = document.getElementById('qs-api-key').value.trim();
+      const fb = document.getElementById('qs-key-feedback');
+      if (!key) return alert('Please paste an API key first.');
+      fb.textContent = 'Pinging Google AI Studio...';
+      fb.style.color = 'var(--text-muted)';
+      const res = await callBridge('test_api_key', key);
+      if (res.status === 'success') {
+        fb.textContent = '✓ Key verified successfully!';
+        fb.style.color = 'var(--emerald)';
+      } else {
+        fb.textContent = `✕ Verification error: ${res.message}`;
+        fb.style.color = 'var(--rose)';
+      }
+    }
+
+    async function submitQuickSetup() {
+      const key = document.getElementById('qs-api-key').value.trim();
+      const adobeUser = document.getElementById('qs-adobe-user').value.trim();
+      const freepikUser = document.getElementById('qs-freepik-user').value.trim();
+
+      if (key) {
+        await callBridge('save_api_key', 'primary_key', key);
+      }
+      if (adobeUser) {
+        await callBridge('save_ftp_credentials', adobeUser, '', 'ftp.contributor.adobestock.com', 21);
+      }
+      if (freepikUser) {
+        await callBridge('save_freepik_credentials', freepikUser, '', 'standby');
+      }
+
+      await callBridge('complete_first_run_setup', '', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      localStorage.setItem('stocknova_setup_dismissed', 'true');
+      closeModal('modal-quick-setup');
+      showToast('Quick setup complete! Studio is ready.');
+      refreshState();
+    }
+
+    async function exportCsv(platform) {
+      const res = await callBridge('export_batch_csv', platform, 'ALL_APPROVED_VAULT');
+      if (res.status === 'success') {
+        alert(`✓ ${platform.toUpperCase()} CSV Exported Successfully!\n\nPath: ${res.path}\nCount: ${res.count} assets`);
+      } else {
+        alert(`Export failed: ${res.message}`);
+      }
+    }
+
+    async function runFreepik150Scan() {
+      const btn = document.getElementById('btn-scan-freepik');
+      btn.disabled = true;
+      btn.textContent = 'Scanning Candidates...';
+      try {
+        const res = await callBridge('curate_freepik_golden');
+        showToast(res.message || '150 QC Scan complete.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔬 Run Strict 150 QC Scan';
+        refreshState();
+      }
+    }
+
+    async function openFolder(type) {
+      await callBridge('open_folder_in_explorer', type);
+    }
+
+    async function saveFtpSettings() {
+      const u = document.getElementById('cfg-adobe-user').value.trim();
+      const p = document.getElementById('cfg-adobe-pass').value.trim();
+      await callBridge('save_ftp_credentials', u, p, 'ftp.contributor.adobestock.com', 21);
+      showToast('Adobe FTP credentials encrypted and saved locally.');
+      refreshState();
+    }
+
+    async function saveFreepikSettings() {
+      const u = document.getElementById('cfg-freepik-user').value.trim();
+      const p = document.getElementById('cfg-freepik-pass').value.trim();
+      await callBridge('save_freepik_credentials', u, p, 'standby');
+      showToast('Freepik settings saved.');
+      refreshState();
+    }
+
+    async function testConnection(platform) {
+      const res = await callBridge('test_ftp_connection', platform);
+      alert(`${platform.toUpperCase()} Connection: ${res.message}`);
+      refreshState();
+    }
+
+    // Startup Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initCharts();
+      refreshState();
+      setInterval(refreshState, 3000);
     });
   </script>
 </body>

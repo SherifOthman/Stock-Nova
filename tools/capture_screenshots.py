@@ -24,58 +24,60 @@ original_html = APP_HTML_PATH.read_text(encoding="utf-8")
 views = [
     {
         "name": "01_dashboard_dark.png",
-        "description": "Live Executive Dashboard (Dark Mode)",
+        "description": "Executive Dashboard (Dark Mode - Free Points Default & Live Ops)",
         "transform": lambda h: h
     },
     {
         "name": "02_dashboard_light.png",
-        "description": "Live Executive Dashboard (Light Mode)",
-        "transform": lambda h: h.replace('<html lang="en" class="dark">', '<html lang="en" class="light"><script>localStorage.setItem("stocknova_theme", "light");</script>')
+        "description": "Executive Dashboard (Crisp Daylight Light Mode)",
+        "transform": lambda h: h.replace('class="dark"', 'class="light"')
+                                 .replace('localStorage.getItem(\'stocknova_theme\') || \'dark\'', '\'light\'')
     },
     {
-        "name": "03_onboarding_guide_tour.png",
-        "description": "Interactive Step-by-Step Onboarding Tour",
-        "transform": lambda h: h.replace('id="modal-onboarding" class="fixed inset-0 bg-black/75 backdrop-blur-md hidden', 'id="modal-onboarding" class="fixed inset-0 bg-black/75 backdrop-blur-md flex')
+        "name": "03_quick_setup_wizard.png",
+        "description": "Interactive First-Run Setup & Ingestion Wizard",
+        "transform": lambda h: h.replace('id="modal-quick-setup"', 'id="modal-quick-setup" class="sc-modal-overlay open"')
     },
     {
         "name": "04_asset_vault.png",
-        "description": "Central Asset Vault Tab",
-        "transform": lambda h: h.replace('id="tab-dashboard" class="space-y-6"', 'id="tab-dashboard" class="hidden space-y-6"')
-                                 .replace('id="tab-vault" class="hidden space-y-4"', 'id="tab-vault" class="space-y-4"')
-                                 .replace('id="nav-dashboard" class="tab-active', 'id="nav-dashboard" class="theme-text-sub')
-                                 .replace('id="nav-vault" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub', 'id="nav-vault" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl')
+        "description": "Asset Vault & Review Queue (2x 4K Status & Visual Grid)",
+        "transform": lambda h: h.replace('id="tab-dashboard" class="tab-content active"', 'id="tab-dashboard" class="tab-content"')
+                                 .replace('id="tab-vault" class="tab-content"', 'id="tab-vault" class="tab-content active"')
+                                 .replace('class="nav-tab-btn active" data-tab="dashboard"', 'class="nav-tab-btn" data-tab="dashboard"')
+                                 .replace('class="nav-tab-btn" data-tab="vault"', 'class="nav-tab-btn active" data-tab="vault"')
+                                 .replace('Executive Dashboard', 'Asset Vault & Review Queue')
     },
     {
         "name": "05_csv_export_studio.png",
-        "description": "Multi-Platform CSV & Metadata Studio Tab",
-        "transform": lambda h: h.replace('id="tab-dashboard" class="space-y-6"', 'id="tab-dashboard" class="hidden space-y-6"')
-                                 .replace('id="tab-export" class="hidden space-y-5"', 'id="tab-export" class="space-y-5"')
-                                 .replace('id="nav-dashboard" class="tab-active', 'id="nav-dashboard" class="theme-text-sub')
-                                 .replace('id="nav-export" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub', 'id="nav-export" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl')
+        "description": "CSV Studio (Adobe Stock Categories 1-21 & Freepik AI CSV)",
+        "transform": lambda h: h.replace('id="tab-dashboard" class="tab-content active"', 'id="tab-dashboard" class="tab-content"')
+                                 .replace('id="tab-export" class="tab-content"', 'id="tab-export" class="tab-content active"')
+                                 .replace('class="nav-tab-btn active" data-tab="dashboard"', 'class="nav-tab-btn" data-tab="dashboard"')
+                                 .replace('class="nav-tab-btn" data-tab="export"', 'class="nav-tab-btn active" data-tab="export"')
+                                 .replace('Executive Dashboard', 'CSV Export Studio')
     },
     {
         "name": "06_freepik_150_gate.png",
-        "description": "Freepik 150 Golden Asset Gate Tab",
-        "transform": lambda h: h.replace('id="tab-dashboard" class="space-y-6"', 'id="tab-dashboard" class="hidden space-y-6"')
-                                 .replace('id="tab-freepik" class="hidden space-y-4"', 'id="tab-freepik" class="space-y-4"')
-                                 .replace('id="nav-dashboard" class="tab-active', 'id="nav-dashboard" class="theme-text-sub')
-                                 .replace('id="nav-freepik" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub', 'id="nav-freepik" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl')
+        "description": "Freepik 150 Golden Asset Gate (Strict QC & Stateful Ledger)",
+        "transform": lambda h: h.replace('id="tab-dashboard" class="tab-content active"', 'id="tab-dashboard" class="tab-content"')
+                                 .replace('id="tab-freepik" class="tab-content"', 'id="tab-freepik" class="tab-content active"')
+                                 .replace('class="nav-tab-btn active" data-tab="dashboard"', 'class="nav-tab-btn" data-tab="dashboard"')
+                                 .replace('class="nav-tab-btn" data-tab="freepik"', 'class="nav-tab-btn active" data-tab="freepik"')
+                                 .replace('Executive Dashboard', 'Freepik 150 Golden Gate')
     },
     {
-        "name": "07_accounts_and_api_keys.png",
-        "description": "Google Accounts & API Keys Manager Tab",
-        "transform": lambda h: h.replace('id="tab-dashboard" class="space-y-6"', 'id="tab-dashboard" class="hidden space-y-6"')
-                                 .replace('id="tab-accounts" class="hidden space-y-5"', 'id="tab-accounts" class="space-y-5"')
-                                 .replace('id="nav-dashboard" class="tab-active', 'id="nav-dashboard" class="theme-text-sub')
-                                 .replace('id="nav-accounts" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub', 'id="nav-accounts" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl')
+        "name": "07_accounts_and_vault.png",
+        "description": "Accounts, Shared Pools & Hardware-Bound Security Vault",
+        "transform": lambda h: h.replace('id="tab-dashboard" class="tab-content active"', 'id="tab-dashboard" class="tab-content"')
+                                 .replace('id="tab-settings" class="tab-content"', 'id="tab-settings" class="tab-content active"')
+                                 .replace('class="nav-tab-btn active" data-tab="dashboard"', 'class="nav-tab-btn" data-tab="dashboard"')
+                                 .replace('class="nav-tab-btn" data-tab="settings"', 'class="nav-tab-btn active" data-tab="settings"')
+                                 .replace('Executive Dashboard', 'Settings & Security Vault')
     },
     {
-        "name": "08_ai_models_guide.png",
-        "description": "AI Models Architecture & Quota Efficiency Tab",
-        "transform": lambda h: h.replace('id="tab-dashboard" class="space-y-6"', 'id="tab-dashboard" class="hidden space-y-6"')
-                                 .replace('id="tab-harmony" class="hidden space-y-4"', 'id="tab-harmony" class="space-y-4"')
-                                 .replace('id="nav-dashboard" class="tab-active', 'id="nav-dashboard" class="theme-text-sub')
-                                 .replace('id="nav-harmony" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub', 'id="nav-harmony" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl')
+        "name": "08_page_guide_dashboard.png",
+        "description": "Spotlight Interactive Page Guide on Dashboard",
+        "transform": lambda h: h.replace('class="page-guide-banner" id="guide-dashboard"', 'class="page-guide-banner visible" id="guide-dashboard"')
     }
 ]
 
