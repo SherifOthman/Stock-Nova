@@ -1,0 +1,86 @@
+# StockNova AI Master Configuration (Template)
+# Passwords and API keys are NEVER stored here; they are stored encrypted in the local SQLite database.
+
+project:
+  name: "StockNova AI"
+  version: "2.0.0"
+
+paths:
+  workspace_root: "workspace"
+  database: "data/google_dots.db"
+  logs_dir: "data/logs"
+  screenshots_dir: "screenshots"
+  exiftool: "tools/exiftool.exe"
+  
+models:
+  image: "nano banana pro"
+  video: "omni flash"
+  supported_video_models: ["omni flash", "veo fast", "viewpoint lite"]
+  max_video_credit_per_generation: 20
+  video_duration_seconds: 10
+  thinking_budget:
+    daily_qc: "low"
+    weekly_strategy: "medium"
+
+upscayl:
+  bin_path: "C:\\Program Files\\Upscayl\\resources\\bin\\upscayl-bin.exe"
+  models_dir: "C:\\Program Files\\Upscayl\\resources\\models"
+  default_model: "high-fidelity-4x"
+  default_scale: 2 # Fixed 2x (~4K standard across all aspect ratios)
+  timeout_seconds: 600
+
+gemini:
+  strategic_model: "gemini-4-argon"
+  agent_orchestrator: "gemini-3.8-flash"
+  qc_fast_model: "gemini-3.5-flash-lite"
+  model: "gemini-3.8-flash"
+  temperature: 0.1
+  max_retries: 3
+  rate_limit_cooldown_seconds: 60
+  enable_google_search_grounding: true
+
+qc:
+  stage1:
+    max_image_bytes: 150000
+    min_confidence: 0.7
+  stage2:
+    min_sharpness: 100.0
+    max_noise: 15.0
+    max_banding: 0.3
+    center_crop_ratio: 0.25
+    downscale_max_dim: 1024
+
+batching:
+  max_batch_size: 30
+  similarity_threshold: 12
+  micro_batch_per_concept: 8
+
+# Contributor Platform Endpoints (Credentials are stored encrypted in local SQLite DB)
+ftp:
+  host: "ftp.contributor.adobestock.com"
+  port: 21
+  username: ""
+  password: ""
+  remote_dir: "/"
+  passive_mode: true
+  timeout: 30
+
+freepik:
+  ftp_host: "ftp.freepik.com"
+  ftp_port: 21
+  username: ""
+  password: ""
+  mode: "standby"
+
+telegram:
+  bot_token: ""
+  chat_id: ""
+  
+submission:
+  workflow: "weekly_mode_a"
+  weekly_upload_day: "Sunday"
+
+seo:
+  max_title_length: 70
+  min_keywords: 45
+  max_keywords: 50

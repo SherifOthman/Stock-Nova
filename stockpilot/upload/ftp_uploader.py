@@ -23,10 +23,15 @@ class AdobeFTPUploader:
 
     def __init__(self) -> None:
         self.db = Database()
-        self.host = Config.get("ftp.host", "ftp.contributor.adobestock.com")
-        self.port = Config.get("ftp.port", 21)
-        self.username = Config.get("ftp.username", "")
-        self.password = Config.get("ftp.password", "")
+        # Retrieve credentials from secure local SQLite database or config
+        from stockpilot.core.security import get_secure_credential
+        cred = get_secure_credential(self.db, "ftp")
+        meta = (cred.get("metadata") if cred else {}) or {}
+
+        self.host = meta.get("host") or Config.get("ftp.host", "ftp.contributor.adobestock.com")
+        self.port = int(meta.get("port") or Config.get("ftp.port", 21))
+        self.username = (cred.get("username") if cred else None) or Config.get("ftp.username", "")
+        self.password = (cred.get("secret") if cred else None) or Config.get_ftp_password()
         self.remote_dir = Config.get("ftp.remote_dir", "/")
         self.timeout = Config.get("ftp.timeout", 30)
 

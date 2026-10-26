@@ -1,4 +1,5 @@
 {
+  "_comment": "StockNova AI - Example Accounts Template. Your real accounts_config.json is kept locally and NEVER pushed to Git.",
   "system_settings": {
     "project_name": "StockNova AI",
     "generation_priority": ["video", "image"],
@@ -31,5 +32,16 @@
       "pacing": "flexible_burst"
     }
   },
-  "accounts": []
+  "accounts": [
+    {
+      "profile_name": "example_profile",
+      "account_name": "Stock Account 1",
+      "email": "user@example.com",
+      "tier": "free",
+      "pool_id": null,
+      "chrome_user_data_dir": "",
+      "profile_dir": "Default",
+      "enabled": true
+    }
+  ]
 }

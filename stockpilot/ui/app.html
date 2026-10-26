@@ -188,6 +188,11 @@
           <span class="text-emerald-600 dark:text-emerald-400 font-semibold" id="top-heartbeat-text">Live 2s</span>
         </div>
 
+        <!-- Quick Tour / Learning Button -->
+        <button onclick="startOnboardingTour(1)" id="btn-quick-tour" class="h-8 px-3 rounded-xl border border-brand-500/40 bg-brand-500/10 hover:bg-brand-500/20 text-xs font-semibold text-brand-600 dark:text-brand-400 flex items-center gap-1.5 transition">
+          <span>🎓</span> <span class="hidden sm:inline">Quick Tour</span>
+        </button>
+
         <!-- Light / Dark Mode Toggle -->
         <button onclick="toggleTheme()" id="theme-toggle-btn" class="h-8 px-3 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main flex items-center gap-1.5 transition">
           <span id="theme-icon">☀️</span>
@@ -612,6 +617,27 @@
       <!-- =============================================================== -->
       <section id="tab-accounts" class="hidden space-y-5">
         
+        <!-- Zero-Leak Privacy & Local Encryption Banner -->
+        <div class="p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm">
+              🛡️
+            </div>
+            <div>
+              <div class="font-bold theme-text-main flex items-center gap-2">
+                <span>Zero-Leak Local Hardware Vault Active</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">DPAPI / AES-256</span>
+              </div>
+              <p class="text-[11px] theme-text-sub mt-0.5">
+                All passwords, accounts, and API keys are stored encrypted locally in your database. All credential files are strictly excluded from Git and will never be pushed to GitHub.
+              </p>
+            </div>
+          </div>
+          <span class="hidden sm:inline-flex px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+            🔒 Git Ignored
+          </span>
+        </div>
+
         <!-- Google Browser Accounts Table -->
         <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
           <div class="flex items-center justify-between border-b theme-border pb-3">
@@ -745,6 +771,79 @@
   <!-- ===================================================================== -->
   <!-- MODALS -->
   <!-- ===================================================================== -->
+
+  <!-- MODAL: INTERACTIVE ONBOARDING TOUR & LEARNING WIZARD -->
+  <div id="modal-onboarding" class="fixed inset-0 bg-black/75 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="w-full max-w-xl theme-card border theme-border rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300">
+      
+      <!-- Tour Top Header -->
+      <div class="px-6 py-4 border-b theme-border flex items-center justify-between theme-subtle">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-sm">
+            🎓
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold theme-text-main">StockNova AI Quick-Start Guide</h3>
+            <span id="tour-step-counter" class="text-[11px] font-mono text-brand-600 dark:text-brand-400 font-semibold">Step 1 of 6</span>
+          </div>
+        </div>
+        <button onclick="closeOnboardingTour()" class="w-7 h-7 rounded-lg theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs theme-text-muted flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+
+      <!-- Tour Content Body -->
+      <div class="p-6 space-y-4">
+        <!-- Visual Illustration / Banner -->
+        <div id="tour-illustration-box" class="w-full h-32 rounded-xl theme-subtle border theme-border flex flex-col items-center justify-center p-4 text-center space-y-2">
+          <span id="tour-icon" class="text-3xl">🚀</span>
+          <div id="tour-highlight-tag" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-brand-500/10 text-brand-500 border border-brand-500/20">
+            Welcome to the Studio
+          </div>
+        </div>
+
+        <!-- Title & Explanations -->
+        <div class="space-y-1.5">
+          <h4 id="tour-title" class="text-base font-bold theme-text-main">How StockNova AI Works</h4>
+          <p id="tour-desc" class="text-xs theme-text-sub leading-relaxed">
+            StockNova AI is your automated stock media studio. It bridges the gap between AI generation and contributor portals by automating QC inspection, 2x upscaling, anti-similarity batching, and official CSV generation.
+          </p>
+        </div>
+
+        <!-- Key Guidance Checklist / Pointer -->
+        <div id="tour-guidance-box" class="p-3.5 rounded-xl border theme-border theme-subtle text-xs space-y-1.5">
+          <div class="font-bold theme-text-main flex items-center gap-1.5">
+            <span>💡</span> <span id="tour-tip-title">What the engine does:</span>
+          </div>
+          <p id="tour-tip-desc" class="theme-text-sub text-[11px] leading-relaxed">
+            You don't need to manually rename files, tag SEO keywords, or calculate aspect ratios. Drop media in and let the pipeline process them.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tour Footer & Controls -->
+      <div class="px-6 py-4 border-t theme-border flex items-center justify-between theme-subtle">
+        <div class="flex items-center gap-1.5" id="tour-dots">
+          <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="prevTourStep()" id="tour-prev-btn" class="px-3.5 py-1.5 rounded-xl border theme-border theme-subtle text-xs font-semibold theme-text-sub hover:theme-text-main disabled:opacity-30" disabled>
+            Back
+          </button>
+          <button onclick="nextTourStep()" id="tour-next-btn" class="px-4 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5">
+            <span>Next</span> <span>→</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- MODAL: ADD API KEY -->
   <div id="modal-add-key" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
@@ -1448,11 +1547,139 @@
       refreshState();
     }
 
+    // =========================================================================
+    // INTERACTIVE ONBOARDING TOUR CONTROLLER
+    // =========================================================================
+    let currentTourStep = 1;
+    const tourSteps = [
+      {
+        step: 1,
+        icon: '🚀',
+        tag: 'Step 1 of 6: Overview',
+        title: 'How StockNova AI Works',
+        desc: 'StockNova AI is your automated stock media pipeline. It bridges the gap between AI generation and contributor portals by automating visual QC inspection, 2x upscaling, anti-similarity batching, and official CSV generation.',
+        tipTitle: 'What the engine does:',
+        tipDesc: 'You don\'t need to manually rename files, tag SEO keywords, or calculate aspect ratios. Drop raw media in and let the engine automate the workflow.',
+        actionTab: 'dashboard'
+      },
+      {
+        step: 2,
+        icon: '🔑',
+        tag: 'Step 2 of 6: API Keys & Accounts',
+        title: 'Where to Add Your Google AI Studio Key',
+        desc: 'StockNova uses Google Gemini models for visual inspection (QC) and generating 45-50 commercial SEO keywords and titles. Add at least one free Gemini API key to begin.',
+        tipTitle: 'How to add your key:',
+        tipDesc: 'Go to the "Accounts & Keys" tab, click "+ Add API Key", paste your key (AIzaSy...), and click Save. You can also link your browser profiles.',
+        actionTab: 'accounts'
+      },
+      {
+        step: 3,
+        icon: '📥',
+        tag: 'Step 3 of 6: Ingestion Zone',
+        title: 'Where to Place Your Raw Generated Media',
+        desc: 'When you generate images or 10-second videos with ImageFX, Midjourney, or Veo, save them in workspace/0_Raw_Downloads.',
+        tipTitle: 'Filenames are auto-sanitized:',
+        tipDesc: 'Do not worry about messy timestamps or hashes. The engine automatically sanitizes names into clean commercial stock titles (e.g. modern_villa_exterior.jpg).',
+        actionTab: 'dashboard'
+      },
+      {
+        step: 4,
+        icon: '🔬',
+        tag: 'Step 4 of 6: Quality Control & 2x 4K Upscale',
+        title: 'Strict Quality Standards (2x 4K Standard)',
+        desc: 'Stage 1 checks visual coherence before upscaling. Then Upscayl CLI performs a strict 2x upscale to produce optimal ~17 MP commercial 4K files without file bloat. Stage 2 checks 100% crop sharpness.',
+        tipTitle: 'Why 2x instead of 4x?',
+        tipDesc: '2x scaling creates crisp 16-17 MP files (8-14 MB). 4x causes file bloat (>50 MB) and AI interpolation blur, which leads to commercial rejection.',
+        actionTab: 'vault'
+      },
+      {
+        step: 5,
+        icon: '📋',
+        tag: 'Step 5 of 6: Multi-Platform CSV Studio',
+        title: 'Exporting Compliant Metadata for Adobe & Freepik',
+        desc: 'Both platforms have completely different CSV specifications. StockNova handles them with 1-click late binding:',
+        tipTitle: 'The differences handled for you:',
+        tipDesc: '• Adobe Stock: Comma-delimited (,) with official numeric Category IDs (1-21).\n• Freepik: Semicolon-delimited (;) with mandatory _ai_generated tag and photo-only filtering.',
+        actionTab: 'export'
+      },
+      {
+        step: 6,
+        icon: '📈',
+        tag: 'Step 6 of 6: Commercial Demand & Sales Tracking',
+        title: 'Track Downloads, Royalties & Buyer Demand',
+        desc: 'Once your assets are accepted on Adobe Stock or Freepik, export your contributor sales report CSV and click "Import Sales CSV" on the Dashboard.',
+        tipTitle: 'Self-Evolving Strategy:',
+        tipDesc: 'The dashboard will evaluate which niches are your Best Sellers vs Zero Downloads and advise you which subjects to double down on.',
+        actionTab: 'dashboard'
+      }
+    ];
+
+    function startOnboardingTour(stepNumber = 1) {
+      currentTourStep = stepNumber;
+      renderTourStep(currentTourStep);
+      openModal('modal-onboarding');
+    }
+
+    function renderTourStep(stepNum) {
+      const stepData = tourSteps.find(s => s.step === stepNum) || tourSteps[0];
+      document.getElementById('tour-step-counter').textContent = `Step ${stepData.step} of ${tourSteps.length}`;
+      document.getElementById('tour-icon').textContent = stepData.icon;
+      document.getElementById('tour-highlight-tag').textContent = stepData.tag;
+      document.getElementById('tour-title').textContent = stepData.title;
+      document.getElementById('tour-desc').textContent = stepData.desc;
+      document.getElementById('tour-tip-title').textContent = stepData.tipTitle;
+      document.getElementById('tour-tip-desc').textContent = stepData.tipDesc;
+
+      // Update Dots
+      const dotsContainer = document.getElementById('tour-dots');
+      dotsContainer.innerHTML = tourSteps.map(s => `
+        <span class="w-2.5 h-2.5 rounded-full transition-colors ${s.step === stepNum ? 'bg-brand-500 scale-110' : 'bg-slate-300 dark:bg-slate-700'}"></span>
+      `).join('');
+
+      // Controls
+      document.getElementById('tour-prev-btn').disabled = (stepNum === 1);
+      const nextBtn = document.getElementById('tour-next-btn');
+      if (stepNum === tourSteps.length) {
+        nextBtn.innerHTML = '<span>Finish Tour</span> <span>✓</span>';
+      } else {
+        nextBtn.innerHTML = '<span>Next</span> <span>→</span>';
+      }
+
+      // Auto-switch to relevant tab in the background to show context
+      if (stepData.actionTab) {
+        switchTab(stepData.actionTab);
+      }
+    }
+
+    function nextTourStep() {
+      if (currentTourStep < tourSteps.length) {
+        currentTourStep++;
+        renderTourStep(currentTourStep);
+      } else {
+        closeOnboardingTour();
+      }
+    }
+
+    function prevTourStep() {
+      if (currentTourStep > 1) {
+        currentTourStep--;
+        renderTourStep(currentTourStep);
+      }
+    }
+
+    function closeOnboardingTour() {
+      closeModal('modal-onboarding');
+      localStorage.setItem('stocknova_tour_seen', 'true');
+    }
+
     // Startup Initialization
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       setInterval(refreshState, 2000);
       setTimeout(refreshState, 300);
+      if (localStorage.getItem('stocknova_tour_seen') !== 'true') {
+        setTimeout(() => startOnboardingTour(1), 600);
+      }
     });
   </script>
 </body>

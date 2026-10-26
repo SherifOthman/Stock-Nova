@@ -27,6 +27,12 @@ from stockpilot.app import GoogleDotsPipeline
 from stockpilot.core.status_monitor import get_monitor
 from stockpilot.core.browser_account_resolver import BrowserAccountResolver
 from stockpilot.metadata.category_classifier import CategoryClassifier
+from stockpilot.core.security import (
+    SecurityVault,
+    save_secure_credential,
+    get_secure_credential,
+    delete_secure_credential,
+)
 
 PROJECT_ROOT = Path(r"d:\Stock Automation")
 
@@ -69,7 +75,13 @@ class DesktopBridgeAPI:
             pools = [dict(r) for r in cursor.fetchall()]
 
             cursor.execute("SELECT key_alias, api_key, priority, status, requests_today FROM gemini_keys")
-            keys = [dict(r) for r in cursor.fetchall()]
+            raw_keys = [dict(r) for r in cursor.fetchall()]
+            keys = []
+            for r in raw_keys:
+                k_copy = dict(r)
+                # NEVER expose raw key in UI bridge; return strictly masked representation
+                k_copy["api_key"] = SecurityVault.mask_secret(k_copy.get("api_key", ""))
+                keys.append(k_copy)
 
             cursor.execute("""
                 SELECT uuid, filename, asset_type, model_used, status, adobe_status, freepik_status, is_freepik_150_golden, created_at 
@@ -90,18 +102,23 @@ class DesktopBridgeAPI:
             "freepik_golden": fp_status.curated_count
         }
 
-        # FTP & Credentials from Config
+        # FTP & Credentials from Secure Local Database & Config
+        ftp_cred = get_secure_credential(self.db, "ftp")
+        freepik_cred = get_secure_credential(self.db, "freepik")
+        ftp_meta = (ftp_cred.get("metadata") if ftp_cred else {}) or {}
+        freepik_meta = (freepik_cred.get("metadata") if freepik_cred else {}) or {}
+
         ftp_info = {
-            "host": Config.get("ftp.host", "ftp.contributor.adobestock.com"),
-            "port": Config.get("ftp.port", 21),
-            "username": Config.get("ftp.username", ""),
-            "configured": bool(Config.get("ftp.username", "") and Config.get("ftp.password", ""))
+            "host": ftp_meta.get("host") or Config.get("ftp.host", "ftp.contributor.adobestock.com"),
+            "port": int(ftp_meta.get("port") or Config.get("ftp.port", 21)),
+            "username": (ftp_cred.get("username") if ftp_cred else None) or Config.get("ftp.username", ""),
+            "configured": bool((ftp_cred and ftp_cred.get("secret")) or (Config.get("ftp.username", "") and Config.get("ftp.password", "")))
         }
 
         freepik_info = {
-            "username": Config.get("freepik.username", ""),
-            "mode": Config.get("freepik.mode", "standby"),
-            "configured": bool(Config.get("freepik.username", ""))
+            "username": (freepik_cred.get("username") if freepik_cred else None) or Config.get("freepik.username", ""),
+            "mode": freepik_meta.get("mode") or Config.get("freepik.mode", "standby"),
+            "configured": bool((freepik_cred and freepik_cred.get("secret")) or Config.get("freepik.username", ""))
         }
 
         # Strategy Learnings & Dynamic Blacklist
@@ -161,6 +178,7 @@ class DesktopBridgeAPI:
             "discovered_profiles": discovered_profiles,
             "credit_pools": pools,
             "gemini_keys": keys,
+            "keys": keys,
             "recent_assets": recent_assets,
             "folders": folders,
             "ftp_info": ftp_info,
@@ -211,110 +229,53 @@ class DesktopBridgeAPI:
             return json.dumps({"status": "error", "message": str(e)})
 
     def save_api_key(self, alias: str, key: str) -> str:
-        """Saves a new Gemini / Argon API key to database & config."""
+        """Saves a new Gemini / Argon API key to local SQLite database with DPAPI/AES encryption."""
         if not key or not alias:
             return json.dumps({"status": "error", "message": "Key and Alias are required."})
+
+        # Encrypt key with local machine DPAPI / Fernet
+        encrypted_key = SecurityVault.encrypt(key.strip())
 
         with self.db.get_connection() as conn:
             conn.execute("""
                 INSERT INTO gemini_keys (key_alias, api_key, priority, status)
                 VALUES (?, ?, 1, 'active')
-                ON CONFLICT(key_alias) DO UPDATE SET api_key = excluded.api_key;
-            """, (alias, key))
-
-        # Also append to config/api_keys.yaml
-        keys_file = PROJECT_ROOT / "config" / "api_keys.yaml"
-        keys_data = {"gemini": []}
-        import yaml
-        if keys_file.exists():
-            try:
-                keys_data = yaml.safe_load(keys_file.read_text(encoding="utf-8")) or {"gemini": []}
-            except Exception:
-                pass
-
-        keys_data.setdefault("gemini", [])
-        # Replace or add
-        existing = [k for k in keys_data["gemini"] if k.get("alias") != alias]
-        existing.append({"alias": alias, "key": key, "daily_limit": 1500, "priority": 1})
-        keys_data["gemini"] = existing
-
-        with open(keys_file, "w", encoding="utf-8") as f:
-            yaml.safe_dump(keys_data, f)
+                ON CONFLICT(key_alias) DO UPDATE SET 
+                    api_key = excluded.api_key,
+                    status = 'active';
+            """, (alias.strip(), encrypted_key))
 
         # Reload in memory
         Config.load()
-        return json.dumps({"status": "success", "message": f"API Key '{alias}' saved successfully!"})
+        return json.dumps({"status": "success", "message": f"API Key '{alias}' encrypted and saved locally to database."})
 
-    def save_ftp_credentials(self, username: str, password: str, host: str, port: int) -> str:
-        """Saves Adobe Stock FTP settings."""
-        settings_file = PROJECT_ROOT / "config" / "settings.yaml"
-        import yaml
-        settings_data = {}
-        if settings_file.exists():
-            settings_data = yaml.safe_load(settings_file.read_text(encoding="utf-8")) or {}
-
-        settings_data.setdefault("ftp", {})
-        settings_data["ftp"]["username"] = username
-        settings_data["ftp"]["password"] = password
-        settings_data["ftp"]["host"] = host
-        settings_data["ftp"]["port"] = int(port)
-
-        with open(settings_file, "w", encoding="utf-8") as f:
-            yaml.safe_dump(settings_data, f)
-
-        Config.load()
-        return json.dumps({"status": "success", "message": "FTP Credentials updated successfully!"})
-
-    def select_workspace_folder(self) -> str:
-        """Opens a native Windows folder picker dialog to select custom asset workspace."""
-        if not self.window_ref or not self.window_ref[0]:
-            return json.dumps({"status": "error"})
-
-        win = self.window_ref[0]
-        selected = win.create_file_dialog(webview.FOLDER_DIALOG)
-        if selected and len(selected) > 0:
-            new_path = selected[0]
-            # Update settings.yaml
-            settings_file = PROJECT_ROOT / "config" / "settings.yaml"
-            import yaml
-            data = yaml.safe_load(settings_file.read_text(encoding="utf-8")) or {}
-            data.setdefault("paths", {})
-            data["paths"]["workspace_root"] = new_path
-            with open(settings_file, "w", encoding="utf-8") as f:
-                yaml.safe_dump(data, f)
-            Config.load()
-            return json.dumps({"status": "success", "new_path": new_path})
-        return json.dumps({"status": "cancelled"})
+    # Frontend alias compatibility
+    add_gemini_key = save_api_key
 
     def delete_api_key(self, alias: str) -> str:
-        """Removes an API key from database and yaml config."""
+        """Removes an API key from local database."""
         with self.db.get_connection() as conn:
-            conn.execute("DELETE FROM gemini_keys WHERE key_alias = ?", (alias,))
+            conn.execute("DELETE FROM gemini_keys WHERE key_alias = ?", (alias.strip(),))
 
-        keys_file = PROJECT_ROOT / "config" / "api_keys.yaml"
-        if keys_file.exists():
-            import yaml
-            try:
-                data = yaml.safe_load(keys_file.read_text(encoding="utf-8")) or {}
-                if "gemini" in data:
-                    data["gemini"] = [k for k in data["gemini"] if k.get("alias") != alias]
-                    with open(keys_file, "w", encoding="utf-8") as f:
-                        yaml.safe_dump(data, f)
-            except Exception as e:
-                pass
         Config.load()
-        return json.dumps({"status": "success", "message": f"API Key '{alias}' deleted."})
+        return json.dumps({"status": "success", "message": f"API Key '{alias}' deleted from local vault."})
+
+    # Frontend alias compatibility
+    delete_gemini_key = delete_api_key
 
     def test_api_key(self, alias: str) -> str:
         """Pings Google AI Studio with this key to verify connectivity and quota."""
         import time
-        key_str = alias
+        raw_key = alias
         with self.db.get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT api_key FROM gemini_keys WHERE key_alias = ?", (alias,))
+            cursor.execute("SELECT api_key FROM gemini_keys WHERE key_alias = ?", (alias.strip(),))
             row = cursor.fetchone()
             if row:
-                key_str = row["api_key"]
+                raw_key = row["api_key"]
+
+        # Decrypt secret
+        key_str = SecurityVault.decrypt(raw_key)
 
         try:
             from google import genai
@@ -340,42 +301,98 @@ class DesktopBridgeAPI:
                 "message": f"API Test Failed: {e}"
             })
 
-    def save_freepik_credentials(self, username: str, password: str, mode: str = "standby") -> str:
-        """Saves Freepik settings and integration mode."""
+    # Frontend alias compatibility
+    test_gemini_key = test_api_key
+
+    def save_ftp_credentials(self, username: str, password: str, host: str, port: int) -> str:
+        """Encrypts and saves Adobe Stock FTP credentials in local SQLite database."""
+        save_secure_credential(
+            self.db,
+            service="ftp",
+            username=username.strip(),
+            secret=password.strip(),
+            metadata={"host": host.strip(), "port": int(port)}
+        )
+
+        # Update non-sensitive host/port in settings.yaml, clearing any plain password
         settings_file = PROJECT_ROOT / "config" / "settings.yaml"
         import yaml
         settings_data = {}
         if settings_file.exists():
-            settings_data = yaml.safe_load(settings_file.read_text(encoding="utf-8")) or {}
+            try:
+                settings_data = yaml.safe_load(settings_file.read_text(encoding="utf-8")) or {}
+            except Exception:
+                settings_data = {}
 
-        settings_data.setdefault("freepik", {})
-        settings_data["freepik"]["username"] = username
-        settings_data["freepik"]["password"] = password
-        settings_data["freepik"]["mode"] = mode  # 'standby' or 'active'
+        settings_data.setdefault("ftp", {})
+        settings_data["ftp"]["username"] = username.strip()
+        settings_data["ftp"]["password"] = ""  # NEVER store plaintext password in YAML!
+        settings_data["ftp"]["host"] = host.strip()
+        settings_data["ftp"]["port"] = int(port)
 
-        with open(settings_file, "w", encoding="utf-8") as f:
-            yaml.safe_dump(settings_data, f)
+        try:
+            with open(settings_file, "w", encoding="utf-8") as f:
+                yaml.safe_dump(settings_data, f)
+        except Exception as e:
+            pass
 
         Config.load()
-        return json.dumps({"status": "success", "message": f"Freepik settings updated (Mode: {mode.upper()})."})
+        return json.dumps({"status": "success", "message": "FTP Credentials encrypted and stored locally in database."})
 
+    def save_freepik_credentials(self, username: str, password: str, mode: str = "standby") -> str:
+        """Encrypts and saves Freepik credentials in local SQLite database."""
+        save_secure_credential(
+            self.db,
+            service="freepik",
+            username=username.strip(),
+            secret=password.strip(),
+            metadata={"mode": mode}
+        )
+
+        # Update non-sensitive mode in settings.yaml, clearing any plain password
+        settings_file = PROJECT_ROOT / "config" / "settings.yaml"
+        import yaml
+        settings_data = {}
+        if settings_file.exists():
+            try:
+                settings_data = yaml.safe_load(settings_file.read_text(encoding="utf-8")) or {}
+            except Exception:
+                settings_data = {}
+
+        settings_data.setdefault("freepik", {})
+        settings_data["freepik"]["username"] = username.strip()
+        settings_data["freepik"]["password"] = ""  # NEVER store plaintext password in YAML!
+        settings_data["freepik"]["mode"] = mode
+
+        try:
+            with open(settings_file, "w", encoding="utf-8") as f:
+                yaml.safe_dump(settings_data, f)
+        except Exception as e:
+            pass
+
+        Config.load()
+        return json.dumps({"status": "success", "message": f"Freepik credentials encrypted locally (Mode: {mode.upper()})."})
     def test_ftp_connection(self, platform: str = "adobe") -> str:
-        """Tests live FTP connection to Adobe Stock or Freepik."""
+        """Tests live FTP connection using encrypted credentials stored in local DB."""
         import ftplib
         if platform == "adobe":
-            host = Config.get("ftp.host", "ftp.contributor.adobestock.com")
-            port = Config.get("ftp.port", 21)
-            user = Config.get("ftp.username", "")
-            pwd = Config.get("ftp.password", "")
+            cred = get_secure_credential(self.db, "ftp")
+            meta = (cred.get("metadata") if cred else {}) or {}
+            host = meta.get("host") or Config.get("ftp.host", "ftp.contributor.adobestock.com")
+            port = int(meta.get("port") or Config.get("ftp.port", 21))
+            user = (cred.get("username") if cred else None) or Config.get("ftp.username", "")
+            pwd = (cred.get("secret") if cred else None) or Config.get_ftp_password()
         else:
-            host = Config.get("freepik.ftp_host", "ftp.freepik.com")
-            port = Config.get("freepik.ftp_port", 21)
-            user = Config.get("freepik.username", "")
-            pwd = Config.get("freepik.password", "")
+            cred = get_secure_credential(self.db, "freepik")
+            meta = (cred.get("metadata") if cred else {}) or {}
+            host = meta.get("host") or Config.get("freepik.ftp_host", "ftp.freepik.com")
+            port = int(meta.get("port") or Config.get("freepik.ftp_port", 21))
+            user = (cred.get("username") if cred else None) or Config.get("freepik.username", "")
+            pwd = (cred.get("secret") if cred else None) or Config.get_freepik_password()
 
         if not user or not pwd:
             hint = "أدخل اسم المستخدم وكلمة المرور في إعدادات المنصة لحفظها."
-            self.db.record_platform_alert(f"{platform.upper()} FTP", host, "MISSING_CREDENTIALS", "بيانات الاعتماد مفقودة", hint, severity="warning")
+            self.db.record_platform_alert(f"{platform.upper()} FTP", str(host), "MISSING_CREDENTIALS", "بيانات الاعتماد مفقودة", hint, severity="warning")
             return json.dumps({"status": "error", "message": f"Missing credentials for {platform.upper()} FTP. Please enter username and password."})
 
         try:
@@ -383,6 +400,14 @@ class DesktopBridgeAPI:
             ftp.connect(host, port, timeout=10)
             ftp.login(user, pwd)
             welcome = ftp.getwelcome()
+            ftp.quit()
+            self.db.clear_platform_alerts(f"{platform.upper()} FTP", user)
+            return json.dumps({"status": "success", "message": f"Connected to {host} successfully!\n{welcome}"})
+        except Exception as e:
+            err_str = str(e)
+            hint = "تحقق من صحة اسم المستخدم وكلمة المرور وحالة حساب المساهم."
+            self.db.record_platform_alert(f"{platform.upper()} FTP", host, "FTP_AUTH_FAILED", err_str, hint, severity="critical")
+            return json.dumps({"status": "error", "message": f"Connection Failed: {e}"})
             ftp.quit()
             self.db.clear_platform_alerts(f"{platform.upper()} FTP", user)
             return json.dumps({"status": "success", "message": f"Connected to {host} successfully!\n{welcome}"})
@@ -620,15 +645,26 @@ class DesktopBridgeAPI:
 
     def save_google_account(
         self,
-        profile_name: str,
-        account_name: str,
-        email: str,
-        tier: str,
+        profile_name: Any = "",
+        account_name: str = "",
+        email: str = "",
+        tier: str = "free",
         pool_id: str | None = None,
         browser: str = "chrome",
-        profile_dir: str = "Default"
+        profile_dir: str = "Default",
+        **kwargs
     ) -> str:
-        """Adds or updates a Google account in the database and accounts_config.json."""
+        """Adds or updates a Google account in the database and local accounts_config.json."""
+        if isinstance(profile_name, dict):
+            data = profile_name
+            profile_name = data.get("profile_name", "")
+            account_name = data.get("account_name", "")
+            email = data.get("email", "")
+            tier = data.get("tier", "free")
+            pool_id = data.get("pool_id")
+            browser = data.get("browser", "chrome")
+            profile_dir = data.get("profile_dir", "Default")
+
         if not account_name or not email:
             return json.dumps({"status": "error", "message": "Account Name and Gmail address are required."})
 
@@ -648,8 +684,10 @@ class DesktopBridgeAPI:
 
         config_path = PROJECT_ROOT / "config" / "accounts_config.json"
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
-                conf = json.load(f)
+            conf = {"system_settings": {}, "credit_strategy": {}, "accounts": []}
+            if config_path.exists():
+                with open(config_path, "r", encoding="utf-8") as f:
+                    conf = json.load(f) or conf
             accounts = conf.get("accounts", [])
             existing_idx = next((i for i, a in enumerate(accounts) if a.get("profile_name") == profile_name), None)
             acc_entry = {

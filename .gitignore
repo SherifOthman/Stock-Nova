@@ -3,16 +3,43 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Logs
+# ==============================================================================
+# ZERO-LEAK SECURITY: Credentials, Keys, Passwords & Local Databases
+# NEVER commit personal accounts, passwords, API keys or databases to Git!
+# ==============================================================================
+config/accounts_config.json
+config/accounts_config.local.json
+config/api_keys.yaml
+config/credentials.json
+config/secrets.*
+config/*.local.*
+
+# Local SQLite databases & Encryption Keys
+data/*.db
+data/*.db-journal
+data/*.sqlite
+data/*.sqlite3
+data/*.key
+data/.*.key
+data/.security.key
+data/.vault.key
+
+# Environment files & Secret tokens
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Logs & History
 data/logs/*
 !data/logs/.gitkeep
 *.log
 
-# Local databases
-data/*.db
-data/*.db-journal
-
-# Workspace media & output
+# Workspace media, renders & user outputs
 workspace/**/*.jpg
 workspace/**/*.jpeg
 workspace/**/*.png
@@ -29,7 +56,6 @@ workspace/exports/*
 tools/exiftool-13.59_64/
 
 # Virtual environments
-.env
 .venv
 env/
 venv/

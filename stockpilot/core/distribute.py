@@ -43,7 +43,7 @@ def export_clean_distribution_package(output_zip: Path | None = None) -> Path:
             rel_root = Path(root).relative_to(PROJECT_ROOT)
             parts = rel_root.parts
 
-            if any(p in parts for p in ["data", "workspace", "backups", "screenshots", "__pycache__", ".git"]):
+            if any(p in parts for p in ["config", "data", "workspace", "backups", "screenshots", "__pycache__", ".git"]):
                 continue
 
             for file in files:
@@ -54,8 +54,8 @@ def export_clean_distribution_package(output_zip: Path | None = None) -> Path:
                 zipf.write(file_path, arcname=arcname)
 
         # Create clean template configs
-        clean_settings = (PROJECT_ROOT / "config" / "settings.yaml").read_text(encoding="utf-8")
-        clean_accounts = (PROJECT_ROOT / "config" / "accounts_config.json").read_text(encoding="utf-8")
+        clean_settings = (PROJECT_ROOT / "config" / "settings.example.yaml").read_text(encoding="utf-8") if (PROJECT_ROOT / "config" / "settings.example.yaml").exists() else (PROJECT_ROOT / "config" / "settings.yaml").read_text(encoding="utf-8")
+        clean_accounts = (PROJECT_ROOT / "config" / "accounts_config.example.json").read_text(encoding="utf-8") if (PROJECT_ROOT / "config" / "accounts_config.example.json").exists() else (PROJECT_ROOT / "config" / "accounts_config.json").read_text(encoding="utf-8")
 
         zipf.writestr("config/settings.yaml", clean_settings)
         zipf.writestr("config/accounts_config.json", clean_accounts)

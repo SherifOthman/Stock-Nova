@@ -1,0 +1,9 @@
+# StockNova AI API Keys Template
+# Real API keys are encrypted with Windows DPAPI / AES and stored in the local SQLite database.
+# This file is only a template for reference.
+
+gemini:
+  - alias: "default_gemini_key"
+    key: "YOUR_API_KEY_HERE"
+    daily_limit: 1500
+    priority: 1
