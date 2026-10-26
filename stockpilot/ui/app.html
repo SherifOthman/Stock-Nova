@@ -1506,7 +1506,7 @@
           <span style="font-size:18px;">🚀</span>
           <div class="sc-modal-title">Studio First-Run Quick Setup</div>
         </div>
-        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeModal('modal-quick-setup')">✕</button>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="skipQuickSetup()">✕</button>
       </div>
 
       <div class="sc-modal-body">
@@ -1552,7 +1552,7 @@
       </div>
 
       <div class="sc-modal-footer">
-        <button class="sc-btn sc-btn-ghost" onclick="closeModal('modal-quick-setup')">Skip for Now</button>
+        <button class="sc-btn sc-btn-ghost" onclick="skipQuickSetup()">Skip for Now</button>
         <button class="sc-btn sc-btn-primary" onclick="submitQuickSetup()">Complete Setup & Launch Studio</button>
       </div>
     </div>
@@ -1747,6 +1747,18 @@
 
     function openQuickSetupModal() {
       openModal('modal-quick-setup');
+    }
+
+    async function skipQuickSetup() {
+      localStorage.setItem('stocknova_setup_dismissed', 'true');
+      closeModal('modal-quick-setup');
+      try {
+        await callBridge('complete_first_run_setup', '', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      } catch (e) {
+        console.warn('Bridge call completed setup error:', e);
+      }
+      showToast('Quick setup dismissed. You can reopen it anytime from the top bar.');
+      refreshState();
     }
 
     function togglePageGuide() {

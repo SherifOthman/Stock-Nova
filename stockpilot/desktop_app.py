@@ -24,14 +24,16 @@ def main() -> None:
     html_file = PROJECT_ROOT / "stockpilot" / "ui" / "app.html"
     html_url = html_file.resolve().as_uri()
 
+    # Launch native Edge WebView2 window in full screen / maximized
     window = webview.create_window(
-        title="StockNova AI — الموظف الذكي لإنتاج وإدارة الاستوك اليومي",
+        title="StockNova AI — Autonomous Stock Media Studio",
         url=html_url,
-        width=1360,
-        height=860,
+        width=1440,
+        height=900,
         min_size=(1080, 720),
         js_api=api,
-        background_color="#0B0F17",
+        background_color="#09090b",
+        maximized=True,
     )
     window_container.append(window)
 
