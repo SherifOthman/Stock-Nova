@@ -4,15 +4,30 @@
 [![Platform Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6.svg)](https://microsoft.com)
 [![UI WebView2](https://img.shields.io/badge/UI-Microsoft%20Edge%20WebView2-008272.svg)](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
 [![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-38B2AC.svg)](https://tailwindcss.com/)
+[![Security DPAPI](https://img.shields.io/badge/Security-Windows%20DPAPI%20%7C%20AES--256-emerald.svg)](stockpilot/core/security.py)
 [![License MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-An executive-grade autonomous pipeline and native Windows desktop dashboard engineered for end-to-end stock media generation, two-stage quality control, 2x AI upscaling, anti-similarity batch distribution, and multi-platform publishing (Adobe Stock & Freepik).
+An executive-grade autonomous pipeline and native Windows desktop studio engineered for end-to-end stock media ingestion, two-stage quality control, 2x AI upscaling, anti-similarity batch distribution, and multi-platform publishing (Adobe Stock & Freepik).
+
+---
+
+## 📸 Visual Showcase
+
+| Dark Mode Dashboard | Light Mode Dashboard |
+| :---: | :---: |
+| ![Dashboard Dark](screenshots/01_dashboard_dark.png) | ![Dashboard Light](screenshots/02_dashboard_light.png) |
+
+| Interactive Quick Tour & Learning Wizard | CSV Export Studio (Adobe 1-21 & Freepik) |
+| :---: | :---: |
+| ![Quick Tour Guide](screenshots/03_onboarding_guide_tour.png) | ![CSV Export Studio](screenshots/05_csv_export_studio.png) |
 
 ---
 
 ## ⚡ Key Highlights
 
 - **Native WebView2 Executive Dashboard:** Zero-browser-tab native desktop app with pure English typography, instant **Light Mode / Dark Mode** toggle, and flicker-free real-time telemetry.
+- **Interactive Quick-Start Guide (`🎓 Quick Tour`):** Built-in 6-step guided walkthrough for first-time users explaining API key setup, media placement, quality control thresholds, and CSV export.
+- **Zero-Leak Hardware-Bound Encryption Vault (DPAPI / AES-256):** All contributor passwords, API keys, and browser account identities are encrypted locally using Windows hardware/user-bound DPAPI (`CryptProtectData`) and stored in the local SQLite database. **Zero credentials or accounts are ever committed to Git or pushed to GitHub.**
 - **Two-Stage Intelligent Quality Control:**
   - **Stage 1 (Pre-Upscale):** Fast RAM compression and AI visual sanity check (rejects hallucinations, warped artifacts, and deformities).
   - **Stage 2 (Post-Upscale):** 100% full-resolution crop analysis checking OpenCV Laplacian sharpness and digital noise thresholds.
@@ -31,22 +46,38 @@ An executive-grade autonomous pipeline and native Windows desktop dashboard engi
 ```text
 Stock-Nova/
 ├── config/
-│   ├── settings.yaml              # Core pipeline and platform configurations
-│   ├── accounts_config.json       # Account rotation and pool allocations
-│   └── creative_strategy.json     # Dynamic self-evolving strategy learnings
+│   ├── settings.example.yaml          # Template configuration file
+│   ├── accounts_config.example.json   # Template accounts rotation file
+│   └── api_keys.example.yaml          # Template API keys file
 ├── stockpilot/
-│   ├── app.py                     # Master pipeline orchestrator
-│   ├── core/                      # Config, database, quota, and status monitor
-│   ├── metadata/                  # Category classifier, SEO, IPTC, and CSV exporter
-│   ├── platforms/                 # Adobe Stock (FTP) and Freepik onboarding gates
-│   ├── quality/                   # Stage 1 QC, Stage 2 QC, and 2x Upscaler
-│   ├── strategy/                  # Argon 4 Copilot, trend researcher, prompt engine
-│   └── ui/                        # WebView2 desktop bridge and app.html
+│   ├── app.py                         # Master pipeline orchestrator
+│   ├── core/
+│   │   ├── config.py                  # Dynamic configuration loader
+│   │   ├── database.py                # Local SQLite persistence engine
+│   │   ├── security.py                # DPAPI / AES-256 local encryption vault
+│   │   ├── status_monitor.py          # Real-time telemetry provider
+│   │   └── browser_account_resolver.py# Chrome/Edge profile resolver
+│   ├── metadata/
+│   │   ├── category_classifier.py     # Adobe Stock numeric category (1-21) classifier
+│   │   ├── batch_exporter.py          # Strict CSV format generator (Adobe & Freepik)
+│   │   └── seo_generator.py           # Commercial title and keyword engine
+│   ├── platforms/
+│   │   ├── adobe_stock.py             # Adobe Stock FTP and validation handler
+│   │   └── freepik_curator.py         # Freepik 150 Golden Asset gatekeeper
+│   ├── quality/
+│   │   ├── stage1_qc.py               # Pre-upscale visual sanity checker
+│   │   ├── stage2_qc.py               # Post-upscale 100% crop sharpness validator
+│   │   ├── upscaler.py                # Strict 2x Upscayl CLI integration
+│   │   └── api_key_rotator.py         # Multi-key HTTP 429 automatic failover
+│   └── ui/
+│       ├── app.html                   # Modern dark/light responsive interface
+│       └── desktop_api.py             # Native pywebview Python-to-JS bridge
+├── screenshots/                       # High-resolution application screenshots
 ├── tools/
-│   ├── benchmark_upscayl.py       # Performance testing utility
-│   ├── exiftool.exe               # Standalone ExifTool wrapper
-│   └── exiftool_files/            # ExifTool dependencies
-├── workspace/                     # Clean pipeline folder stages (.gitkeep)
+│   ├── benchmark_upscayl.py           # Model benchmark script
+│   ├── capture_screenshots.py         # Automated UI screenshot generator
+│   └── exiftool.exe                   # Standalone IPTC metadata writer
+├── workspace/                         # Clean pipeline staging directories (.gitkeep)
 │   ├── 0_Raw_Downloads/
 │   ├── 1_QC1_Approved/
 │   ├── 2_Upscaled/
@@ -54,7 +85,8 @@ Stock-Nova/
 │   ├── 3_Batched_Ready/
 │   ├── 4_Uploaded_Awaiting_Submit/
 │   └── exports/
-├── run.bat                        # 1-Click launcher for native desktop app
+├── run.bat                            # 1-Click native Windows desktop launcher
+├── requirements.txt                   # Production Python dependencies
 └── README.md
 ```
 
@@ -77,38 +109,23 @@ Stock-Nova/
 
 2. Install Python dependencies:
    ```bash
-   pip install pywebview pyyaml opencv-python pillow imagehash google-genai
+   pip install -r requirements.txt
    ```
 
 3. Launch the Studio:
    - Double-click `run.bat`, or execute:
    ```bash
-   python -m stockpilot.ui.desktop_api
+   python -m stockpilot.desktop_app
    ```
 
 ---
 
-## 🛠️ Configuration
+## 🔒 Zero-Leak Security & Privacy Architecture
 
-Update `config/settings.yaml` with your credentials and paths:
-```yaml
-project:
-  name: "StockNova AI"
-  version: "2.0.0"
-
-paths:
-  workspace_root: "d:\\Stock Automation\\workspace"
-  database: "d:\\Stock Automation\\data\\google_dots.db"
-  exiftool: "d:\\Stock Automation\\tools\\exiftool.exe"
-
-upscayl:
-  default_scale: 2 # Fixed 2x standard (Optimal 4K / ~17 MP)
-
-gemini:
-  strategic_model: "gemini-4-argon"
-  agent_orchestrator: "gemini-3.8-flash"
-  qc_fast_model: "gemini-3.5-flash-lite"
-```
+StockNova is built from the ground up for strict confidentiality:
+- **Local SQLite Vault:** All personal tokens, API keys, and contributor passwords are encrypted using **Windows DPAPI** (`CryptProtectData`) and AES-256 before being written to the local database at `data/google_dots.db`.
+- **Zero Git Leakage:** All files containing personal configuration or credentials (`config/accounts_config.json`, `config/api_keys.yaml`, `data/*.db`, `data/*.key`) are permanently ignored in `.gitignore`.
+- **Masked UI Exposure:** The frontend interface never receives raw secrets; API keys and passwords are masked (`••••••••`) before crossing the WebView2 bridge.
 
 ---
 
@@ -120,7 +137,7 @@ gemini:
 | **Header Row** | `Filename,Title,Keywords,Category,Releases` | `File name;Title;Keywords;Prompt;Model` |
 | **Category Format** | **Numeric ID (1 to 21)** strictly | Dynamic keyword taxonomy & asset type |
 | **AI Tagging** | Standard IPTC metadata | Mandatory `_ai_generated` in keywords |
-| **Supported Media** | Images and Videos | Photos Only (Videos filtered) |
+| **Supported Media** | Images and Videos | Photos Only (Videos strictly blocked) |
 
 ---
 
