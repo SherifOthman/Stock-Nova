@@ -1,0 +1,80 @@
+# StockNova AI Master Configuration
+project:
+  name: "StockNova AI"
+  version: "2.0.0"
+
+paths:
+  workspace_root: "d:\\Stock Automation\\workspace"
+  database: "d:\\Stock Automation\\data\\google_dots.db"
+  logs_dir: "d:\\Stock Automation\\data\\logs"
+  screenshots_dir: "d:\\Stock Automation\\screenshots"
+  exiftool: "d:\\Stock Automation\\tools\\exiftool.exe"
+  
+models:
+  image: "nano banana pro"
+  video: "omni flash"
+  supported_video_models: ["omni flash", "veo fast", "viewpoint 1"]
+  max_video_credit_per_generation: 20 # HARD LIMIT: BANS 100-credit models
+  video_duration_seconds: 10
+  thinking_budget:
+    daily_qc: "low" # Fast, conserves quota
+    weekly_strategy: "medium" # In-depth reasoning without hitting RPM limits
+
+upscayl:
+  bin_path: "C:\\Program Files\\Upscayl\\resources\\bin\\upscayl-bin.exe"
+  models_dir: "C:\\Program Files\\Upscayl\\resources\\models"
+  default_model: "high-fidelity-4x"
+  default_scale: 2 # Fixed 2x (Optimal 4K / ~17MP standard across all aspect ratios)
+  timeout_seconds: 600
+
+chrome:
+  user_data_dir: "C:\\Users\\eleml\\AppData\\Local\\Google\\Chrome\\User Data"
+
+gemini:
+  # Official Google AI Studio Antigravity Models:
+  strategic_model: "gemini-4-argon"      # Deep Market Research, Search Grounding & Prompt Strategy
+  agent_orchestrator: "gemini-3.8-flash"  # Core Autonomous Agent & Long-Horizon Workflow
+  qc_fast_model: "gemini-3.5-flash-lite"  # High-throughput Fast Image/Video QC & SEO Tagging
+  model: "gemini-3.8-flash"
+  temperature: 0.1
+  max_retries: 3
+  rate_limit_cooldown_seconds: 60
+  enable_google_search_grounding: true
+
+qc:
+  stage1:
+    max_image_bytes: 150000
+    min_confidence: 0.7
+  stage2:
+    min_sharpness: 100.0
+    max_noise: 15.0
+    max_banding: 0.3
+    center_crop_ratio: 0.25
+    downscale_max_dim: 1024
+
+batching:
+  max_batch_size: 30
+  similarity_threshold: 12  # pHash hamming distance
+  micro_batch_per_concept: 8
+
+ftp:
+  host: ""
+  port: 21
+  username: ""
+  password: ""
+  remote_dir: "/"
+  passive_mode: true
+  timeout: 30
+
+telegram:
+  bot_token: ""
+  chat_id: ""
+  
+submission:
+  workflow: "weekly_mode_a"  # Safe Semi-Auto Mode A with weekly schedule
+  weekly_upload_day: "Sunday"
+
+seo:
+  max_title_length: 70
+  min_keywords: 45
+  max_keywords: 50

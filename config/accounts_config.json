@@ -1,0 +1,35 @@
+{
+  "system_settings": {
+    "project_name": "StockNova AI",
+    "generation_priority": ["video", "image"],
+    "image_model": "nano banana pro",
+    "supported_video_models": [
+      {"name": "omni flash", "points_cost": 15, "priority": 1},
+      {"name": "veo fast", "points_cost": 10, "priority": 2},
+      {"name": "viewpoint lite", "points_cost": 12, "priority": 3}
+    ],
+    "max_allowed_points_per_video": 20,
+    "default_video_duration_seconds": 10,
+    "upload_frequency": "weekly"
+  },
+  "credit_strategy": {
+    "free_tier": {
+      "daily_points_per_account": 50,
+      "max_videos_per_day": 3,
+      "priority": "exhaust_first_daily"
+    },
+    "plus_pool": {
+      "total_credits": 200,
+      "target_consumption_days": 10,
+      "daily_target_credits": 20,
+      "pacing": "flexible_burst"
+    },
+    "pro_pool": {
+      "total_credits": 1000,
+      "target_consumption_days": 12,
+      "daily_target_credits": 80,
+      "pacing": "flexible_burst"
+    }
+  },
+  "accounts": []
+}

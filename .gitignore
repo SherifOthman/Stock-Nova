@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+data/logs/*
+!data/logs/.gitkeep
+*.log
+
+# Local databases
+data/*.db
+data/*.db-journal
+
+# Workspace media & output
+workspace/**/*.jpg
+workspace/**/*.jpeg
+workspace/**/*.png
+workspace/**/*.mp4
+workspace/**/*.mov
+workspace/**/*.csv
+workspace/exports/*
+!workspace/**/.gitkeep
+!workspace/exports/.gitkeep
+
+# Archives and build artifacts
+*.zip
+*.tar.gz
+tools/exiftool-13.59_64/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.bak
