@@ -619,8 +619,8 @@ class DesktopBridgeAPI:
 
     delete_gemini_key = delete_api_key
 
-    def test_api_key(self, alias: str) -> str:
-        """Pings Google AI Studio with `gemini-2.5-flash` to verify connectivity and quota."""
+    def test_api_key(self, alias: str, model_name: str = "") -> str:
+        """Pings Google AI Studio with candidate models (gemini-1.5-flash, gemini-1.5-pro, etc.) to verify connectivity."""
         raw_key = alias
         with self.db.get_connection() as conn:
             cursor = conn.cursor()
@@ -629,38 +629,65 @@ class DesktopBridgeAPI:
             if row:
                 raw_key = row["api_key"]
 
-        key_str = SecurityVault.decrypt(raw_key)
-        try:
-            from google import genai
-            client = genai.Client(api_key=key_str)
-            t0 = time.perf_counter()
-            resp = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents="Reply with 'OK'.",
-            )
-            elapsed = int((time.perf_counter() - t0) * 1000)
-            self.db.clear_platform_alerts("Google AI Studio API", alias)
-            return json.dumps({
-                "status": "success",
-                "message": f"المفتاح يعمل بنجاح! زمن الاستجابة: {elapsed}ms ({(resp.text or 'OK').strip()})",
-            })
-        except Exception as e:
-            err_str = str(e)
-            err_type = "RATE_LIMIT_429" if "429" in err_str else ("AUTH_403" if "403" in err_str else "API_ERROR")
-            hint = (
-                "المفتاح وصل للحد المؤقت وسيقوم النظام بالتدوير التلقائي لمفتاح آخر."
-                if "429" in err_str
-                else "تأكد من صحة المفتاح من Google AI Studio."
-            )
-            self.db.record_platform_alert(
-                "Google AI Studio API",
-                alias,
-                err_type,
-                err_str,
-                hint,
-                severity="critical" if "403" in err_str else "warning",
-            )
-            return json.dumps({"status": "error", "message": f"فشل اختبار المفتاح: {e}"})
+        key_str = SecurityVault.decrypt(raw_key).strip()
+        if not key_str:
+            return json.dumps({"status": "error", "message": "API Key is empty or invalid."})
+
+        # Candidate models to try in order of priority:
+        candidate_models = []
+        if model_name and model_name.strip():
+            candidate_models.append(model_name.strip())
+
+        default_candidates = [
+            "gemini-1.5-flash",
+            "gemini-1.5-pro",
+            "gemini-2.0-flash",
+            "gemini-3.8-flash",
+            "gemini-2.5-flash",
+        ]
+        for m in default_candidates:
+            if m not in candidate_models:
+                candidate_models.append(m)
+
+        last_error = None
+        for mod in candidate_models:
+            try:
+                from google import genai
+                client = genai.Client(api_key=key_str)
+                t0 = time.perf_counter()
+                resp = client.models.generate_content(
+                    model=mod,
+                    contents="Ping. Reply with 'OK'.",
+                )
+                elapsed = int((time.perf_counter() - t0) * 1000)
+                self.db.clear_platform_alerts("Google AI Studio API", alias)
+                return json.dumps({
+                    "status": "success",
+                    "working_model": mod,
+                    "message": f"Verified successfully with '{mod}'! Latency: {elapsed}ms.",
+                })
+            except Exception as e:
+                err_str = str(e)
+                last_error = e
+                # If model name is not found (404), continue trying next available model
+                if "404" in err_str or "NOT_FOUND" in err_str:
+                    continue
+                # If auth failure or invalid key, stop early
+                if "403" in err_str or "API_KEY_INVALID" in err_str:
+                    break
+
+        err_str = str(last_error) if last_error else "Unknown verification error."
+        err_type = "AUTH_403" if "403" in err_str else ("RATE_LIMIT_429" if "429" in err_str else "API_ERROR")
+        hint = "Check that your API key is active in Google AI Studio." if "403" in err_str else "All candidate models returned an error."
+        self.db.record_platform_alert(
+            "Google AI Studio API",
+            alias,
+            err_type,
+            err_str,
+            hint,
+            severity="critical" if "403" in err_str else "warning",
+        )
+        return json.dumps({"status": "error", "message": f"Verification error: {err_str}"})
 
     test_gemini_key = test_api_key
 
