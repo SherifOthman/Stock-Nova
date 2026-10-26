@@ -16,77 +16,116 @@
 
   <style>
     /* ==========================================================================
-       SHADCN/UI HIGH-CONTRAST DESIGN SYSTEM TOKENS (LIGHT & DARK MODES)
+       OFFICIAL SHADCN/UI DESIGN SYSTEM TOKENS (DEFAULT ZINC / MONOCHROME)
        ========================================================================== */
     :root {
-      /* Light Mode: Crisp Alabaster & White Surfaces */
-      --bg-app: #f8fafc;
-      --bg-sidebar: #ffffff;
-      --bg-card: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --bg-hover: #e2e8f0;
-      --bg-input: #ffffff;
-      --border: #e2e8f0;
-      --border-subtle: #cbd5e1;
-      --ring: #4f46e5;
+      /* Shadcn Official Light Mode (Default Pure White & Pitch Black) */
+      --background: #ffffff;
+      --foreground: #09090b;
+      --card: #ffffff;
+      --card-foreground: #09090b;
+      --popover: #ffffff;
+      --popover-foreground: #09090b;
+      --primary: #18181b;
+      --primary-foreground: #fafafa;
+      --secondary: #f4f4f5;
+      --secondary-foreground: #18181b;
+      --muted: #f4f4f5;
+      --muted-foreground: #71717a;
+      --accent: #f4f4f5;
+      --accent-foreground: #18181b;
+      --destructive: #ef4444;
+      --destructive-foreground: #fafafa;
+      --border: #e4e4e7;
+      --input: #e4e4e7;
+      --ring: #18181b;
+      --radius: 8px;
 
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-subtle: #94a3b8;
+      /* Direct Design System Aliases */
+      --bg-app: var(--background);
+      --bg-sidebar: var(--background);
+      --bg-card: var(--card);
+      --bg-subtle: var(--muted);
+      --bg-hover: var(--accent);
+      --bg-input: var(--background);
+      --border-subtle: #d4d4d8;
 
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --primary-fg: #ffffff;
-      --primary-soft: rgba(79, 70, 229, 0.1);
+      --text-main: var(--foreground);
+      --text-muted: var(--muted-foreground);
+      --text-subtle: #a1a1aa;
 
-      --emerald: #059669;
-      --emerald-soft: rgba(5, 150, 105, 0.12);
-      --amber: #d97706;
-      --amber-soft: rgba(217, 119, 6, 0.12);
-      --rose: #dc2626;
-      --rose-soft: rgba(220, 38, 38, 0.12);
-      --cyan: #0284c7;
-      --cyan-soft: rgba(2, 132, 199, 0.12);
+      --primary-hover: #27272a;
+      --primary-fg: var(--primary-foreground);
+      --primary-soft: #f4f4f5;
+
+      /* Semantic Accents (Shadcn Subtle Variants) */
+      --emerald: #10b981;
+      --emerald-soft: rgba(16, 185, 129, 0.1);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.1);
+      --rose: #ef4444;
+      --rose-soft: rgba(239, 68, 68, 0.1);
+      --cyan: #18181b;
+      --cyan-soft: #f4f4f5;
 
       --sidebar-width: 250px;
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
       --shadow-dialog: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     }
 
     html.dark {
-      /* Dark Mode: Deep Obsidian Zinc Studio */
-      --bg-app: #09090b;
-      --bg-sidebar: #0c0d12;
-      --bg-card: #12131a;
-      --bg-subtle: #181a24;
-      --bg-hover: #222433;
-      --bg-input: #151722;
-      --border: #232533;
-      --border-subtle: #303347;
-      --ring: #6366f1;
+      /* Shadcn Official Dark Mode (Default Deep Zinc #09090b & Pure White) */
+      --background: #09090b;
+      --foreground: #fafafa;
+      --card: #09090b;
+      --card-foreground: #fafafa;
+      --popover: #09090b;
+      --popover-foreground: #fafafa;
+      --primary: #fafafa;
+      --primary-foreground: #18181b;
+      --secondary: #27272a;
+      --secondary-foreground: #fafafa;
+      --muted: #27272a;
+      --muted-foreground: #a1a1aa;
+      --accent: #27272a;
+      --accent-foreground: #fafafa;
+      --destructive: #7f1d1d;
+      --destructive-foreground: #fafafa;
+      --border: #27272a;
+      --input: #27272a;
+      --ring: #d4d4d8;
 
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-subtle: #64748b;
+      /* Direct Design System Aliases */
+      --bg-app: var(--background);
+      --bg-sidebar: var(--background);
+      --bg-card: var(--card);
+      --bg-subtle: var(--muted);
+      --bg-hover: var(--accent);
+      --bg-input: var(--background);
+      --border-subtle: #3f3f46;
 
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --primary-fg: #ffffff;
-      --primary-soft: rgba(99, 102, 241, 0.15);
+      --text-main: var(--foreground);
+      --text-muted: var(--muted-foreground);
+      --text-subtle: #71717a;
 
+      --primary-hover: #e4e4e7;
+      --primary-fg: var(--primary-foreground);
+      --primary-soft: #27272a;
+
+      /* Semantic Accents (Shadcn Dark Variants) */
       --emerald: #10b981;
       --emerald-soft: rgba(16, 185, 129, 0.15);
       --amber: #f59e0b;
       --amber-soft: rgba(245, 158, 11, 0.15);
       --rose: #ef4444;
       --rose-soft: rgba(239, 68, 68, 0.15);
-      --cyan: #06b6d4;
-      --cyan-soft: rgba(6, 182, 212, 0.15);
+      --cyan: #fafafa;
+      --cyan-soft: #27272a;
 
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
-      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
-      --shadow-dialog: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+      --shadow-dialog: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
     }
 
     * {
@@ -96,15 +135,15 @@
     }
 
     body {
-      background-color: var(--bg-app);
-      color: var(--text-main);
+      background-color: var(--background);
+      color: var(--foreground);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 13px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       overflow-x: hidden;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .mono {
@@ -150,22 +189,23 @@
     }
 
     .brand-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, var(--primary), #818cf8);
-      color: #ffffff;
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius);
+      background: var(--foreground);
+      color: var(--background);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 14px;
-      box-shadow: 0 2px 8px var(--primary-soft);
+      font-size: 13px;
+      letter-spacing: -0.02em;
       flex-shrink: 0;
+      border: 1px solid var(--border);
     }
 
     .brand-text h1 {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       letter-spacing: -0.01em;
       line-height: 1.2;
@@ -198,12 +238,12 @@
       width: 100%;
       border: 1px solid transparent;
       background: transparent;
-      color: var(--text-muted);
+      color: var(--muted-foreground);
       font-family: inherit;
       font-size: 13px;
       font-weight: 500;
       padding: 8px 12px;
-      border-radius: 8px;
+      border-radius: calc(var(--radius) - 2px);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -213,15 +253,15 @@
     }
 
     .nav-tab-btn:hover {
-      background: var(--bg-hover);
-      color: var(--text-main);
+      background: var(--accent);
+      color: var(--accent-foreground);
     }
 
     .nav-tab-btn.active {
-      background: var(--primary-soft);
-      color: var(--primary);
-      border-color: rgba(99, 102, 241, 0.25);
+      background: var(--accent);
+      color: var(--accent-foreground);
       font-weight: 600;
+      border-color: var(--border);
     }
 
     .nav-tab-btn svg {
@@ -233,7 +273,6 @@
 
     .nav-tab-btn.active svg {
       opacity: 1;
-      color: var(--primary);
     }
 
     .sidebar-footer {
@@ -251,14 +290,14 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      background: var(--bg-app);
+      background: var(--background);
     }
 
     /* Top Navigation Bar */
     .top-header {
       height: 52px;
       border-bottom: 1px solid var(--border);
-      background: var(--bg-sidebar);
+      background: var(--background);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -278,10 +317,10 @@
     .icon-btn {
       width: 32px;
       height: 32px;
-      border-radius: 8px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text-main);
+      background: transparent;
+      color: var(--foreground);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -290,7 +329,8 @@
     }
 
     .icon-btn:hover {
-      background: var(--bg-hover);
+      background: var(--accent);
+      color: var(--accent-foreground);
     }
 
     .top-divider {
@@ -319,16 +359,17 @@
       align-items: center;
       gap: 7px;
       padding: 4px 11px;
-      border-radius: 20px;
+      border-radius: 9999px;
       font-size: 11.5px;
       font-weight: 600;
       border: 1px solid var(--border);
-      background: var(--bg-card);
+      background: var(--secondary);
+      color: var(--foreground);
     }
 
     .worker-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--emerald);
       box-shadow: 0 0 0 2px var(--emerald-soft);
@@ -365,11 +406,11 @@
        SHADCN UI COMPONENTS (CARDS, BUTTONS, BADGES, TOOLTIPS, MODALS)
        ========================================================================== */
     .sc-card {
-      background: var(--bg-card);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       padding: 16px;
-      box-shadow: var(--shadow-card);
+      box-shadow: var(--shadow-sm);
       transition: border-color 0.15s ease;
     }
 
@@ -386,12 +427,13 @@
     }
 
     .sc-card-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--foreground);
       display: flex;
       align-items: center;
       gap: 6px;
+      letter-spacing: -0.01em;
     }
 
     /* Interactive Hover Tooltip (ⓘ) */
@@ -404,15 +446,17 @@
       height: 16px;
       border-radius: 50%;
       font-size: 11px;
-      font-weight: 700;
-      color: var(--text-subtle);
+      font-weight: 600;
+      color: var(--muted-foreground);
+      border: 1px solid var(--border);
       cursor: help;
-      transition: color 0.15s ease, background 0.15s ease;
+      transition: all 0.15s ease;
     }
 
     .info-tip:hover {
-      color: var(--primary);
-      background: var(--primary-soft);
+      color: var(--foreground);
+      border-color: var(--foreground);
+      background: var(--accent);
     }
 
     .info-tip::after {
@@ -421,17 +465,17 @@
       bottom: calc(100% + 8px);
       left: 50%;
       transform: translateX(-50%) scale(0.96);
-      background: var(--bg-subtle);
-      color: var(--text-main);
+      background: var(--popover);
+      color: var(--popover-foreground);
       border: 1px solid var(--border);
       padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 11px;
+      border-radius: calc(var(--radius) - 2px);
+      font-size: 11.5px;
       font-weight: 400;
       line-height: 1.4;
       white-space: normal;
       width: max-content;
-      max-width: 250px;
+      max-width: 260px;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
@@ -446,7 +490,7 @@
       transform: translateX(-50%) scale(1);
     }
 
-    /* Buttons */
+    /* Shadcn Buttons */
     .sc-btn {
       display: inline-flex;
       align-items: center;
@@ -454,113 +498,141 @@
       gap: 7px;
       font-family: inherit;
       font-size: 12.5px;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 8px;
+      font-weight: 500;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: var(--radius);
       border: 1px solid transparent;
       cursor: pointer;
       transition: all 0.15s ease;
       white-space: nowrap;
       text-decoration: none;
+      outline: none;
+    }
+
+    .sc-btn:focus-visible {
+      box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
     }
 
     .sc-btn-primary {
       background: var(--primary);
-      color: var(--primary-fg);
-      box-shadow: 0 1px 3px rgba(79, 70, 229, 0.3);
+      color: var(--primary-foreground);
+      font-weight: 600;
+      border: 1px solid var(--primary);
     }
 
     .sc-btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    .sc-btn-secondary {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+      border: 1px solid var(--border);
+    }
+
+    .sc-btn-secondary:hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
     }
 
     .sc-btn-outline {
-      background: var(--bg-card);
-      border-color: var(--border);
-      color: var(--text-main);
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--foreground);
     }
 
     .sc-btn-outline:hover {
-      background: var(--bg-hover);
+      background: var(--accent);
+      color: var(--accent-foreground);
       border-color: var(--border-subtle);
     }
 
     .sc-btn-ghost {
       background: transparent;
-      color: var(--text-muted);
+      color: var(--foreground);
     }
 
     .sc-btn-ghost:hover {
-      background: var(--bg-hover);
-      color: var(--text-main);
+      background: var(--accent);
+      color: var(--accent-foreground);
     }
 
-    .sc-btn-danger {
-      background: var(--rose-soft);
-      border-color: rgba(239, 68, 68, 0.3);
-      color: var(--rose);
+    .sc-btn-danger, .sc-btn-destructive {
+      background: var(--destructive);
+      color: var(--destructive-foreground);
+      border: 1px solid var(--destructive);
     }
 
-    .sc-btn-danger:hover {
-      background: var(--rose);
-      color: #ffffff;
+    .sc-btn-danger:hover, .sc-btn-destructive:hover {
+      opacity: 0.9;
     }
 
     .sc-btn-sm {
-      padding: 4px 10px;
+      height: 30px;
+      padding: 0 10px;
       font-size: 11.5px;
-      border-radius: 6px;
+      border-radius: calc(var(--radius) - 2px);
     }
 
     .sc-btn-lg {
-      padding: 10px 18px;
+      height: 40px;
+      padding: 0 18px;
       font-size: 13.5px;
-      border-radius: 10px;
+      border-radius: var(--radius);
     }
 
-    /* Badges */
+    /* Shadcn Badges */
     .sc-badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 2.5px 8px;
+      padding: 2px 8px;
       border-radius: 9999px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       border: 1px solid transparent;
+      line-height: 1.4;
     }
 
-    .sc-badge-emerald { background: var(--emerald-soft); color: var(--emerald); border-color: rgba(16, 185, 129, 0.25); }
-    .sc-badge-amber { background: var(--amber-soft); color: var(--amber); border-color: rgba(245, 158, 11, 0.25); }
-    .sc-badge-indigo { background: var(--primary-soft); color: var(--primary); border-color: rgba(99, 102, 241, 0.25); }
-    .sc-badge-rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(239, 68, 68, 0.25); }
-    .sc-badge-cyan { background: var(--cyan-soft); color: var(--cyan); border-color: rgba(6, 182, 212, 0.25); }
-    .sc-badge-muted { background: var(--bg-subtle); color: var(--text-muted); border-color: var(--border); }
+    .sc-badge-default { background: var(--primary); color: var(--primary-foreground); }
+    .sc-badge-secondary { background: var(--secondary); color: var(--secondary-foreground); border-color: var(--border); }
+    .sc-badge-outline { border-color: var(--border); color: var(--foreground); background: transparent; }
+    .sc-badge-muted { background: var(--secondary); color: var(--muted-foreground); border-color: var(--border); }
+    .sc-badge-indigo { background: var(--secondary); color: var(--foreground); border-color: var(--border); }
+
+    /* Semantic status badges */
+    .sc-badge-emerald { background: var(--emerald-soft); color: var(--emerald); border-color: rgba(16, 185, 129, 0.2); }
+    .sc-badge-amber { background: var(--amber-soft); color: var(--amber); border-color: rgba(245, 158, 11, 0.2); }
+    .sc-badge-rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(239, 68, 68, 0.2); }
+    .sc-badge-cyan { background: var(--secondary); color: var(--foreground); border-color: var(--border); }
 
     /* Progress Bar */
     .sc-progress {
       width: 100%;
       height: 6px;
       border-radius: 9999px;
-      background: var(--bg-subtle);
+      background: var(--secondary);
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
     .sc-progress-fill {
       height: 100%;
       border-radius: 9999px;
+      background: var(--foreground);
       transition: width 0.4s ease;
     }
 
     /* Input & Select */
     .sc-input, .sc-select {
       width: 100%;
-      padding: 8px 12px;
-      border-radius: 8px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
-      background: var(--bg-input);
-      color: var(--text-main);
+      background: var(--background);
+      color: var(--foreground);
       font-family: inherit;
       font-size: 13px;
       outline: none;
@@ -569,7 +641,11 @@
 
     .sc-input:focus, .sc-select:focus {
       border-color: var(--ring);
-      box-shadow: 0 0 0 2px var(--primary-soft);
+      box-shadow: 0 0 0 1px var(--ring);
+    }
+
+    .sc-input::placeholder {
+      color: var(--muted-foreground);
     }
 
     /* Grids */
@@ -604,7 +680,7 @@
     .sc-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -620,18 +696,18 @@
     .sc-modal-dialog {
       width: 100%;
       max-width: 560px;
-      background: var(--bg-card);
+      background: var(--background);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: calc(var(--radius) + 4px);
       box-shadow: var(--shadow-dialog);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      animation: modal-pop 0.2s ease-out;
+      animation: modal-pop 0.15s ease-out;
     }
 
     @keyframes modal-pop {
-      0% { opacity: 0; transform: scale(0.95); }
+      0% { opacity: 0; transform: scale(0.97); }
       100% { opacity: 1; transform: scale(1); }
     }
 
@@ -641,12 +717,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--bg-sidebar);
+      background: var(--background);
     }
 
     .sc-modal-title {
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
+      color: var(--foreground);
     }
 
     .sc-modal-body {
@@ -656,12 +733,13 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      background: var(--background);
     }
 
     .sc-modal-footer {
       padding: 14px 20px;
       border-top: 1px solid var(--border);
-      background: var(--bg-sidebar);
+      background: var(--secondary);
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -670,15 +748,15 @@
 
     /* Spotlight Page Guide Card */
     .page-guide-banner {
-      background: var(--primary-soft);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      border-radius: 12px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 14px 18px;
       display: none;
       align-items: flex-start;
       justify-content: space-between;
       gap: 14px;
-      animation: guide-fade 0.25s ease-out;
+      animation: guide-fade 0.2s ease-out;
     }
 
     .page-guide-banner.visible {
@@ -703,17 +781,17 @@
 
     .sc-toast {
       padding: 10px 16px;
-      border-radius: 8px;
-      background: var(--bg-card);
+      border-radius: var(--radius);
+      background: var(--background);
       border: 1px solid var(--border);
-      color: var(--text-main);
+      color: var(--foreground);
       box-shadow: var(--shadow-dialog);
       font-size: 12.5px;
-      font-weight: 600;
+      font-weight: 500;
       display: flex;
       align-items: center;
       gap: 8px;
-      animation: toast-in 0.2s ease-out;
+      animation: toast-in 0.15s ease-out;
     }
 
     @keyframes toast-in {
@@ -1737,10 +1815,31 @@
     let chartAcceptance = null;
     let chartPipeline = null;
 
-    function initCharts() {
+    function getShadcnChartTheme() {
       const isDark = document.documentElement.classList.contains('dark');
-      const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
-      const textColor = isDark ? '#94a3b8' : '#64748b';
+      return {
+        isDark,
+        gridColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+        textColor: isDark ? '#a1a1aa' : '#71717a',
+        lineBorder: isDark ? '#fafafa' : '#18181b',
+        lineBg: isDark ? 'rgba(250, 250, 250, 0.05)' : 'rgba(24, 24, 27, 0.04)',
+        pointBg: isDark ? '#09090b' : '#ffffff',
+        barColors: isDark
+          ? ['#71717a', '#fafafa', '#d4d4d8', '#a1a1aa', '#52525b']
+          : ['#a1a1aa', '#18181b', '#27272a', '#52525b', '#71717a']
+      };
+    }
+
+    function initCharts() {
+      const t = getShadcnChartTheme();
+
+      Chart.defaults.plugins.tooltip.backgroundColor = t.isDark ? '#09090b' : '#ffffff';
+      Chart.defaults.plugins.tooltip.titleColor = t.isDark ? '#fafafa' : '#09090b';
+      Chart.defaults.plugins.tooltip.bodyColor = t.isDark ? '#fafafa' : '#09090b';
+      Chart.defaults.plugins.tooltip.borderColor = t.isDark ? '#27272a' : '#e4e4e7';
+      Chart.defaults.plugins.tooltip.borderWidth = 1;
+      Chart.defaults.plugins.tooltip.cornerRadius = 6;
+      Chart.defaults.plugins.tooltip.padding = 8;
 
       const ctxA = document.getElementById('chart-acceptance');
       if (ctxA) {
@@ -1751,12 +1850,15 @@
             datasets: [{
               label: 'Acceptance Rate (%)',
               data: [0, 0, 0, 0, 0, 0],
-              borderColor: '#10b981',
-              backgroundColor: 'rgba(16, 185, 129, 0.08)',
+              borderColor: t.lineBorder,
+              backgroundColor: t.lineBg,
               fill: true,
               tension: 0.35,
               borderWidth: 2,
-              pointRadius: 3
+              pointRadius: 4,
+              pointBackgroundColor: t.pointBg,
+              pointBorderColor: t.lineBorder,
+              pointBorderWidth: 2
             }]
           },
           options: {
@@ -1764,8 +1866,8 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-              x: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } },
-              y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }
+              x: { grid: { color: t.gridColor }, ticks: { color: t.textColor, font: { size: 10 } } },
+              y: { min: 0, max: 100, grid: { color: t.gridColor }, ticks: { color: t.textColor, font: { size: 10 } } }
             }
           }
         });
@@ -1780,7 +1882,7 @@
             datasets: [{
               label: 'Volume',
               data: [0, 0, 0, 0, 0],
-              backgroundColor: ['#64748b', '#4f46e5', '#06b6d4', '#10b981', '#ef4444'],
+              backgroundColor: t.barColors,
               borderRadius: 6
             }]
           },
@@ -1789,8 +1891,8 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 } } },
-              y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }
+              x: { grid: { display: false }, ticks: { color: t.textColor, font: { size: 10 } } },
+              y: { grid: { color: t.gridColor }, ticks: { color: t.textColor, font: { size: 10 } } }
             }
           }
         });
@@ -1799,18 +1901,21 @@
 
     function updateCharts(state) {
       if (!chartAcceptance || !chartPipeline) return;
-      const isDark = document.documentElement.classList.contains('dark');
-      const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
-      const textColor = isDark ? '#94a3b8' : '#64748b';
+      const t = getShadcnChartTheme();
 
-      chartAcceptance.options.scales.x.grid.color = gridColor;
-      chartAcceptance.options.scales.x.ticks.color = textColor;
-      chartAcceptance.options.scales.y.grid.color = gridColor;
-      chartAcceptance.options.scales.y.ticks.color = textColor;
+      chartAcceptance.options.scales.x.grid.color = t.gridColor;
+      chartAcceptance.options.scales.x.ticks.color = t.textColor;
+      chartAcceptance.options.scales.y.grid.color = t.gridColor;
+      chartAcceptance.options.scales.y.ticks.color = t.textColor;
+      chartAcceptance.data.datasets[0].borderColor = t.lineBorder;
+      chartAcceptance.data.datasets[0].backgroundColor = t.lineBg;
+      chartAcceptance.data.datasets[0].pointBorderColor = t.lineBorder;
+      chartAcceptance.data.datasets[0].pointBackgroundColor = t.pointBg;
 
-      chartPipeline.options.scales.y.grid.color = gridColor;
-      chartPipeline.options.scales.x.ticks.color = textColor;
-      chartPipeline.options.scales.y.ticks.color = textColor;
+      chartPipeline.options.scales.y.grid.color = t.gridColor;
+      chartPipeline.options.scales.x.ticks.color = t.textColor;
+      chartPipeline.options.scales.y.ticks.color = t.textColor;
+      chartPipeline.data.datasets[0].backgroundColor = t.barColors;
 
       const metrics = state.metrics || {};
       const rate = metrics.acceptance_rate || 0;
