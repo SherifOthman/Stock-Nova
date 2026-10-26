@@ -1,0 +1,10 @@
+{
+  "name": "stocknova-ai",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "python3 app.py",
+    "start": "python3 app.py",
+    "build": "python3 -m py_compile app.py"
+  }
+}

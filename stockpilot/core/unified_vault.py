@@ -1,12 +1,13 @@
 """
-StockNova AI — Unified Central Asset Vault & Dual-Platform Model.
-Single table tracking both Adobe Stock and Freepik lifecycles on the EXACT same asset pool,
-enabling automatic cross-platform recycling and zero-duplicate asset management.
+StockNova AI — Unified Central Asset Vault & Video Model Benchmark Manager.
+Manages:
+1. Single asset repository shared across Adobe Stock and Freepik with independent status tracking.
+2. Video Model A/B Testing & Winner Selection (strictly banning 100-credit Quality modes).
 """
 
 from __future__ import annotations
 
-import sqlite3
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -18,118 +19,130 @@ logger = get_logger("unified_vault")
 
 
 class UnifiedVaultManager:
-    """Manages the single repository of assets targeting both Adobe Stock and Freepik."""
+    """Manages the unified asset repository and video model benchmarking."""
+
+    BANNED_VIDEO_MODES = {"quality", "quality_100", "100_credit", "quality (100 credits)"}
 
     def __init__(self) -> None:
         self.db = Database()
-        self._ensure_dual_platform_schema()
 
-    def _ensure_dual_platform_schema(self) -> None:
-        """Adds adobe_status, freepik_status, and model_performance tracking columns."""
+    @classmethod
+    def is_video_model_allowed(cls, model_name: str, credit_cost: int = 15) -> bool:
+        """Hard-blocks any video generation mode costing >= 100 credits or named 'Quality'."""
+        norm = model_name.strip().lower()
+        if credit_cost >= 100:
+            return False
+        if norm in cls.BANNED_VIDEO_MODES or "100" in norm:
+            return False
+        return True
+
+    def select_best_video_model(self) -> dict[str, Any]:
+        """
+        Evaluates eligible video models (< 100 credits):
+        - If models are still in benchmark phase (< 4 tested videos), picks the next under-tested model
+          so the agent compares their real quality.
+        - Once tested, automatically locks onto the model with the highest QC Pass + Adobe Acceptance score!
+        """
         with self.db.get_connection() as conn:
             cursor = conn.cursor()
-            # Check existing columns in assets
-            cursor.execute("PRAGMA table_info(assets);")
-            columns = [row["name"] for row in cursor.fetchall()]
+            cursor.execute("""
+                SELECT model_name, points_cost, total_generated, qc_passed, qc_borderline, qc_failed,
+                       adobe_accepted, adobe_rejected, is_winner, status
+                FROM model_performance
+                WHERE asset_type = 'video'
+                  AND points_cost < 100
+                  AND status NOT IN ('blacklisted', 'banned_100_credit')
+                ORDER BY is_winner DESC, id ASC;
+            """)
+            models = [dict(r) for r in cursor.fetchall() if self.is_video_model_allowed(r["model_name"], r["points_cost"])]
 
-            new_cols = {
-                "adobe_status": "TEXT DEFAULT 'pending'",      # pending, uploaded, accepted, rejected
-                "freepik_status": "TEXT DEFAULT 'not_targeted'", # not_targeted, candidate_150, uploaded, accepted, rejected
-                "is_freepik_150_golden": "INTEGER DEFAULT 0",
-                "video_model_tested": "TEXT"                   # omni_flash, veo_fast, viewpoint_lite
+        if not models:
+            return {"model_name": "omni flash", "points_cost": 15, "mode": "default_winner"}
+
+        # Check if any eligible model needs initial benchmark samples (< 3 samples)
+        under_tested = [m for m in models if (m["total_generated"] or 0) < 3]
+        if under_tested:
+            chosen = under_tested[0]
+            return {
+                "model_name": chosen["model_name"],
+                "points_cost": chosen["points_cost"],
+                "mode": "benchmark_testing",
+                "reason": f"Benchmarking '{chosen['model_name']}' ({chosen['total_generated']}/3 test samples completed)",
             }
 
-            for col, col_type in new_cols.items():
-                if col not in columns:
-                    cursor.execute(f"ALTER TABLE assets ADD COLUMN {col} {col_type};")
+        # Calculate composite quality score for each tested model
+        best_model = models[0]
+        best_score = -1.0
+        for m in models:
+            gen = max(1, m["total_generated"] or 1)
+            qc_pass_rate = float(m["qc_passed"] or 0) / gen
+            ad_total = (m["adobe_accepted"] or 0) + (m["adobe_rejected"] or 0)
+            ad_acc_rate = (float(m["adobe_accepted"] or 0) / ad_total) if ad_total > 0 else qc_pass_rate
+            score = (qc_pass_rate * 0.55) + (ad_acc_rate * 0.45)
+            if score > best_score:
+                best_score = score
+                best_model = m
 
-            # Model Performance Analytics Table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS model_performance (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    model_name TEXT UNIQUE NOT NULL,
-                    asset_type TEXT NOT NULL,
-                    points_cost INTEGER DEFAULT 15,
-                    total_generated INTEGER DEFAULT 0,
-                    qc_passed INTEGER DEFAULT 0,
-                    qc_failed INTEGER DEFAULT 0,
-                    adobe_accepted INTEGER DEFAULT 0,
-                    adobe_rejected INTEGER DEFAULT 0,
-                    status TEXT DEFAULT 'active', -- active, blacklisted, preferred
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-                );
-            """)
+        # Mark the best model as winner in SQLite
+        with self.db.get_connection() as conn:
+            conn.execute("UPDATE model_performance SET is_winner = 0 WHERE asset_type = 'video';")
+            conn.execute("UPDATE model_performance SET is_winner = 1 WHERE model_name = ?;", (best_model["model_name"],))
 
-        logger.info("Unified Dual-Platform Schema verified.")
+        return {
+            "model_name": best_model["model_name"],
+            "points_cost": best_model["points_cost"],
+            "mode": "locked_winner",
+            "score": round(best_score * 100, 1),
+            "reason": f"Locked onto winner '{best_model['model_name']}' ({best_score*100:.0f}% quality score)",
+        }
 
-    def record_model_result(self, model_name: str, asset_type: str, passed_qc: bool) -> None:
-        """Records generation and QC results per AI model to self-evolve and blacklist bad models."""
+    def record_model_result(self, model_name: str, asset_type: str, passed_qc: bool, is_borderline: bool = False, sharpness: float = 0.0) -> None:
+        """Records generation and QC results per AI model and recalculates the winning video model."""
+        if asset_type == "video" and not self.is_video_model_allowed(model_name):
+            logger.warning(f"Blocked recording for banned 100-credit video mode: {model_name}")
+            return
+
         with self.db.get_connection() as conn:
             conn.execute("""
-                INSERT INTO model_performance (model_name, asset_type, total_generated, qc_passed, qc_failed)
-                VALUES (?, ?, 1, CASE WHEN ? THEN 1 ELSE 0 END, CASE WHEN ? THEN 0 ELSE 1 END)
+                INSERT INTO model_performance (
+                    model_name, asset_type, total_generated, qc_passed, qc_borderline, qc_failed, avg_sharpness
+                )
+                VALUES (?, ?, 1, ?, ?, ?, ?)
                 ON CONFLICT(model_name) DO UPDATE SET
                     total_generated = total_generated + 1,
-                    qc_passed = qc_passed + CASE WHEN excluded.qc_passed = 1 THEN 1 ELSE 0 END,
-                    qc_failed = qc_failed + CASE WHEN excluded.qc_failed = 1 THEN 1 ELSE 0 END,
+                    qc_passed = qc_passed + excluded.qc_passed,
+                    qc_borderline = qc_borderline + excluded.qc_borderline,
+                    qc_failed = qc_failed + excluded.qc_failed,
+                    avg_sharpness = CASE WHEN excluded.avg_sharpness > 0 
+                                         THEN (avg_sharpness + excluded.avg_sharpness) / 2.0 
+                                         ELSE avg_sharpness END,
                     updated_at = CURRENT_TIMESTAMP;
-            """, (model_name, asset_type, passed_qc, passed_qc))
+            """, (
+                model_name,
+                asset_type,
+                1 if passed_qc and not is_borderline else 0,
+                1 if is_borderline else 0,
+                0 if (passed_qc or is_borderline) else 1,
+                sharpness,
+            ))
 
-            # Auto-blacklist rule: if a model fails QC > 50% over 6+ samples, blacklist it
             cursor = conn.cursor()
             cursor.execute("SELECT total_generated, qc_failed FROM model_performance WHERE model_name = ?", (model_name,))
             r = cursor.fetchone()
             if r and r["total_generated"] >= 6:
                 fail_rate = r["qc_failed"] / r["total_generated"]
-                if fail_rate >= 0.50:
-                    conn.execute("UPDATE model_performance SET status = 'blacklisted' WHERE model_name = ?", (model_name,))
-                    logger.warning(f"🚨 AUTO-BLACKLIST: Video Model '{model_name}' blacklisted (QC Fail Rate: {fail_rate*100:.1f}%)")
+                if fail_rate >= 0.55:
+                    conn.execute("UPDATE model_performance SET status = 'blacklisted', is_winner = 0 WHERE model_name = ?", (model_name,))
+                    logger.warning(f"Auto-Blacklisted Model '{model_name}' (QC Fail Rate: {fail_rate*100:.1f}%)")
 
-    def curate_freepik_golden_batch(self, target_count: int = 120) -> list[Path]:
-        """
-        1-Click Freepik 150/120 Curator:
-        Scans the unified vault of approved assets (Nano Banana Pro), selects the cleanest,
-        most compliant, and diverse assets, and packages them into the Freepik onboarding folder.
-        """
-        from stockpilot.batching.similarity_engine import AntiSimilarityBatcher
+        if asset_type == "video":
+            self.select_best_video_model()
 
-        batcher = AntiSimilarityBatcher()
-        ws_root = Config.get_path("paths.workspace_root", Path(r"d:\Stock Automation\workspace"))
-        approved_dir = ws_root / "2_QC2_Approved"
-        golden_out_dir = ws_root / "freepik_golden_onboarding"
-        golden_out_dir.mkdir(parents=True, exist_ok=True)
+    def curate_freepik_golden_batch(self, target_count: int = 150) -> list[Path]:
+        """Delegates to the stateful FreepikOnboardingCurator."""
+        from stockpilot.platforms.freepik_curator import FreepikOnboardingCurator
 
-        candidates = list(approved_dir.glob("*.jpg")) + list(approved_dir.glob("*.png"))
-        if not candidates:
-            # Also check images batched or already uploaded to Adobe (safe to reuse on Freepik!)
-            batched_dir = ws_root / "3_Batched_Ready"
-            candidates.extend(batched_dir.rglob("*.jpg"))
-
-        logger.info(f"Scanning {len(candidates)} unified vault assets for Freepik Onboarding...")
-
-        selected: list[Path] = []
-        selected_hashes: list[str] = []
-
-        # Sort: prefer clean mockups and flatlays, then textures
-        for img in candidates:
-            if len(selected) >= target_count:
-                break
-
-            ph, _ = batcher.compute_hashes(img)
-            # Enforce strict uniqueness among the golden 120-150
-            collision = any(batcher.are_similar(ph, exist_h) for exist_h in selected_hashes)
-            if not collision:
-                selected.append(img)
-                selected_hashes.append(ph)
-
-        # Copy to golden onboarding package
-        import shutil
-        curated_paths = []
-        for img in selected:
-            dest = golden_out_dir / img.name
-            shutil.copy2(str(img), str(dest))
-            curated_paths.append(dest)
-            self.db.update_asset(img.stem, freepik_status="candidate_150", is_freepik_150_golden=1)
-
-        logger.info(f"🎉 Curated {len(curated_paths)} golden candidates in {golden_out_dir}")
-        return curated_paths
+        curator = FreepikOnboardingCurator()
+        res = curator.run_incremental_curation()
+        logger.info(f"Freepik 150 Curation Result: {res}")
+        return list(curator.golden_folder.glob("*.jpg")) + list(curator.golden_folder.glob("*.png"))

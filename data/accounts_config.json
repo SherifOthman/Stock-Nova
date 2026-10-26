@@ -1,0 +1,24 @@
+{
+  "system_settings": {
+    "project_name": "StockNova AI",
+    "generation_priority": [
+      "video",
+      "image"
+    ],
+    "image_model": "nano banana pro"
+  },
+  "credit_strategy": {
+    "free_tier": {
+      "daily_points_per_account": 50
+    },
+    "plus_pool": {
+      "total_credits": 200,
+      "target_consumption_days": 7
+    },
+    "pro_pool": {
+      "total_credits": 1000,
+      "target_consumption_days": 14
+    }
+  },
+  "accounts": []
+}

@@ -58,3 +58,12 @@ def validate_upscale_model(model_name: str) -> str:
 
     logger.warning(f"Unknown model '{model_name}'. Defaulting to safe commercial model 'high-fidelity-4x'.")
     return "high-fidelity-4x"
+
+
+def get_all_models_report() -> dict:
+    return {
+        "permitted": COMMERCIALLY_PERMITTED_MODELS,
+        "banned": STRICTLY_BANNED_NON_COMMERCIAL_MODELS,
+        "enforced_scale": 2,
+    }
+

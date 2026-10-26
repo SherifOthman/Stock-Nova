@@ -1,0 +1,452 @@
+# Comprehensive Project Audit, UI/UX Redesign Plan, and AI Agent Architecture Review
+
+I want you to thoroughly audit the entire project and explain exactly what you understand about it so I can determine whether I have built the right program or not.
+
+**Do not start writing code or implementing changes yet.** Your first task is to understand the project deeply, inspect the existing implementation, identify what is wrong and what is right, and produce a comprehensive, prioritized improvement plan.
+
+My goal is to build a genuinely intelligent AI agent that runs locally on my computer and automates approximately 99% of my AI stock-content production workflow. I want to know whether the current project is actually moving toward that goal or whether it needs substantial corrections.
+
+# 1. Understand the Project and Its Core Vision
+
+First, explain in your own words what you understand about the current project, its purpose, its intended users, and how the entire workflow is supposed to operate.
+
+Determine whether the current implementation aligns with my actual vision or whether it has become something fundamentally different.
+
+I want you to understand the complete workflow, not just individual screens or features.
+
+# 2. Comprehensive UI/UX and Design Audit
+
+Honestly, I feel that the current design is very poor. It contains too many unnecessary details, the interface is extremely cluttered, and the overall experience is frustrating and confusing.
+
+I want a serious review of the entire UI/UX, not superficial styling improvements.
+
+Investigate the following:
+
+- Which elements, cards, panels, settings, descriptions, buttons, and sections are unnecessary?
+- Which features are presented in a confusing or overly complicated way?
+- Which screens should be simplified, reorganized, combined, or redesigned from scratch?
+- Is the information hierarchy logical? Can users immediately understand what matters and what they should do next?
+- Are the current navigation, page layouts, component structures, and interaction patterns appropriate for this type of application?
+- Is the UI making the actual workflow easier, or is it adding unnecessary complexity?
+- Are there too many descriptions, tooltips, explanatory panels, statistics, and secondary details competing for attention?
+- Can we remove unnecessary visual elements without losing essential functionality?
+
+I want a clean, focused, modern interface where the important actions and information are immediately obvious.
+
+**The priority is clarity, simplicity, and usability, not the number of features displayed on the screen.**
+
+Do not assume that every existing page, card, statistic, or component deserves to remain in the application.
+
+# 3. Inspect the Actual UI, Not Just the Source Code
+
+Do not evaluate the interface solely by reading React components, CSS, or design-system definitions.
+
+If the available development environment allows it, run the application and inspect its actual rendered UI. Navigate through the existing screens and examine how the application behaves in practice.
+
+Use screenshots, browser previews, or other appropriate visual inspection methods to evaluate the actual interface.
+
+I want you to identify problems such as:
+
+- Cluttered layouts and excessive visual density.
+- Poor spacing, alignment, typography, and visual hierarchy.
+- Confusing navigation and unclear actions.
+- Excessive descriptions and unnecessary explanatory text.
+- Components that occupy too much space without providing enough value.
+- Screens that look technically sophisticated but are difficult to understand.
+- Dialogs, overlays, or panels that obscure important content.
+- Inconsistent design patterns across different pages.
+- Important actions that are difficult to find.
+- UI elements that appear functional but do not produce meaningful results.
+
+If screenshots or previews reveal that the UI looks bad, confusing, or poorly organized, explicitly explain what is wrong and how you would improve it.
+
+If you cannot run the application or inspect certain screens, state that limitation clearly. Do not pretend that you have visually verified something you have not seen.
+
+# 4. Fix the First-Launch Interactive Tutorial and Product Walkthrough
+
+There is a particularly frustrating problem with the introductory walkthrough that explains the application when I first open it.
+
+The walkthrough displays a black background with a dialog containing explanatory text, but it does not properly highlight the specific icon, button, component, or area it is supposed to explain.
+
+As a result, the application keeps changing or navigating through elements in the background while the dialog remains in front. I cannot clearly see what the tutorial is referring to, and I have to guess which element the explanation describes.
+
+I want you to investigate the implementation of this walkthrough and determine the actual cause of the problem.
+
+Evaluate whether the current approach uses the correct technique for guided tours, element highlighting, overlays, focus management, and navigation.
+
+The desired behavior is:
+
+- The specific element being explained should remain clearly visible.
+- The highlighted element should be visually emphasized against the rest of the interface.
+- The explanatory dialog should not obscure the element it is describing.
+- The background should not change unexpectedly or navigate to another screen while the user is trying to understand the current step.
+- The tutorial should correctly handle elements that are outside the viewport or located on another page.
+- The user should be able to navigate through the tutorial, skip it, or close it without confusion.
+- The walkthrough should not interfere with normal application interactions.
+- If a step requires navigating to another page, that navigation should happen deliberately and predictably, with the relevant element highlighted afterward.
+
+I also want you to reconsider whether this tutorial is necessary in its current form.
+
+I do not want the application to force users through a long, intrusive explanation every time they open it.
+
+My preference is to minimize explanatory text and show only what is necessary. If an introductory guide is useful, it should primarily appear during the first use, be optional, and remain accessible later through a help option if needed.
+
+Determine whether we should keep the existing tutorial and fix it, replace its implementation with a better library, or remove most of it in favor of a simpler onboarding experience.
+
+# 5. Codebase Audit, Bugs, and Implementation Gaps
+
+Perform a comprehensive technical audit of the entire codebase.
+
+Identify:
+
+- Confirmed bugs and logical errors.
+- Architectural weaknesses and unnecessary complexity.
+- Incomplete or unreliable integrations.
+- Features that exist in the UI but are not actually implemented.
+- Buttons and controls that do nothing or produce incorrect results.
+- Missing error handling, validation, logging, or persistence.
+- Problems with background jobs, queues, concurrency, and long-running tasks.
+- Security risks associated with account credentials, browser sessions, tokens, and local data.
+- Performance bottlenecks and resource-management problems.
+- Missing functionality required to achieve the intended workflow.
+- Opportunities to simplify the codebase and improve maintainability.
+
+Trace important functionality through the actual implementation rather than judging it by component names or interface labels.
+
+Clearly distinguish between confirmed bugs, suspected problems, missing functionality, and potential improvements.
+
+# 6. Libraries, Frameworks, and Architecture
+
+Evaluate the existing frameworks, libraries, AI tools, UI components, and architectural decisions.
+
+Determine whether better alternatives would materially improve reliability, functionality, visual quality, or development efficiency.
+
+In particular, investigate whether we should use better libraries for:
+
+- UI components and design systems.
+- Guided tours, element highlighting, and onboarding.
+- Chat interfaces and AI conversation management.
+- Agent orchestration and communication.
+- Background jobs and task scheduling.
+- Browser automation and account interaction.
+- Image and video processing.
+- Image upscaling and quality assessment.
+- Data storage, analytics, and historical performance tracking.
+- Logging, monitoring, and debugging.
+
+For each proposed replacement, explain why it would be better, what problems it would solve, and what migration effort it would require.
+
+Do not replace a working technology simply because another library exists.
+
+# 7. My Actual Vision: An Intelligent Local AI Agent
+
+My ultimate goal is to build something much closer to a powerful AI agent running locally on my computer, capable of handling approximately 99% of my AI stock-content production workflow with minimal human intervention.
+
+The application should be able to use my existing accounts wherever technically and legally possible, including:
+
+- **Google AI Studio:** Generating content ideas, prompts, titles, keywords, descriptions, and other text-related assets.
+- **Argon:** Performing searches, researching trends, discovering opportunities, and gathering relevant information.
+- **Freepik:** Generating or obtaining visual content and managing the relevant production workflow.
+- **Adobe Stock:** Preparing content for submission, tracking acceptance and rejection outcomes, and analyzing performance.
+
+Investigate the actual capabilities and integration options available for each service. Prefer supported integrations and my existing subscriptions where possible, rather than unnecessarily requiring additional subscriptions or paid APIs.
+
+The agent should independently handle the following workflow:
+
+1. Research content opportunities, trends, and potentially profitable niches.
+2. Generate and evaluate content ideas.
+3. Create optimized prompts, titles, descriptions, and keywords.
+4. Generate images and videos using suitable tools and services.
+5. Inspect generated content for visual defects, quality problems, technical issues, and potential rejection risks.
+6. Reject unsuitable content before it wastes time, credits, or submission capacity.
+7. Upscale images when necessary and verify the resulting quality.
+8. Improve prompts and generation strategies based on previous results.
+9. Prepare suitable content for submission to the relevant stock platforms.
+10. Track submission outcomes and use the results to improve future decisions.
+11. Analyze performance over time and determine whether the workflow is improving or deteriorating.
+
+I do not want a collection of disconnected tools hidden behind a dashboard. I want an integrated agent that can reason about the task, use tools, inspect results, recover from errors, and decide what to do next.
+
+# 8. AI Communication, Orchestration, and Decision-Making
+
+One of my main concerns is whether the communication and coordination between the different AI models and agents is implemented correctly.
+
+Investigate:
+
+- How the AI components currently communicate with one another.
+- Whether they share relevant context and previous results.
+- Whether one component can evaluate another component's output.
+- Whether there is a meaningful planning and execution loop.
+- Whether the system can detect failures, retry tasks intelligently, and choose alternative approaches.
+- Whether different models have clearly defined responsibilities.
+- Whether agents are genuinely collaborating or are simply independent features connected through basic workflows.
+- Whether the current implementation supports long-running autonomous tasks reliably.
+
+I want you to assess whether the current architecture is appropriate for a local AI agent or whether it needs to be redesigned.
+
+Recommend a practical orchestration architecture that balances intelligence, reliability, cost, speed, and maintainability.
+
+Do not assume that introducing more agents automatically produces better results. Explain where multiple agents are useful and where a simpler workflow would be more reliable.
+
+# 9. Learning from Results and Continuous Improvement
+
+The agent should maintain a useful history of its work and improve its decisions based on actual results.
+
+For example:
+
+- If a particular type of video consistently gets rejected, the system should investigate likely causes and avoid repeating the same mistakes.
+- If a prompt style consistently produces high-quality, accepted content, the system should preserve and refine that approach.
+- If certain niches, categories, or visual styles perform better, the system should prioritize them based on available evidence.
+- It should compare acceptance rates, rejection rates, production volume, and other relevant metrics over time.
+- It should identify workflows that waste credits or repeatedly generate unsuitable content.
+- It should measure whether the time and cost required to produce accepted content are decreasing.
+- It should distinguish confirmed rejection reasons from its own hypotheses.
+- It should avoid changing successful strategies based on insufficient evidence.
+
+Evaluate what is currently implemented for persistent memory, feedback loops, historical analysis, and strategy optimization.
+
+Explain what would be needed to create a genuine improvement cycle rather than merely storing logs or displaying statistics.
+
+# 10. Human Approval, Telegram Notifications, and Account Safety
+
+The agent should automate as much of the workflow as possible, but I do not want it to perform the final submission automatically.
+
+My preferred workflow is:
+
+1. The agent performs research, generation, evaluation, quality control, and preparation.
+2. It prepares a batch of content that meets predefined quality criteria.
+3. It sends me a Telegram notification when the batch is ready.
+4. I open the application or the relevant platform, review the prepared content, and manually click Submit.
+
+The final submission must remain under my control because I want to minimize the risk of account restrictions or bans caused by unauthorized automation.
+
+The system should distinguish between tasks that can safely be automated, tasks requiring explicit approval, and actions that may violate a platform's terms of service.
+
+Prefer official APIs and supported integrations. If browser automation is necessary, evaluate its reliability and risks carefully.
+
+The system should also protect account credentials, avoid exposing session tokens, and handle authentication failures securely.
+
+# 11. Content Quality Control and Automated Evaluation
+
+The agent should not blindly accept every generated image or video.
+
+Investigate how to implement a reliable quality-control pipeline that evaluates content before it enters a submission batch.
+
+For images, this could include:
+
+- Resolution and technical specifications.
+- Sharpness, artifacts, noise, and upscaling defects.
+- Visual coherence and obvious generation errors.
+- Composition and commercial usability.
+- Duplicate or near-duplicate detection.
+- Metadata and keyword quality.
+
+For videos, this could include:
+
+- Resolution, frame rate, duration, and encoding.
+- Flickering, visual artifacts, and inconsistent motion.
+- Unnatural transitions or malformed objects.
+- Unwanted text, logos, or other problematic elements.
+- Repeated frames and insufficient visual quality.
+- Audio issues when applicable.
+- Commercial usability and technical submission requirements.
+
+The actual checks should depend on each platform's current requirements.
+
+Determine which checks can be automated reliably, which require AI-based judgment, and which still require human review.
+
+I want the agent to reject content that is clearly unsuitable and flag uncertain cases instead of pretending to guarantee acceptance.
+
+# 12. Analytics and Performance Tracking
+
+I want a useful analytics system that answers questions such as:
+
+- Are we producing and submitting more content than before?
+- Are acceptance rates improving?
+- Which categories have the highest acceptance rates?
+- Which image and video styles perform best?
+- Which generation tools and prompt strategies produce the best results?
+- What are the most common rejection reasons?
+- Are we wasting credits on content unlikely to be accepted?
+- Is the time and cost required to produce accepted content decreasing?
+- Are we actually improving productivity and results over time?
+
+The analytics should be based on real data whenever possible.
+
+The system should distinguish between generated content, prepared content, submitted content, accepted content, and rejected content.
+
+It should also avoid misleading comparisons when the sample sizes are too small or when different time periods contain different amounts of data.
+
+# 13. Simplify the Entire User Experience
+
+This is one of the most important parts of the audit.
+
+I want the application to be as simple and focused as possible, even though its underlying automation may be technically sophisticated.
+
+The user interface should expose the functionality I actually need without forcing me to understand every internal implementation detail.
+
+Evaluate whether the application would be better organized around a small number of clear areas, such as:
+
+- **Dashboard:** A concise overview of current activity, important results, and issues requiring attention.
+- **Production:** Manage content generation and automated workflows.
+- **Review Queue:** Inspect content prepared by the agent and approve or reject it before submission.
+- **Analytics:** Understand acceptance rates, rejection patterns, productivity, and improvement over time.
+- **Settings:** Configure accounts, models, automation rules, and other essential preferences.
+
+These are suggestions, not mandatory requirements. Recommend a different structure if it better fits the actual project.
+
+The application should prioritize the next useful action instead of displaying every possible statistic, configuration option, or technical detail at once.
+
+For example, when the agent is working correctly, I should not need to navigate through multiple complex screens just to understand whether it is generating content, whether something failed, or whether a batch is ready for review.
+
+I also want you to evaluate whether a chat-based interface would improve the experience.
+
+Could I simply tell the agent something like, "Find promising video ideas, generate a batch, inspect the results, and prepare the best ones for review"?
+
+Would a chat interface, combined with a clear task-progress view and a visual review queue, be more effective than the current collection of dashboards, forms, and configuration panels?
+
+If so, explain how to integrate conversational interaction without turning the application into a confusing chatbot or hiding important information.
+
+The goal is not to make everything a chat. The goal is to make the application easier to operate.
+
+# 14. Reduce Descriptions, Explanations, and Unnecessary UI Elements
+
+The application currently appears to explain too much and display too many details.
+
+I want you to review all explanatory text, descriptions, tooltips, onboarding panels, empty-state messages, and instructional sections.
+
+My preferences are:
+
+- Keep descriptions short and useful.
+- Remove redundant explanations.
+- Do not display long blocks of instructional text when a clear label or icon would suffice.
+- Do not repeat information already obvious from the surrounding interface.
+- Show advanced configuration only when it is relevant.
+- Prefer sensible defaults over forcing users to configure everything manually.
+- Keep essential warnings and errors visible, but avoid unnecessary informational noise.
+- Use progressive disclosure to reveal advanced details only when needed.
+
+For first-time users, a short optional introduction may be useful. However, the application should not continuously explain itself or make the user navigate through intrusive tutorials.
+
+The interface should be self-explanatory through good design rather than depending on long descriptions to compensate for poor usability.
+
+# 15. UI/UX Recommendations Must Be Concrete
+
+I do not want vague recommendations such as "improve spacing," "make the interface cleaner," or "use a modern design."
+
+For every major screen or component that needs improvement, explain:
+
+1. What is wrong with the current implementation.
+2. Why it is a problem for the user.
+3. What should be removed, simplified, relocated, or redesigned.
+4. What the proposed layout should look like conceptually.
+5. Which existing components should be reused or replaced.
+6. Whether a suitable UI library or component library would help.
+7. What functional behavior should change alongside the visual design.
+
+Where possible, inspect screenshots of the current interface and use them as evidence.
+
+If useful, describe or sketch the proposed layout in a way that makes the intended changes easy to understand before implementation begins.
+
+Do not generate a completely new design based on assumptions without first understanding the current application and its workflows.
+
+# 16. Security, Reliability, and Local Agent Operation
+
+Because the application will operate on my computer and interact with personal accounts, investigate the security and reliability implications.
+
+Evaluate:
+
+- Local credential storage and secret management.
+- Browser profiles and authenticated sessions.
+- Permission boundaries for automated actions.
+- Protection against unintended destructive operations.
+- Background execution and recovery after application restarts.
+- Task state persistence and retry behavior.
+- Logging and debugging of failed workflows.
+- Resource consumption during image and video processing.
+- Safe handling of downloaded files and generated content.
+- Prevention of duplicate tasks and accidental repeated submissions.
+- Human approval requirements for sensitive actions.
+
+I want a local-first agent that is practical to operate on an ordinary computer, not an unnecessarily complex distributed system.
+
+Explain what should run locally, what requires external services, and which limitations cannot be avoided.
+
+# 17. Final Assessment and Prioritized Action Plan
+
+After completing the audit, provide a comprehensive report answering the following questions directly.
+
+**Product and functionality**
+1. Did I build the right product, or did I build something fundamentally different from what I need?
+2. Is the existing application a functional foundation for the intended AI agent, or is it mostly UI with incomplete or disconnected functionality?
+3. Which parts are already implemented correctly and worth keeping?
+4. Which features are incomplete, misleading, unnecessary, or fundamentally wrong?
+
+**UI/UX**
+5. What are the biggest design problems?
+6. Which screens, descriptions, cards, panels, and controls should be removed or simplified?
+7. What is wrong with the introductory walkthrough, and how should it be fixed?
+8. Would a chat-based workflow, a visual task manager, or another interaction model improve the application?
+9. Which UI libraries or design systems would genuinely improve the result?
+
+**Technical architecture**
+10. What confirmed bugs and architectural problems need attention?
+11. Which libraries and frameworks should be retained, replaced, or introduced?
+12. How should AI components communicate, coordinate tasks, share context, and learn from outcomes?
+13. What is missing to make the agent reliable and genuinely autonomous?
+
+**Implementation strategy**
+14. What should be fixed immediately?
+15. What should be redesigned before adding more features?
+16. What can be postponed?
+17. What is the most practical path to achieving approximately 99% workflow automation while preserving manual control over final submissions?
+
+## Required Deliverables
+
+Organize your findings into the following deliverables:
+
+**A. Project Understanding**
+
+A clear explanation of the application's actual purpose, current architecture, existing capabilities, and intended end-to-end workflow.
+
+**B. Current-State Audit**
+
+A structured assessment of implemented features, confirmed bugs, incomplete functionality, architectural weaknesses, UI/UX issues, and missing capabilities. Reference relevant files, components, functions, and code wherever possible.
+
+**C. UI/UX Redesign Plan**
+
+A screen-by-screen assessment of what should stay, what should be removed, what should be simplified, and what should be redesigned. Include a proposed information architecture and practical layout recommendations.
+
+**D. AI Agent Architecture Plan**
+
+A proposed architecture for local execution, AI orchestration, browser and account integrations, content generation, quality control, task management, historical memory, and continuous improvement.
+
+**E. Technology and Library Recommendations**
+
+A justified list of technologies worth keeping, replacing, or adding, including their benefits, trade-offs, and migration implications.
+
+**F. Prioritized Implementation Roadmap**
+
+A phased plan that identifies critical bugs, necessary redesigns, missing functionality, architectural improvements, and optional enhancements. Explain dependencies and why each phase should happen in that order.
+
+For every significant recommendation, indicate its priority, the reason it matters, the expected benefit, and the relevant parts of the codebase.
+
+# Important Instructions
+
+- Inspect the actual codebase thoroughly before drawing conclusions.
+- Run the application and visually inspect its UI when the environment allows it.
+- Use screenshots or previews to support concrete design recommendations whenever possible.
+- Trace critical functionality through its actual implementation rather than judging it by the UI alone.
+- Verify integrations, AI workflows, background tasks, persistence, analytics, and error handling.
+- Do not claim that something works unless you have sufficient evidence.
+- Do not assume that the presence of a button or dashboard means the underlying functionality exists.
+- Do not rewrite working code unnecessarily.
+- Do not introduce additional complexity without a clear benefit.
+- Clearly separate confirmed facts, observed bugs, assumptions, and recommendations.
+- If something cannot be verified, explicitly state what remains unknown and how it should be verified.
+- Be direct and critical. I would rather discover fundamental problems now than continue building on a flawed foundation.
+- Do not start coding, modifying files, installing libraries, or implementing the proposed changes during this phase.
+
+**For now, your only task is to understand the project, investigate it thoroughly, identify what is right and wrong, and give me a complete, evidence-based assessment and improvement plan. Wait for my approval before implementing anything.**
+
+My goal is not simply to build another content-generation dashboard. I want a genuinely useful, intelligent, locally running AI agent that handles almost the entire stock-content production workflow, learns from real outcomes, improves its decisions over time, keeps the interface simple and understandable, and only requires my intervention when human judgment or final submission is necessary.

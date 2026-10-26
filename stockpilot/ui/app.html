@@ -1,1685 +1,2126 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="ar" dir="rtl" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <title>StockNova AI — Autonomous Stock Photography & Video Studio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace']
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockNova AI — Autonomous Stock Video & Media Engine</title>
+  <meta name="description" content="Autonomous multi-account stock video & image production engine for Adobe Stock and Freepik with dynamic credit pools, 8-frame Storyboard QC, and Pre-Shift AI Flow Auditing." />
+  <meta property="og:title" content="StockNova AI — Autonomous Stock Video & Media Engine" />
+  <meta property="og:description" content="Autonomous multi-account stock video & image production engine for Adobe Stock and Freepik." />
+
+  <!-- Fonts: Cairo + Plus Jakarta Sans + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Executive Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
   <style>
-    /* Theme Variables */
+    /* ==========================================================================
+       SHADCN/UI DESIGN SYSTEM TOKENS (DARK DEFAULT + LIGHT MODE)
+       ========================================================================== */
     :root {
-      --bg-page: #f8fafc;
-      --bg-sidebar: #ffffff;
-      --bg-card: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --bg-hover: #e2e8f0;
-      --border: #e2e8f0;
-      --text-main: #0f172a;
-      --text-sub: #475569;
-      --text-muted: #94a3b8;
-      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-      --badge-bg: #f1f5f9;
-      --modal-overlay: rgba(15, 23, 42, 0.6);
+      --background: #ffffff;
+      --foreground: #09090b;
+      --card: #ffffff;
+      --card-foreground: #09090b;
+      --popover: #ffffff;
+      --popover-foreground: #09090b;
+      --primary: #18181b;
+      --primary-foreground: #fafafa;
+      --secondary: #f4f4f5;
+      --secondary-foreground: #18181b;
+      --muted: #f4f4f5;
+      --muted-foreground: #71717a;
+      --accent: #f4f4f5;
+      --accent-foreground: #18181b;
+      --border: #e4e4e7;
+      --input: #e4e4e7;
+      --ring: #6366f1;
+      --radius: 0.5rem;
+
+      /* Semantic Accents */
+      --emerald: #10b981;
+      --emerald-soft: rgba(16, 185, 129, 0.12);
+      --cyan: #06b6d4;
+      --cyan-soft: rgba(6, 182, 212, 0.12);
+      --indigo: #6366f1;
+      --indigo-soft: rgba(99, 102, 241, 0.12);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.12);
+      --rose: #f43f5e;
+      --rose-soft: rgba(244, 63, 94, 0.12);
+
+      /* shadcn/ui Sidebar Tokens (Light) */
+      --sidebar-background: #f8f8fa;
+      --sidebar-foreground: #27272a;
+      --sidebar-primary: #18181b;
+      --sidebar-primary-foreground: #fafafa;
+      --sidebar-accent: #ededf0;
+      --sidebar-accent-foreground: #09090b;
+      --sidebar-border: #e4e4e7;
+      --sidebar-ring: #6366f1;
+      --sidebar-width: 260px;
     }
 
     html.dark {
-      --bg-page: #080b11;
-      --bg-sidebar: #0e121a;
-      --bg-card: #121826;
-      --bg-subtle: #172033;
-      --bg-hover: #1e293d;
-      --border: #1e293b;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --text-muted: #64748b;
-      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-      --badge-bg: #172033;
-      --modal-overlay: rgba(0, 0, 0, 0.75);
+      --background: #09090b;
+      --foreground: #fafafa;
+      --card: #121215;
+      --card-foreground: #fafafa;
+      --popover: #141418;
+      --popover-foreground: #fafafa;
+      --primary: #fafafa;
+      --primary-foreground: #09090b;
+      --secondary: #1e1e24;
+      --secondary-foreground: #fafafa;
+      --muted: #18181c;
+      --muted-foreground: #a1a1aa;
+      --accent: #1f1f26;
+      --accent-foreground: #fafafa;
+      --border: #27272a;
+      --input: #27272a;
+      --ring: #818cf8;
+
+      /* shadcn/ui Sidebar Tokens (Dark Default - Zinc) */
+      --sidebar-background: #0c0c0f;
+      --sidebar-foreground: #e4e4e7;
+      --sidebar-primary: #6366f1;
+      --sidebar-primary-foreground: #ffffff;
+      --sidebar-accent: #1c1c22;
+      --sidebar-accent-foreground: #fafafa;
+      --sidebar-border: #222226;
+      --sidebar-ring: #818cf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--bg-page);
-      color: var(--text-main);
-      transition: background-color 0.2s ease, color 0.2s ease;
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: 'Plus Jakarta Sans', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    .theme-sidebar { background-color: var(--bg-sidebar); border-color: var(--border); }
-    .theme-card { background-color: var(--bg-card); border-color: var(--border); box-shadow: var(--card-shadow); }
-    .theme-subtle { background-color: var(--bg-subtle); border-color: var(--border); }
-    .theme-border { border-color: var(--border); }
-    .theme-text-main { color: var(--text-main); }
-    .theme-text-sub { color: var(--text-sub); }
-    .theme-text-muted { color: var(--text-muted); }
-    .theme-badge { background-color: var(--badge-bg); border-color: var(--border); }
-
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
-
-    /* Active Tab */
-    .tab-active {
-      background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-      color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
     }
-    .tab-active span { color: #ffffff !important; }
+
+    /* ==========================================================================
+       SHADCN/UI SIDEBAR ARCHITECTURE (SidebarProvider + Sidebar + SidebarInset)
+       ========================================================================== */
+    .sc-sidebar-provider {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      background: var(--background);
+    }
+
+    .sc-sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      background: var(--sidebar-background);
+      color: var(--sidebar-foreground);
+      border-inline-end: 1px solid var(--sidebar-border);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 50;
+      transition: width 0.2s ease, transform 0.2s ease;
+      overflow-y: auto;
+    }
+
+    .sc-sidebar.collapsed {
+      width: 0;
+      border-inline-end: none;
+      overflow: hidden;
+    }
+
+    .sc-sidebar-header {
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid var(--sidebar-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      background: var(--foreground);
+      color: var(--background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 13.5px;
+      letter-spacing: -0.01em;
+      color: var(--foreground);
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted-foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 175px;
+    }
+
+    .sc-sidebar-content {
+      flex: 1;
+      padding: 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    .sc-sidebar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sc-sidebar-group-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted-foreground);
+      padding: 4px 8px;
+    }
+
+    .sc-sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .shadcn-tab-trigger {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--sidebar-foreground);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      text-align: start;
+    }
+
+    .shadcn-tab-trigger .menu-item-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .shadcn-tab-trigger svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      opacity: 0.78;
+    }
+
+    .shadcn-tab-trigger:hover {
+      background: var(--sidebar-accent);
+      color: var(--sidebar-accent-foreground);
+    }
+
+    .shadcn-tab-trigger.active {
+      background: var(--sidebar-accent);
+      color: var(--sidebar-accent-foreground);
+      font-weight: 600;
+      border-color: var(--sidebar-border);
+    }
+
+    .shadcn-tab-trigger.active svg {
+      opacity: 1;
+      color: var(--ring);
+    }
+
+    .sc-sidebar-scope-box {
+      background: var(--card);
+      border: 1px solid var(--sidebar-border);
+      border-radius: 7px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sc-sidebar-footer {
+      padding: 12px 10px;
+      border-top: 1px solid var(--sidebar-border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--sidebar-background);
+    }
+
+    /* SidebarInset (Main Area next to Side Menu) */
+    .sc-sidebar-inset {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--background);
+    }
+
+    .sc-inset-header {
+      height: 50px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      gap: 12px;
+    }
+
+    .sc-inset-header-start {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sc-sidebar-trigger {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--foreground);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .sc-sidebar-trigger:hover {
+      background: var(--accent);
+    }
+
+    .sc-header-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--border);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Status Dot Indicator */
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      background: var(--emerald);
+      box-shadow: 0 0 0 2px var(--emerald-soft);
+    }
+
+    /* Main Content Container */
+    .main-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px 20px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .sc-sidebar {
+        position: fixed;
+        inset-block: 0;
+        inset-inline-start: 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tab-pane.active {
+      display: flex;
+    }
+
+    /* Shadcn Card */
+    .sc-card {
+      background: var(--card);
+      color: var(--card-foreground);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: border-color 0.15s ease;
+    }
+
+    .sc-card.clickable {
+      cursor: pointer;
+    }
+
+    .sc-card.clickable:hover {
+      border-color: var(--ring);
+    }
+
+    .sc-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .sc-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sc-card-desc {
+      font-size: 11.5px;
+      color: var(--muted-foreground);
+    }
+
+    /* Shadcn Buttons */
+    .sc-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .sc-btn-primary {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .sc-btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .sc-btn-indigo {
+      background: #6366f1;
+      color: #ffffff;
+    }
+
+    .sc-btn-indigo:hover {
+      background: #4f46e5;
+    }
+
+    .sc-btn-emerald {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .sc-btn-emerald:hover {
+      background: #059669;
+    }
+
+    .sc-btn-outline {
+      background: transparent;
+      color: var(--foreground);
+      border-color: var(--border);
+    }
+
+    .sc-btn-outline:hover {
+      background: var(--accent);
+    }
+
+    .sc-btn-ghost {
+      background: transparent;
+      color: var(--muted-foreground);
+    }
+
+    .sc-btn-ghost:hover {
+      background: var(--accent);
+      color: var(--foreground);
+    }
+
+    .sc-btn-sm {
+      padding: 4px 9px;
+      font-size: 11px;
+    }
+
+    /* Shadcn Status Indicators */
+    .sc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .sc-badge-emerald {
+      background: var(--emerald-soft);
+      color: var(--emerald);
+      border-color: rgba(16, 185, 129, 0.28);
+    }
+
+    .sc-badge-cyan {
+      background: var(--cyan-soft);
+      color: var(--cyan);
+      border-color: rgba(6, 182, 212, 0.28);
+    }
+
+    .sc-badge-indigo {
+      background: var(--indigo-soft);
+      color: var(--indigo);
+      border-color: rgba(99, 102, 241, 0.28);
+    }
+
+    .sc-badge-amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+      border-color: rgba(245, 158, 11, 0.28);
+    }
+
+    .sc-badge-rose {
+      background: var(--rose-soft);
+      color: var(--rose);
+      border-color: rgba(244, 63, 94, 0.28);
+    }
+
+    /* Shadcn Inputs & Selects */
+    .sc-input, .sc-select {
+      width: 100%;
+      background: var(--background);
+      color: var(--foreground);
+      border: 1px solid var(--input);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .sc-input:focus, .sc-select:focus {
+      border-color: var(--ring);
+    }
+
+    .sc-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--foreground);
+    }
+
+    /* Shadcn Progress Bar */
+    .sc-progress {
+      width: 100%;
+      height: 7px;
+      background: var(--secondary);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .sc-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* Grid Layouts */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 1150px) {
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+      .grid-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    }
+
+    /* KPI Stat Value */
+    .kpi-num {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    /* Table */
+    .sc-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    table.sc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    table.sc-table th, table.sc-table td {
+      padding: 8px 10px;
+      text-align: start;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.sc-table th {
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    table.sc-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Shadcn Modal / Dialog */
+    .sc-dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.68);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .sc-dialog-backdrop.open {
+      display: flex;
+    }
+
+    .sc-dialog {
+      background: var(--popover);
+      color: var(--popover-foreground);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 18px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Account Progress Row */
+    .acc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--background);
+    }
+
+    .acc-row.next-up {
+      border-color: var(--emerald);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .acc-row.exhausted {
+      opacity: 0.68;
+    }
+
+    /* Toast */
+    #toast-box {
+      position: fixed;
+      bottom: 18px;
+      inset-inline-end: 18px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sc-toast {
+      background: var(--popover);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
   </style>
 </head>
-<body class="h-screen flex overflow-hidden antialiased font-sans select-none">
+<body>
 
-  <!-- ===================================================================== -->
-  <!-- SIDEBAR NAVIGATION -->
-  <!-- ===================================================================== -->
-  <aside class="w-64 theme-sidebar border-r flex flex-col justify-between shrink-0 select-none z-20">
-    <div>
-      <!-- Brand Header -->
-      <div class="h-16 flex items-center px-5 border-b theme-border gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-emerald-400 flex items-center justify-center font-black text-white shadow-md text-base">
-          ⚡
-        </div>
-        <div class="flex-1">
-          <div class="flex items-center gap-1.5">
-            <h1 class="text-sm font-extrabold theme-text-main tracking-tight">StockNova AI</h1>
-            <span class="text-[9px] bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/30 px-1 py-0.5 rounded font-mono font-bold">2.0</span>
+  <!-- ========================================================================
+       SHADCN/UI SIDEBAR PROVIDER SHELL (SIDE MENU + SIDEBAR INSET)
+       ======================================================================== -->
+  <div class="sc-sidebar-provider">
+
+    <!-- SHADCN SIDEBAR (Side Menu Navigation) -->
+    <aside id="app-sidebar" class="sc-sidebar">
+      <!-- SidebarHeader -->
+      <div class="sc-sidebar-header">
+        <div class="brand-row">
+          <div class="brand-logo">SN</div>
+          <div>
+            <div class="brand-title">StockNova AI</div>
+            <div class="brand-sub" data-i18n="app_subtitle">محرك الأتمتة الذكي لإنتاج الفيديوهات والصور</div>
           </div>
-          <span class="text-[10px] text-emerald-500 font-medium flex items-center gap-1 mt-0.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Engine Active
+        </div>
+        <span class="status-dot" title="Auto-Pilot Active"></span>
+      </div>
+
+      <!-- SidebarContent -->
+      <div class="sc-sidebar-content">
+
+        <!-- SidebarGroup 1: Core Navigation Menu -->
+        <div class="sc-sidebar-group">
+          <div class="sc-sidebar-group-label" data-i18n="sidebar_nav_label">القائمة الرئيسية</div>
+          <nav class="sc-sidebar-menu">
+            <button class="shadcn-tab-trigger active" data-tab="dashboard" onclick="switchTab('dashboard')">
+              <span class="menu-item-main">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                <span data-i18n="tab_dashboard">لوحة القيادة والملخص</span>
+              </span>
+            </button>
+
+            <button class="shadcn-tab-trigger" data-tab="pools" onclick="switchTab('pools')">
+              <span class="menu-item-main">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <span data-i18n="tab_pools">الحسابات وطابور الكريديت</span>
+              </span>
+              <span id="sidebar-acc-count" class="mono" style="font-size:11px; color:var(--muted-foreground);">0</span>
+            </button>
+
+            <button class="shadcn-tab-trigger" data-tab="review" onclick="switchTab('review')">
+              <span class="menu-item-main">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <span data-i18n="tab_review">مراجعة الفيديوهات والـ SEO</span>
+              </span>
+            </button>
+
+            <button class="shadcn-tab-trigger" data-tab="freepik" onclick="switchTab('freepik')">
+              <span class="menu-item-main">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                <span data-i18n="tab_freepik">بوابة Freepik 150</span>
+              </span>
+            </button>
+
+            <button class="shadcn-tab-trigger" data-tab="settings" onclick="switchTab('settings')">
+              <span class="menu-item-main">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span data-i18n="tab_settings">الإعدادات والمجلد الخارجي</span>
+              </span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- SidebarGroup 2: Dynamic Production Scope Controls -->
+        <div class="sc-sidebar-group">
+          <div class="sc-sidebar-group-label" data-i18n="lbl_prod_scope">نطاق الإنتاج:</div>
+          <div class="sc-sidebar-scope-box">
+            <select id="quick-gen-mode" class="sc-select" style="padding:5px 8px;" onchange="saveQuickProductionScope()">
+              <option value="videos_only" data-i18n="opt_videos_only">فيديوهات فقط (بدون صور)</option>
+              <option value="both" data-i18n="opt_both_media">فيديوهات + صور (2x)</option>
+              <option value="images_only" data-i18n="opt_images_only">صور فقط (2x)</option>
+            </select>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:2px;">
+              <label style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; cursor:pointer;">
+                <input type="checkbox" id="quick-adobe-en" checked onchange="saveQuickProductionScope()" />
+                <span>Adobe Stock</span>
+              </label>
+              <label style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; cursor:pointer;">
+                <input type="checkbox" id="quick-freepik-en" checked onchange="saveQuickProductionScope()" />
+                <span>Freepik</span>
+              </label>
+            </div>
+            <button class="sc-btn sc-btn-outline sc-btn-sm" style="width:100%; justify-content:center;" onclick="pickExternalWorkspace()">
+              <span data-i18n="btn_pick_folder">مجلد خارجي</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SidebarFooter -->
+      <div class="sc-sidebar-footer">
+        <button class="sc-btn sc-btn-indigo" style="width:100%;" onclick="startDailyShiftNow()">
+          <span>▶</span>
+          <span data-i18n="btn_start_shift">تشغيل الوردية الآن</span>
+        </button>
+        <button class="sc-btn sc-btn-outline" style="width:100%;" onclick="openAddAccountModal()">
+          <span>➕</span>
+          <span data-i18n="btn_add_account">إضافة حساب</span>
+        </button>
+        <div style="display:flex; gap:6px;">
+          <button class="sc-btn sc-btn-outline sc-btn-sm mono" style="flex:1;" id="lang-btn" onclick="toggleLanguage()">EN / عربي</button>
+          <button class="sc-btn sc-btn-outline sc-btn-sm" style="flex:1;" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light">☀ / 🌙</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- SHADCN SIDEBAR INSET (Top Header + Main Viewport) -->
+    <div class="sc-sidebar-inset">
+
+      <!-- Sticky Top Header inside SidebarInset -->
+      <header class="sc-inset-header">
+        <div class="sc-inset-header-start">
+          <button class="sc-sidebar-trigger" onclick="toggleSidebar()" title="Toggle Sidebar Menu">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          </button>
+          <div class="sc-header-divider"></div>
+          <span id="current-view-title" style="font-weight:600; font-size:13px;" data-i18n="tab_dashboard">لوحة القيادة والملخص</span>
+        </div>
+
+        <div class="topbar-actions">
+          <span class="sc-card-desc mono" id="autopilot-pill" style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="status-dot"></span> Auto-Pilot ON
           </span>
+          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="runPreShiftAuditNow()">
+            <span data-i18n="btn_ai_audit">فحص AI اليومي</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ========================================================================
+           MAIN CONTENT AREA
+           ======================================================================== -->
+      <main class="main-container">
+
+        <!-- 1. DAILY PRE-SHIFT AI FLOW AUDITOR & ADVISORY ALERT BANNER -->
+        <section id="ai-auditor-banner" class="sc-card">
+          <div class="sc-card-header" style="margin-bottom:6px;">
+            <div class="sc-card-title">
+              <span class="status-dot" style="background:var(--indigo); box-shadow:0 0 0 2px var(--indigo-soft);"></span>
+              <span data-i18n="auditor_title">تقرير وتقييم الذكاء الاصطناعي اليومي قبل بدء العمل (Pre-Shift AI Flow Auditor)</span>
+              <span id="audit-status-badge" class="sc-badge sc-badge-indigo">Evaluating...</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span id="audit-timestamp" class="sc-card-desc mono">--</span>
+              <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="runPreShiftAuditNow()" data-i18n="btn_recheck">تحديث التقييم ↻</button>
+            </div>
+          </div>
+          <div id="audit-ai-note" style="font-size:12.5px; font-weight:500; margin-bottom:8px; color:var(--foreground);">
+            --
+          </div>
+          <div id="audit-recommendations-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </section>
+
+        <!-- ======================================================================
+             TAB 1: EXECUTIVE DASHBOARD (PROGRESS, ACCEPTANCE/REJECTION, CHARTS, PER-ACCOUNT BARS)
+             ====================================================================== -->
+        <div id="tab-dashboard" class="tab-pane active">
+
+      <!-- Top 4 Executive KPI Cards -->
+      <div class="grid-4">
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <span class="sc-card-desc" data-i18n="kpi_shift_progress">تقدم وردية اليوم</span>
+            <span id="kpi-shift-badge" class="sc-badge sc-badge-emerald">READY</span>
+          </div>
+          <div class="kpi-num mono" id="kpi-shift-videos">0 / 0</div>
+          <div class="sc-card-desc" id="kpi-shift-sub" style="margin-top:4px;">Videos Completed Today</div>
+          <div class="sc-progress" style="margin-top:8px;">
+            <div id="kpi-shift-bar" class="sc-progress-bar" style="width:0%; background:#10b981;"></div>
+          </div>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <span class="sc-card-desc" data-i18n="kpi_acceptance_rate">معدل القبول والرفض</span>
+            <span class="sc-badge sc-badge-indigo" id="kpi-win-model-badge">omni flash</span>
+          </div>
+          <div class="kpi-num mono" id="kpi-acceptance-pct">0%</div>
+          <div class="sc-card-desc" id="kpi-acceptance-counts" style="margin-top:4px;">Accepted: 0 | Rejected: 0</div>
+          <div class="sc-progress" style="margin-top:8px;">
+            <div id="kpi-acceptance-bar" class="sc-progress-bar" style="width:0%; background:#6366f1;"></div>
+          </div>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <span class="sc-card-desc" data-i18n="kpi_upload_pipeline">حالة الرفع والمراجعة</span>
+            <span class="sc-badge sc-badge-cyan">FTP / CSV</span>
+          </div>
+          <div class="kpi-num mono" id="kpi-uploaded-count">0</div>
+          <div class="sc-card-desc" id="kpi-pipeline-sub" style="margin-top:4px;">Ready: 0 | Borderline: 0</div>
+          <div class="sc-progress" style="margin-top:8px;">
+            <div id="kpi-upload-bar" class="sc-progress-bar" style="width:0%; background:#06b6d4;"></div>
+          </div>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <span class="sc-card-desc" data-i18n="kpi_total_credits">إجمالي الكريديت المتاح فعلياً</span>
+            <span class="sc-badge sc-badge-amber" id="kpi-accounts-count-badge">0 Accounts</span>
+          </div>
+          <div class="kpi-num mono" id="kpi-total-available-credits">0</div>
+          <div class="sc-card-desc" id="kpi-next-account-hint" style="margin-top:4px;">No accounts added yet</div>
+          <div class="sc-progress" style="margin-top:8px;">
+            <div id="kpi-credits-bar" class="sc-progress-bar" style="width:0%; background:#f59e0b;"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <nav class="p-3 space-y-1 font-medium text-xs">
-        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition duration-150">
-          <span class="text-sm">📊</span>
-          <span class="font-semibold">Dashboard</span>
-        </button>
-
-        <button onclick="switchTab('vault')" id="nav-vault" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">📂</span>
-          <span class="font-semibold">Asset Vault</span>
-        </button>
-
-        <button onclick="switchTab('export')" id="nav-export" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">📥</span>
-          <span class="font-semibold">CSV & Export Studio</span>
-        </button>
-
-        <button onclick="switchTab('freepik')" id="nav-freepik" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">🎯</span>
-          <span class="font-semibold">Freepik 150 Gate</span>
-        </button>
-
-        <button onclick="switchTab('accounts')" id="nav-accounts" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">🔑</span>
-          <span class="font-semibold">Accounts & Keys</span>
-        </button>
-
-        <button onclick="switchTab('copilot')" id="nav-copilot" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">🤖</span>
-          <span class="font-semibold">Argon 4 Copilot</span>
-        </button>
-
-        <button onclick="switchTab('harmony')" id="nav-harmony" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150">
-          <span class="text-sm">🧬</span>
-          <span class="font-semibold">AI Models Guide</span>
-        </button>
-      </nav>
-    </div>
-
-    <!-- Sidebar Bottom Status -->
-    <div class="p-3 border-t theme-border space-y-2">
-      <div class="p-3 rounded-xl theme-subtle border text-[11px] space-y-1.5">
-        <div class="flex items-center justify-between">
-          <span class="theme-text-muted font-medium">Engine Status</span>
-          <span id="engine-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold theme-badge theme-text-muted">IDLE</span>
-        </div>
-        <p id="engine-substatus" class="text-[10px] theme-text-sub truncate">Standing by for next run</p>
-      </div>
-
-      <button onclick="openFolder('workspace')" class="w-full py-2 px-3 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-semibold theme-text-sub flex items-center justify-center gap-2 transition">
-        <span>📁</span> Open Workspace Folder
-      </button>
-    </div>
-  </aside>
-
-  <!-- ===================================================================== -->
-  <!-- MAIN APPLICATION CONTENT -->
-  <!-- ===================================================================== -->
-  <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
-    
-    <!-- Top Action Header -->
-    <header class="h-16 theme-sidebar border-b flex items-center justify-between px-6 shrink-0 z-10">
-      <div class="flex items-center gap-3">
-        <h2 id="top-title" class="text-sm font-bold theme-text-main">Live Executive Dashboard</h2>
-        <span class="text-xs theme-text-muted font-mono hidden md:inline" id="top-workspace-path">d:\Stock Automation\workspace</span>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <!-- Live Connection Indicator -->
-        <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono theme-subtle border theme-border">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-emerald-600 dark:text-emerald-400 font-semibold" id="top-heartbeat-text">Live 2s</span>
-        </div>
-
-        <!-- Quick Tour / Learning Button -->
-        <button onclick="startOnboardingTour(1)" id="btn-quick-tour" class="h-8 px-3 rounded-xl border border-brand-500/40 bg-brand-500/10 hover:bg-brand-500/20 text-xs font-semibold text-brand-600 dark:text-brand-400 flex items-center gap-1.5 transition">
-          <span>🎓</span> <span class="hidden sm:inline">Quick Tour</span>
-        </button>
-
-        <!-- Light / Dark Mode Toggle -->
-        <button onclick="toggleTheme()" id="theme-toggle-btn" class="h-8 px-3 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main flex items-center gap-1.5 transition">
-          <span id="theme-icon">☀️</span>
-          <span id="theme-label" class="hidden sm:inline">Light</span>
-        </button>
-
-        <!-- Run Pipeline Button -->
-        <button onclick="runPipelineCycle()" id="btn-run-pipeline" class="h-8 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
-          <span>⚡</span> Run Pipeline
-        </button>
-      </div>
-    </header>
-
-    <!-- Scrollable Tab Container -->
-    <div class="flex-1 overflow-y-auto p-6 space-y-6">
-
-      <!-- =============================================================== -->
-      <!-- TAB 1: LIVE DASHBOARD -->
-      <!-- =============================================================== -->
-      <section id="tab-dashboard" class="space-y-6">
-
-        <!-- 1. LIVE ACTIVITY & OPS BANNER -->
-        <div class="p-4 rounded-2xl border theme-border theme-card flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-3.5">
-            <div id="ops-icon" class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-600 dark:text-brand-400 flex items-center justify-center text-lg shrink-0">
-              ⚡
+      <!-- 3 CLICKABLE CREDIT POOL CARDS (FREE 50, PLUS 200, PRO 1000) -->
+      <div class="sc-card">
+        <div class="sc-card-header">
+          <div>
+            <div class="sc-card-title" data-i18n="pools_section_title">
+              محافظ الكريديت الديناميكية (اضغط على أي باقة لعرض الحسابات: مين خلص ومين عليه الدور)
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span id="ops-stage-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold theme-badge theme-text-muted">IDLE</span>
-                <h3 id="ops-stage-title" class="text-sm font-bold theme-text-main">System Standing By</h3>
-              </div>
-              <p id="ops-active-file" class="text-xs theme-text-sub font-mono mt-0.5 truncate max-w-md">No active process</p>
+            <div class="sc-card-desc" data-i18n="pools_section_desc">
+              الأرقام تُحسب ديناميكياً من الإيميلات التي تدخلها فقط — الأولوية #1 للـ 50 المجانية، ثم Plus 200، ثم Pro 1000.
             </div>
           </div>
-
-          <!-- Upload Speed & Live Progress -->
-          <div class="flex items-center gap-6">
-            <div class="text-right">
-              <div class="text-[10px] font-mono theme-text-muted uppercase tracking-wider">Speed</div>
-              <div id="ops-speed" class="text-xs font-bold font-mono theme-text-main">Idle</div>
-            </div>
-            <div class="w-36">
-              <div class="flex justify-between text-[10px] font-mono theme-text-muted mb-1">
-                <span>Progress</span>
-                <span id="ops-progress-pct">0%</span>
-              </div>
-              <div class="w-full h-2 rounded-full theme-subtle overflow-hidden">
-                <div id="ops-progress-bar" class="h-full bg-gradient-to-r from-brand-600 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
-              </div>
-            </div>
+          <div style="display:flex; gap:6px;">
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="simulateCreditStep()" data-i18n="btn_test_turn">تجربة سحب 15 نقطة ⚡</button>
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="resetDailyFreeCredits()" data-i18n="btn_reset_50">تصفير الـ 50 اليومية ↻</button>
           </div>
         </div>
 
-        <!-- 2. PLATFORM ALERTS (Dynamic Alert Bus) -->
-        <div id="platform-alerts-container" class="hidden"></div>
-
-        <!-- 3. CORE METRICS KPI GRID (6 Cards) -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
-          <!-- Card 1: Acceptance Rate -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">Acceptance Rate</div>
-            <div class="text-xl font-extrabold theme-text-main font-mono" id="kpi-acceptance">0.0%</div>
-            <div class="text-[10px] font-mono theme-text-sub" id="kpi-acceptance-sub">0 Acc / 0 Rej</div>
-          </div>
-
-          <!-- Card 2: Pro Pool (1000) -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">Pro Pool (1000)</div>
-            <div class="text-xl font-extrabold theme-text-main font-mono" id="kpi-pro-pts">0 pts</div>
-            <div class="text-[10px] font-mono theme-text-sub truncate" id="kpi-pro-sub">Not Configured</div>
-          </div>
-
-          <!-- Card 3: Plus Pool (200) -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">Plus Pool (200)</div>
-            <div class="text-xl font-extrabold theme-text-main font-mono" id="kpi-plus-pts">0 pts</div>
-            <div class="text-[10px] font-mono theme-text-sub truncate" id="kpi-plus-sub">Not Configured</div>
-          </div>
-
-          <!-- Card 4: Free Daily Accounts -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">Free Accounts</div>
-            <div class="text-xl font-extrabold theme-text-main font-mono" id="kpi-free-accs">0 Accounts</div>
-            <div class="text-[10px] font-mono theme-text-sub" id="kpi-free-sub">0 / 0 pts daily</div>
-          </div>
-
-          <!-- Card 5: Freepik Golden Gate -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">Freepik 150 Gate</div>
-            <div class="text-xl font-extrabold text-amber-500 font-mono" id="kpi-fp-gate">0 / 150</div>
-            <div class="text-[10px] font-mono theme-text-sub">Curation Mode</div>
-          </div>
-
-          <!-- Card 6: API Keys Health -->
-          <div class="p-4 rounded-xl border theme-border theme-card space-y-1">
-            <div class="text-[11px] font-semibold theme-text-muted">API Keys</div>
-            <div class="text-xl font-extrabold text-emerald-500 font-mono" id="kpi-keys-count">1 Active</div>
-            <div class="text-[10px] font-mono theme-text-sub" id="kpi-keys-sub">0 req today</div>
-          </div>
-        </div>
-
-        <!-- 4. COMMERCIAL DOWNLOADS & SALES SECTION -->
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b theme-border pb-3">
-            <div>
-              <h3 class="text-sm font-bold theme-text-main">Commercial Performance & Best Sellers</h3>
-              <p class="text-xs theme-text-sub mt-0.5">Track buyer downloads, royalties, and commercial focus across Adobe Stock and Freepik.</p>
+        <div class="grid-3">
+          <!-- Pool 1: Free 50/day -->
+          <div class="sc-card clickable" onclick="openPoolDrilldownModal('free_daily')">
+            <div class="sc-card-header">
+              <span class="sc-badge sc-badge-emerald" data-i18n="priority_1_badge">الأولوية #1 يومياً</span>
+              <span class="sc-card-desc mono" id="pool-free-acc-badge">0 Accounts</span>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="openModal('modal-import-csv')" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main transition flex items-center gap-1.5">
-                <span>📥</span> Import Sales CSV
-              </button>
-              <button onclick="openModal('modal-manual-download')" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main transition flex items-center gap-1.5">
-                <span>➕</span> Record Sale
-              </button>
-            </div>
-          </div>
-
-          <!-- 4 Sales KPI Pills -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div class="p-3 rounded-xl border theme-border theme-subtle">
-              <div class="text-[10px] font-mono theme-text-muted uppercase">Total Downloads</div>
-              <div class="text-lg font-extrabold font-mono theme-text-main mt-0.5" id="sales-total-downloads">0</div>
-              <div class="text-[10px] font-mono theme-text-sub" id="sales-dl-breakdown">Adobe: 0 | Freepik: 0</div>
-            </div>
-
-            <div class="p-3 rounded-xl border theme-border theme-subtle">
-              <div class="text-[10px] font-mono theme-text-muted uppercase">Best Sellers (Sold)</div>
-              <div class="text-lg font-extrabold font-mono text-emerald-500 mt-0.5" id="sales-best-sellers">0</div>
-              <div class="text-[10px] font-mono theme-text-sub" id="sales-zero-sub">Zero Downloads: 0</div>
-            </div>
-
-            <div class="p-3 rounded-xl border theme-border theme-subtle">
-              <div class="text-[10px] font-mono theme-text-muted uppercase">Monetization Rate</div>
-              <div class="text-lg font-extrabold font-mono text-indigo-500 mt-0.5" id="sales-monetization-rate">0.0%</div>
-              <div class="text-[10px] font-mono theme-text-sub">Portfolio demand %</div>
-            </div>
-
-            <div class="p-3 rounded-xl border theme-border theme-subtle">
-              <div class="text-[10px] font-mono theme-text-muted uppercase">Estimated Royalties</div>
-              <div class="text-lg font-extrabold font-mono text-emerald-600 dark:text-emerald-400 mt-0.5" id="sales-royalties">$0.00</div>
-              <div class="text-[10px] font-mono theme-text-sub" id="sales-earnings-breakdown">Adobe: $0.00 | Freepik: $0.00</div>
-            </div>
-          </div>
-
-          <!-- Bottom Demand Guidelines & Zero Download Strategy -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-            <!-- Strategic Focus Niches -->
-            <div class="p-3.5 rounded-xl border theme-border theme-subtle space-y-2">
-              <div class="text-xs font-bold theme-text-main flex items-center gap-1.5">
-                <span>🎯</span> High-Demand Commercial Niches
-              </div>
-              <div class="space-y-1 text-xs theme-text-sub" id="sales-niches-list">
-                <div class="flex items-center justify-between p-1.5 rounded theme-card border theme-border">
-                  <span class="font-medium theme-text-main">Food & Healthy Nutrition</span>
-                  <span class="font-mono text-[10px] text-emerald-500">High Demand</span>
-                </div>
-                <div class="flex items-center justify-between p-1.5 rounded theme-card border theme-border">
-                  <span class="font-medium theme-text-main">Clean Energy & Technology</span>
-                  <span class="font-mono text-[10px] text-emerald-500">High ROI</span>
-                </div>
-                <div class="flex items-center justify-between p-1.5 rounded theme-card border theme-border">
-                  <span class="font-medium theme-text-main">Minimalist Isolated Mockups</span>
-                  <span class="font-mono text-[10px] text-emerald-500">Top Freepik</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Zero Download Diagnosis -->
-            <div class="p-3.5 rounded-xl border theme-border theme-subtle space-y-2">
-              <div class="text-xs font-bold theme-text-main flex items-center gap-1.5">
-                <span>💡</span> Demand Directives
-              </div>
-              <ul class="text-xs theme-text-sub space-y-1.5 list-disc pl-4">
-                <li>Include primary commercial buyer intent in the first 10 keywords.</li>
-                <li>Leave generous copy-space for corporate and web designers.</li>
-                <li>Prioritize clear focal subjects over generic abstract textures.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. CHARTS & PIPELINE GRID (2 Columns) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <!-- Column 1: Review Distribution & Trend Charts (Flicker-Free) -->
-          <div class="lg:col-span-2 p-5 rounded-2xl border theme-border theme-card space-y-4">
-            <div class="flex items-center justify-between border-b theme-border pb-3">
+            <div class="sc-card-title" data-i18n="pool_free_title">رصيد الـ 50 نقطة المجانية اليومية</div>
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
               <div>
-                <h3 class="text-sm font-bold theme-text-main">Review Outcomes & Acceptance Velocity</h3>
-                <p class="text-xs theme-text-sub">Portfolio review status and historical acceptance rates.</p>
+                <span class="kpi-num mono" style="color:#10b981;" id="pool-free-rem">0</span>
+                <span class="sc-card-desc" id="pool-free-tot">/ 0</span>
               </div>
-              <div class="flex items-center gap-3 text-xs font-mono">
-                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Accepted</span>
-                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Rejected</span>
-                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Awaiting</span>
-              </div>
+              <span class="sc-card-desc mono" id="pool-free-used">Used: 0</span>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-56">
-              <!-- Doughnut Chart Canvas -->
-              <div class="relative flex items-center justify-center p-2">
-                <canvas id="chart-reviews"></canvas>
-              </div>
-
-              <!-- Line Trends Canvas -->
-              <div class="relative p-2">
-                <canvas id="chart-trends"></canvas>
-              </div>
+            <div class="sc-progress">
+              <div id="pool-free-bar" class="sc-progress-bar" style="width:0%; background:#10b981;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
+              <span id="pool-free-queue-summary">Done: 0 | Available: 0</span>
+              <span style="color:#10b981; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
             </div>
           </div>
 
-          <!-- Column 2: Autonomous Pipeline Flow (File Counts) -->
-          <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
-            <div class="border-b theme-border pb-2.5">
-              <h3 class="text-sm font-bold theme-text-main">Pipeline Folders</h3>
-              <p class="text-xs theme-text-sub">Local asset count in each processing stage.</p>
+          <!-- Pool 2: Plus 200/month -->
+          <div class="sc-card clickable" onclick="openPoolDrilldownModal('plus_200')">
+            <div class="sc-card-header">
+              <span class="sc-badge sc-badge-cyan" data-i18n="priority_2_badge">الأولوية #2 (بعد المجاني)</span>
+              <span class="sc-card-desc mono" id="pool-plus-acc-badge">0 Accounts</span>
             </div>
-
-            <div class="space-y-1.5 text-xs font-mono">
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">0_Raw_Downloads</span>
-                <span class="font-bold theme-text-main" id="count-raw">0</span>
+            <div class="sc-card-title" data-i18n="pool_plus_title">باقة Plus الشهرية (200 نقطة)</div>
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
+              <div>
+                <span class="kpi-num mono" style="color:#06b6d4;" id="pool-plus-rem">0</span>
+                <span class="sc-card-desc" id="pool-plus-tot">/ 0</span>
               </div>
-
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">1_QC1_Approved</span>
-                <span class="font-bold theme-text-main" id="count-qc1">0</span>
-              </div>
-
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">2_Upscaled (2x 4K)</span>
-                <span class="font-bold theme-text-main" id="count-upscaled">0</span>
-              </div>
-
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">2_QC2_Approved</span>
-                <span class="font-bold text-emerald-500" id="count-qc2">0</span>
-              </div>
-
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">3_Batched_Ready</span>
-                <span class="font-bold theme-text-main" id="count-batched">0 batches</span>
-              </div>
-
-              <div class="flex items-center justify-between p-2 rounded-xl theme-subtle border theme-border">
-                <span class="theme-text-sub">4_Uploaded_Awaiting</span>
-                <span class="font-bold theme-text-main" id="count-uploaded">0 batches</span>
-              </div>
+              <span class="sc-card-desc mono" id="pool-plus-used">Used: 0</span>
+            </div>
+            <div class="sc-progress">
+              <div id="pool-plus-bar" class="sc-progress-bar" style="width:0%; background:#06b6d4;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
+              <span id="pool-plus-queue-summary">Not configured</span>
+              <span style="color:#06b6d4; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
             </div>
           </div>
 
+          <!-- Pool 3: Pro 1000/month -->
+          <div class="sc-card clickable" onclick="openPoolDrilldownModal('pro_1000')">
+            <div class="sc-card-header">
+              <span class="sc-badge sc-badge-indigo" data-i18n="priority_3_badge">الأولوية #3 (حسب التجديد)</span>
+              <span class="sc-card-desc mono" id="pool-pro-acc-badge">0 Accounts</span>
+            </div>
+            <div class="sc-card-title" data-i18n="pool_pro_title">باقة Pro الشهرية (1000 نقطة)</div>
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin:10px 0 6px;">
+              <div>
+                <span class="kpi-num mono" style="color:#818cf8;" id="pool-pro-rem">0</span>
+                <span class="sc-card-desc" id="pool-pro-tot">/ 0</span>
+              </div>
+              <span class="sc-card-desc mono" id="pool-pro-used">Used: 0</span>
+            </div>
+            <div class="sc-progress">
+              <div id="pool-pro-bar" class="sc-progress-bar" style="width:0%; background:#6366f1;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px;" class="sc-card-desc">
+              <span id="pool-pro-queue-summary">Not configured</span>
+              <span style="color:#818cf8; font-weight:600;" data-i18n="click_for_queue">عرض الطابور ←</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-      </section>
-
-      <!-- =============================================================== -->
-      <!-- TAB 2: CENTRAL ASSET VAULT -->
-      <!-- =============================================================== -->
-      <section id="tab-vault" class="hidden space-y-4">
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b theme-border pb-3">
+      <!-- CHARTS ROW: PIPELINE / ACCEPTANCE CHART + CREDIT CONSUMPTION CHART -->
+      <div class="grid-2">
+        <div class="sc-card">
+          <div class="sc-card-header">
             <div>
-              <h3 class="text-sm font-bold theme-text-main">Central Asset Vault</h3>
-              <p class="text-xs theme-text-sub">Browse, inspect, and manage all generated and processed stock assets.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <input type="text" id="vault-search-input" oninput="filterVault()" placeholder="Search assets by filename..." class="px-3 py-1.5 rounded-xl border theme-border theme-subtle text-xs theme-text-main focus:outline-none focus:border-brand-500 w-56 font-mono">
-              <select id="vault-filter-status" onchange="filterVault()" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle text-xs theme-text-main font-mono focus:outline-none">
-                <option value="ALL">All Statuses</option>
-                <option value="qc2_pass">Approved (QC2 Pass)</option>
-                <option value="uploaded">Uploaded</option>
-                <option value="adobe_accepted">Adobe Accepted</option>
-              </select>
+              <div class="sc-card-title" data-i18n="chart_pipeline_title">تحليل الإنتاج والرفع والقبول (Adobe Stock & Freepik)</div>
+              <div class="sc-card-desc" data-i18n="chart_pipeline_desc">مقارنة الملفات المعتمدة، المرفوعة، المقبولة، والمرفوضة</div>
             </div>
           </div>
-
-          <!-- Asset Grid -->
-          <div id="vault-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
-            <!-- Dynamic Cards Populated in JS -->
+          <div style="height: 210px; position: relative;">
+            <canvas id="pipelineChart"></canvas>
           </div>
         </div>
-      </section>
 
-      <!-- =============================================================== -->
-      <!-- TAB 3: CSV & EXPORT STUDIO -->
-      <!-- =============================================================== -->
-      <section id="tab-export" class="hidden space-y-5">
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-4">
-          <div class="border-b theme-border pb-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="sc-card">
+          <div class="sc-card-header">
             <div>
-              <h3 class="text-sm font-bold theme-text-main">Multi-Platform CSV & Metadata Studio</h3>
-              <p class="text-xs theme-text-sub">Generate strictly compliant metadata CSV files for Adobe Stock and Freepik with official category mapping.</p>
+              <div class="sc-card-title" data-i18n="chart_credits_title">توزيع واستهلاك الكريديت عبر الباقات المسجلة</div>
+              <div class="sc-card-desc" data-i18n="chart_credits_desc">المستهلك مقابل المتبقي الفعلي في Free 50 و Plus 200 و Pro 1000</div>
             </div>
-            <button onclick="openFolder('exports')" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main transition flex items-center gap-1.5">
-              <span>📂</span> Open Exports Folder
-            </button>
           </div>
-
-          <!-- Platform Selector Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Option 1: Adobe Stock -->
-            <label class="p-4 rounded-xl border theme-border theme-card cursor-pointer hover:border-emerald-500 transition flex items-start gap-3.5 select-none" onclick="selectExportPlatform('adobe')">
-              <input type="radio" name="export-platform" id="radio-platform-adobe" value="adobe" checked class="mt-1 text-brand-600 focus:ring-0">
-              <div class="flex-1 space-y-1">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs theme-text-main">Adobe Stock Contributor</span>
-                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/40">Photos + Videos</span>
-                </div>
-                <div class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
-                  Headers: Filename,Title,Keywords,Category,Releases [Delimiter: ,]
-                </div>
-                <p class="text-xs theme-text-sub">
-                  Strict comma delimiter, titles &lt;70 chars, and official <strong>numeric Category IDs (1 to 21)</strong>.
-                </p>
-              </div>
-            </label>
-
-            <!-- Option 2: Freepik -->
-            <label class="p-4 rounded-xl border theme-border theme-card cursor-pointer hover:border-amber-500 transition flex items-start gap-3.5 select-none" onclick="selectExportPlatform('freepik')">
-              <input type="radio" name="export-platform" id="radio-platform-freepik" value="freepik" class="mt-1 text-brand-600 focus:ring-0">
-              <div class="flex-1 space-y-1">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs theme-text-main">Freepik Contributor</span>
-                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800/40">Photos Only</span>
-                </div>
-                <div class="text-[10px] font-mono text-amber-600 dark:text-amber-400">
-                  Headers: File name;Title;Keywords;Prompt;Model [Delimiter: ;]
-                </div>
-                <p class="text-xs theme-text-sub">
-                  Strict <strong>semicolon (;) delimiter</strong>, includes <strong>_ai_generated</strong> tag, prompt, model, and blocks videos.
-                </p>
-              </div>
-            </label>
-          </div>
-
-          <!-- Actions -->
-          <div class="flex items-center justify-between pt-2">
-            <div class="flex items-center gap-3">
-              <span class="text-xs font-mono theme-text-muted">Batch Source:</span>
-              <select id="export-batch-select" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle text-xs theme-text-main font-mono focus:outline-none">
-                <option value="ALL_APPROVED_VAULT">All Approved Vault Assets (Default)</option>
-              </select>
-            </div>
-
-            <button onclick="generateCSV()" id="btn-generate-csv" class="px-5 py-2 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
-              <span>📥</span> Generate Platform CSV
-            </button>
+          <div style="height: 210px; position: relative;">
+            <canvas id="creditsChart"></canvas>
           </div>
         </div>
+      </div>
 
-        <!-- CSV Preview Table -->
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <h4 class="text-xs font-bold uppercase tracking-wider theme-text-main">CSV Output Preview</h4>
-              <span id="csv-preview-badge" class="text-[10px] font-mono px-2 py-0.5 rounded theme-subtle theme-text-muted border theme-border">0 rows</span>
-            </div>
-            <span class="text-[11px] font-mono theme-text-muted truncate max-w-sm" id="csv-file-path">No file exported yet</span>
-          </div>
-
-          <div class="overflow-x-auto max-h-72 overflow-y-auto">
-            <table class="w-full text-left text-xs font-mono">
-              <thead class="theme-subtle theme-text-muted border-b theme-border sticky top-0">
-                <tr>
-                  <th class="p-2.5">Filename</th>
-                  <th class="p-2.5">Title</th>
-                  <th class="p-2.5">Category (Spec)</th>
-                  <th class="p-2.5">Keywords</th>
-                  <th class="p-2.5">Format</th>
-                </tr>
-              </thead>
-              <tbody id="csv-preview-body" class="divide-y theme-border theme-text-sub">
-                <tr><td colspan="5" class="p-6 text-center theme-text-muted font-sans">Select a platform and click "Generate Platform CSV" to preview rows.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- =============================================================== -->
-      <!-- TAB 4: FREEPIK 150 GOLDEN GATE -->
-      <!-- =============================================================== -->
-      <section id="tab-freepik" class="hidden space-y-4">
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-4">
-          <div class="border-b theme-border pb-3 flex items-center justify-between">
-            <div>
-              <h3 class="text-sm font-bold theme-text-main">Freepik 150-200 Golden Asset Onboarding Gate</h3>
-              <p class="text-xs theme-text-sub">Accumulate 150 top-tier assets to pass contributor application on the first attempt.</p>
-            </div>
-            <div class="text-right">
-              <span class="text-xl font-extrabold text-amber-500 font-mono" id="fp-gate-large">0 / 150</span>
-            </div>
-          </div>
-
-          <!-- Progress -->
-          <div class="w-full h-3 rounded-full theme-subtle overflow-hidden">
-            <div id="fp-gate-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
-          </div>
-
-          <!-- Quality Standards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
-            <div class="p-3 rounded-xl border theme-border theme-subtle space-y-1">
-              <div class="font-bold theme-text-main">✓ 4K Resolution Locked</div>
-              <p class="theme-text-sub text-[11px]">Strict 2x upscale (~17 MP) meets &gt;= 4.0 MP and &gt;= 2000px standards.</p>
-            </div>
-            <div class="p-3 rounded-xl border theme-border theme-subtle space-y-1">
-              <div class="font-bold theme-text-main">✓ Balanced Curation</div>
-              <p class="theme-text-sub text-[11px]">50% pure white isolated mockups and 50% high-contrast commercial textures.</p>
-            </div>
-            <div class="p-3 rounded-xl border theme-border theme-subtle space-y-1">
-              <div class="font-bold theme-text-main">✓ Zero Similarity Filter</div>
-              <p class="theme-text-sub text-[11px]">pHash distance &gt; 12 enforced to prevent identical batch rejections.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- =============================================================== -->
-      <!-- TAB 5: ACCOUNTS & API KEYS -->
-      <!-- =============================================================== -->
-      <section id="tab-accounts" class="hidden space-y-5">
-        
-        <!-- Zero-Leak Privacy & Local Encryption Banner -->
-        <div class="p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-between text-xs">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm">
-              🛡️
-            </div>
-            <div>
-              <div class="font-bold theme-text-main flex items-center gap-2">
-                <span>Zero-Leak Local Hardware Vault Active</span>
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">DPAPI / AES-256</span>
-              </div>
-              <p class="text-[11px] theme-text-sub mt-0.5">
-                All passwords, accounts, and API keys are stored encrypted locally in your database. All credential files are strictly excluded from Git and will never be pushed to GitHub.
-              </p>
-            </div>
-          </div>
-          <span class="hidden sm:inline-flex px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-            🔒 Git Ignored
-          </span>
-        </div>
-
-        <!-- Google Browser Accounts Table -->
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
-          <div class="flex items-center justify-between border-b theme-border pb-3">
-            <div>
-              <h3 class="text-sm font-bold theme-text-main">Google Accounts & Credit Pools</h3>
-              <p class="text-xs theme-text-sub">Manage your Chrome/Edge browser profiles, Pro (1000), Plus (200), and Free accounts.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="detectBrowserAccounts()" class="px-3 py-1.5 rounded-xl border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-semibold theme-text-main transition flex items-center gap-1.5">
-                <span>🔍</span> Scan Local Profiles
-              </button>
-              <button onclick="openModal('modal-add-account')" class="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow transition flex items-center gap-1.5">
-                <span>➕</span> Add Account
-              </button>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs font-mono">
-              <thead class="theme-subtle theme-text-muted border-b theme-border">
-                <tr>
-                  <th class="p-2.5">Account / Profile</th>
-                  <th class="p-2.5">Email (Gmail)</th>
-                  <th class="p-2.5">Browser & Profile Dir</th>
-                  <th class="p-2.5">Assigned Pool / Tier</th>
-                  <th class="p-2.5">Status</th>
-                  <th class="p-2.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="accounts-table-body" class="divide-y theme-border theme-text-sub">
-                <tr><td colspan="6" class="p-6 text-center theme-text-muted font-sans">No accounts configured yet. Click "Scan Local Profiles" or "Add Account" to configure.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Gemini API Keys Table -->
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
-          <div class="flex items-center justify-between border-b theme-border pb-3">
-            <div>
-              <h3 class="text-sm font-bold theme-text-main">Google AI Studio API Keys</h3>
-              <p class="text-xs theme-text-sub">Keys used for strategic research, quality inspection, and SEO tagging.</p>
-            </div>
-            <button onclick="openModal('modal-add-key')" class="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow transition flex items-center gap-1.5">
-              <span>➕</span> Add API Key
-            </button>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs font-mono">
-              <thead class="theme-subtle theme-text-muted border-b theme-border">
-                <tr>
-                  <th class="p-2.5">Key Alias</th>
-                  <th class="p-2.5">Status</th>
-                  <th class="p-2.5">Requests Today</th>
-                  <th class="p-2.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="keys-table-body" class="divide-y theme-border theme-text-sub">
-                <!-- Populated in JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- =============================================================== -->
-      <!-- TAB 6: ARGON 4 COPILOT -->
-      <!-- =============================================================== -->
-      <section id="tab-copilot" class="hidden space-y-4">
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-3">
-          <div class="border-b theme-border pb-3">
-            <h3 class="text-sm font-bold theme-text-main">Argon 4 Strategic Copilot</h3>
-            <p class="text-xs theme-text-sub">Autonomous stock strategy advisor with live market grounding.</p>
-          </div>
-          <div class="p-4 rounded-xl theme-subtle border theme-border text-xs theme-text-sub space-y-2">
-            <p>Argon 4 analyzes your portfolio acceptance metrics and guides prompt formulation to maximize buyer download rates on Adobe Stock and Freepik.</p>
-            <div class="text-[11px] font-mono theme-text-muted">Status: Active & Connected to Google AI Studio</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- =============================================================== -->
-      <!-- TAB 7: AI MODELS HARMONY -->
-      <!-- =============================================================== -->
-      <section id="tab-harmony" class="hidden space-y-4">
-        <div class="p-5 rounded-2xl border theme-border theme-card space-y-4">
-          <div class="border-b theme-border pb-3">
-            <h3 class="text-sm font-bold theme-text-main">Tri-Model AI Architecture & Quota Efficiency</h3>
-            <p class="text-xs theme-text-sub">How Google Studio models collaborate cleanly without exceeding rate limits.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div class="p-4 rounded-xl border theme-border theme-subtle space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-brand-600 dark:text-brand-400">1. Strategic Brain</span>
-                <span class="px-2 py-0.5 rounded theme-card text-[10px] font-mono border theme-border">Argon 4</span>
-              </div>
-              <p class="theme-text-sub leading-relaxed">
-                Conducts in-depth market research, trending niche discovery, and negative prompt strategy.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-xl border theme-border theme-subtle space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-brand-600 dark:text-brand-400">2. Orchestrator</span>
-                <span class="px-2 py-0.5 rounded theme-card text-[10px] font-mono border theme-border">Flash 3.8</span>
-              </div>
-              <p class="theme-text-sub leading-relaxed">
-                Manages multi-account rotation, video pacing, and automated FTP upload coordination.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-xl border theme-border theme-subtle space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-brand-600 dark:text-brand-400">3. High-Speed QC</span>
-                <span class="px-2 py-0.5 rounded theme-card text-[10px] font-mono border theme-border">Flash-Lite 3.5</span>
-              </div>
-              <p class="theme-text-sub leading-relaxed">
-                High-throughput visual inspection and rapid IPTC/CSV metadata generation.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- ===================================================================== -->
-  <!-- MODALS -->
-  <!-- ===================================================================== -->
-
-  <!-- MODAL: INTERACTIVE ONBOARDING TOUR & LEARNING WIZARD -->
-  <div id="modal-onboarding" class="fixed inset-0 bg-black/75 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-xl theme-card border theme-border rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300">
-      
-      <!-- Tour Top Header -->
-      <div class="px-6 py-4 border-b theme-border flex items-center justify-between theme-subtle">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-sm">
-            🎓
-          </div>
+      <!-- PER-ACCOUNT LIVE PROGRESS BARS & QUEUE ORDER -->
+      <div class="sc-card">
+        <div class="sc-card-header">
           <div>
-            <h3 class="text-sm font-extrabold theme-text-main">StockNova AI Quick-Start Guide</h3>
-            <span id="tour-step-counter" class="text-[11px] font-mono text-brand-600 dark:text-brand-400 font-semibold">Step 1 of 6</span>
+            <div class="sc-card-title" data-i18n="per_account_bars_title">شريط التقدم واستهلاك الكريديت لكل حساب مسجل</div>
+            <div class="sc-card-desc" data-i18n="per_account_bars_desc">يوضح الحساب الأساسي لـ Argon، ومن أنهى حصته اليوم، ومن عليه الدور الآن</div>
           </div>
+          <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="openAddAccountModal()" data-i18n="btn_add_account">إضافة حساب</button>
         </div>
-        <button onclick="closeOnboardingTour()" class="w-7 h-7 rounded-lg theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-xs theme-text-muted flex items-center justify-center">
-          ✕
-        </button>
-      </div>
-
-      <!-- Tour Content Body -->
-      <div class="p-6 space-y-4">
-        <!-- Visual Illustration / Banner -->
-        <div id="tour-illustration-box" class="w-full h-32 rounded-xl theme-subtle border theme-border flex flex-col items-center justify-center p-4 text-center space-y-2">
-          <span id="tour-icon" class="text-3xl">🚀</span>
-          <div id="tour-highlight-tag" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-brand-500/10 text-brand-500 border border-brand-500/20">
-            Welcome to the Studio
-          </div>
-        </div>
-
-        <!-- Title & Explanations -->
-        <div class="space-y-1.5">
-          <h4 id="tour-title" class="text-base font-bold theme-text-main">How StockNova AI Works</h4>
-          <p id="tour-desc" class="text-xs theme-text-sub leading-relaxed">
-            StockNova AI is your automated stock media studio. It bridges the gap between AI generation and contributor portals by automating QC inspection, 2x upscaling, anti-similarity batching, and official CSV generation.
-          </p>
-        </div>
-
-        <!-- Key Guidance Checklist / Pointer -->
-        <div id="tour-guidance-box" class="p-3.5 rounded-xl border theme-border theme-subtle text-xs space-y-1.5">
-          <div class="font-bold theme-text-main flex items-center gap-1.5">
-            <span>💡</span> <span id="tour-tip-title">What the engine does:</span>
-          </div>
-          <p id="tour-tip-desc" class="theme-text-sub text-[11px] leading-relaxed">
-            You don't need to manually rename files, tag SEO keywords, or calculate aspect ratios. Drop media in and let the pipeline process them.
-          </p>
-        </div>
-      </div>
-
-      <!-- Tour Footer & Controls -->
-      <div class="px-6 py-4 border-t theme-border flex items-center justify-between theme-subtle">
-        <div class="flex items-center gap-1.5" id="tour-dots">
-          <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button onclick="prevTourStep()" id="tour-prev-btn" class="px-3.5 py-1.5 rounded-xl border theme-border theme-subtle text-xs font-semibold theme-text-sub hover:theme-text-main disabled:opacity-30" disabled>
-            Back
-          </button>
-          <button onclick="nextTourStep()" id="tour-next-btn" class="px-4 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5">
-            <span>Next</span> <span>→</span>
-          </button>
-        </div>
+        <div id="dashboard-accounts-bars" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
 
     </div>
-  </div>
 
-  <!-- MODAL: ADD API KEY -->
-  <div id="modal-add-key" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-md theme-card border theme-border rounded-2xl p-6 space-y-4">
-      <h3 class="text-sm font-bold theme-text-main">Add Gemini API Key</h3>
-      <div class="space-y-3 text-xs font-mono">
-        <div>
-          <label class="block theme-text-muted mb-1">Key Alias</label>
-          <input type="text" id="input-key-alias" placeholder="e.g. Gemini_Key_3" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
+    <!-- ======================================================================
+         TAB 2: ACCOUNTS & DYNAMIC CREDIT QUEUES
+         ====================================================================== -->
+    <div id="tab-pools" class="tab-pane">
+      <div class="sc-card">
+        <div class="sc-card-header">
+          <div>
+            <div class="sc-card-title" data-i18n="accounts_mgmt_title">إدارة حسابات Gemini / Argon وتحديد الحساب الأساسي (#1 Primary Brain)</div>
+            <div class="sc-card-desc" data-i18n="accounts_mgmt_desc">
+              أضف إيميلاتك وسيحدد النظام تلقائياً الباقة (Free / Plus 200 / Pro 1000)، وهل الرصيد مشترك أم منفصل، وأفضل موديل فيديو متاح.
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="autoDetectBrowserAccounts()" data-i18n="btn_auto_detect">اكتشاف من المتصفح 🔍</button>
+            <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="openAddAccountModal()" data-i18n="btn_add_account">إضافة حساب ➕</button>
+          </div>
         </div>
-        <div>
-          <label class="block theme-text-muted mb-1">API Key</label>
-          <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
+
+        <div class="sc-table-wrap">
+          <table class="sc-table">
+            <thead>
+              <tr>
+                <th data-i18n="th_account">الحساب / الإيميل</th>
+                <th data-i18n="th_tier">الباقة</th>
+                <th data-i18n="th_shared">نوع المحفظة</th>
+                <th data-i18n="th_free_50">الـ 50 اليومية</th>
+                <th data-i18n="th_monthly">الرصيد الشهري (200/1000)</th>
+                <th data-i18n="th_renewal">التجديد</th>
+                <th data-i18n="th_models">الموديلات المتاحة</th>
+                <th data-i18n="th_actions">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-table-body"></tbody>
+          </table>
         </div>
       </div>
-      <div class="flex justify-end gap-2 pt-2 text-xs">
-        <button onclick="closeModal('modal-add-key')" class="px-4 py-2 rounded-xl border theme-border theme-subtle theme-text-sub">Cancel</button>
-        <button onclick="submitAddKey()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold">Save Key</button>
+    </div>
+
+    <!-- ======================================================================
+         TAB 3: VIDEO & ASSET REVIEW + DUAL-PLATFORM SEO
+         ====================================================================== -->
+    <div id="tab-review" class="tab-pane">
+      <div class="sc-card">
+        <div class="sc-card-header">
+          <div>
+            <div class="sc-card-title" data-i18n="review_title">فحص الفيديوهات (تقييم تقني 40% + استمرارية الحركة 60%) وعناوين SEO المزدوجة</div>
+            <div class="sc-card-desc" data-i18n="review_desc">يتم استبعاد موديل الـ 100 نقطة تلقائياً، وتوليد عنوانين منفصلين لـ Adobe Stock و Freepik</div>
+          </div>
+          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="benchmarkVideoModels()" data-i18n="btn_benchmark_models">اختيار أفضل موديل فيديو 🏆</button>
+        </div>
+
+        <div class="sc-table-wrap">
+          <table class="sc-table">
+            <thead>
+              <tr>
+                <th data-i18n="th_file">الملف</th>
+                <th data-i18n="th_type_model">النوع / الموديل</th>
+                <th data-i18n="th_qc_scores">تقييم الجودة والحركة</th>
+                <th data-i18n="th_adobe_title">عنوان Adobe Stock (&lt;70)</th>
+                <th data-i18n="th_freepik_title">عنوان Freepik (&lt;100)</th>
+                <th data-i18n="th_status">الحالة / التحكم</th>
+              </tr>
+            </thead>
+            <tbody id="assets-review-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 4: FREEPIK 150 GATE
+         ====================================================================== -->
+    <div id="tab-freepik" class="tab-pane">
+      <div class="sc-card">
+        <div class="sc-card-header">
+          <div>
+            <div class="sc-card-title" data-i18n="fp_title">بوابة Freepik 150 الذكية (فحص SHA-256 بدون تكرار)</div>
+            <div class="sc-card-desc" data-i18n="fp_desc">اختر مجلداً خارجياً ليقوم النظام بفرز أفضل 150 صورة بدقة 4MP+ بدون إعادة فحص الصور القديمة</div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="pickExternalFreepikFolder()" data-i18n="btn_pick_fp_folder">تحديد مجلد الصور 📁</button>
+            <button class="sc-btn sc-btn-emerald sc-btn-sm" onclick="runFreepikCurationNow()" data-i18n="btn_run_fp_150">بدء فرز الـ 150 صورة ✨</button>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-bottom:12px;">
+          <div class="sc-card">
+            <div class="sc-card-desc">Golden Approved / 150</div>
+            <div class="kpi-num mono" id="fp-curated-num">0 / 150</div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-card-desc">Total Unique Inspected (SHA-256)</div>
+            <div class="kpi-num mono" id="fp-inspected-num">0</div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-card-desc">Candidate Source Folder</div>
+            <div class="mono" style="font-size:11px; word-break:break-all; margin-top:6px;" id="fp-folder-label">--</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 5: SETTINGS, EXTERNAL WORKSPACE PICKER & API KEYS
+         ====================================================================== -->
+    <div id="tab-settings" class="tab-pane">
+      <div class="grid-2">
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <div>
+              <div class="sc-card-title" data-i18n="ext_folder_title">المجلد الخارجي للعمل (خارج ملفات المشروع)</div>
+              <div class="sc-card-desc" data-i18n="ext_folder_desc">احفظ الفيديوهات والصور في مجلد مستقل على جهازك لمنع أي لخبطة داخل ملفات الكود</div>
+            </div>
+          </div>
+          <label class="sc-label" data-i18n="lbl_current_ws">مسار مجلد العمل الحالي:</label>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input type="text" id="settings-ws-path" class="sc-input mono" placeholder="C:\StockNova_Workspace" />
+            <button class="sc-btn sc-btn-indigo" onclick="pickExternalWorkspace()" data-i18n="btn_browse_folder">استعراض واختيار 📁</button>
+          </div>
+          <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="saveManualWorkspacePath()" data-i18n="btn_save_path">حفظ المسار يدوياً</button>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-header">
+            <div>
+              <div class="sc-card-title" data-i18n="api_keys_title">مفاتيح Google AI Studio API (لفحص الـ 8 لقطات والـ SEO)</div>
+              <div class="sc-card-desc" data-i18n="api_keys_desc">التبديل التلقائي بين المفاتيح المجانية بدون استهلاك نقاط الفيديو</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <input type="text" id="new-key-alias" class="sc-input" placeholder="Key Alias (e.g. key_1)" style="max-width:140px;" />
+            <input type="password" id="new-key-val" class="sc-input mono" placeholder="AIzaSy..." />
+            <button class="sc-btn sc-btn-indigo" onclick="addGeminiApiKey()" data-i18n="btn_add_key">إضافة</button>
+          </div>
+          <div id="api-keys-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </div>
+      </div>
+    </div>
+
+      </main>
+    </div><!-- /.sc-sidebar-inset -->
+  </div><!-- /.sc-sidebar-provider -->
+
+  <!-- ========================================================================
+       MODAL 1: CREDIT POOL DRILL-DOWN MODAL (WHO FINISHED, WHO IS NEXT IN TURN, SHARED VS INDIVIDUAL)
+       ======================================================================== -->
+  <div id="pool-drilldown-modal" class="sc-dialog-backdrop" onclick="if(event.target===this) closePoolModal()">
+    <div class="sc-dialog">
+      <div class="sc-card-header">
+        <div>
+          <div class="sc-card-title" id="modal-pool-title">تفاصيل طابور الحسابات</div>
+          <div class="sc-card-desc" id="modal-pool-subtitle">مين خلص ومين عليه الدور في السحب</div>
+        </div>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closePoolModal()">✕</button>
+      </div>
+
+      <!-- Summary Strip Inside Modal -->
+      <div class="grid-3" style="margin-bottom:12px;">
+        <div class="sc-card" style="padding:10px;">
+          <div class="sc-card-desc" data-i18n="modal_rem_credits">الرصيد المتبقي</div>
+          <div class="kpi-num mono" id="modal-pool-rem">0</div>
+        </div>
+        <div class="sc-card" style="padding:10px;">
+          <div class="sc-card-desc" data-i18n="modal_exhausted_accs">حسابات خلصت (Exhausted)</div>
+          <div class="kpi-num mono" id="modal-pool-done">0</div>
+        </div>
+        <div class="sc-card" style="padding:10px;">
+          <div class="sc-card-desc" data-i18n="modal_avail_accs">حسابات متاحة في الدور</div>
+          <div class="kpi-num mono" id="modal-pool-avail">0</div>
+        </div>
+      </div>
+
+      <div id="modal-pool-accounts-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px;">
+        <button class="sc-btn sc-btn-indigo sc-btn-sm" onclick="closePoolModal(); openAddAccountModal();" data-i18n="btn_add_account_to_pool">➕ إضافة حساب جديد لهذه الباقة</button>
+        <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="closePoolModal()" data-i18n="btn_close">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ADD ACCOUNT -->
-  <div id="modal-add-account" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-md theme-card border theme-border rounded-2xl p-6 space-y-4">
-      <h3 class="text-sm font-bold theme-text-main">Add Google Account Profile</h3>
-      <div class="space-y-3 text-xs font-mono">
+  <!-- ========================================================================
+       MODAL 2: ADD / CONFIGURE ACCOUNT MODAL (DYNAMIC TIER, SHARED POOL, RENEWAL DAY)
+       ======================================================================== -->
+  <div id="add-account-modal" class="sc-dialog-backdrop" onclick="if(event.target===this) closeAddAccountModal()">
+    <div class="sc-dialog" style="max-width:520px;">
+      <div class="sc-card-header">
         <div>
-          <label class="block theme-text-muted mb-1">Account Name</label>
-          <input type="text" id="input-acc-name" placeholder="e.g. Primary Account" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
+          <div class="sc-card-title" data-i18n="add_acc_modal_title">إضافة / تحديث حساب Gemini & Argon</div>
+          <div class="sc-card-desc" data-i18n="add_acc_modal_desc">أدخل الإيميل وسيقوم النظام بضبط الطابور والموديلات وحساب الرصيد ديناميكياً</div>
         </div>
+        <button class="sc-btn sc-btn-ghost sc-btn-sm" onclick="closeAddAccountModal()">✕</button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
         <div>
-          <label class="block theme-text-muted mb-1">Gmail Address</label>
-          <input type="email" id="input-acc-email" placeholder="example@gmail.com" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
+          <label class="sc-label" data-i18n="lbl_email">البريد الإلكتروني (Email):</label>
+          <input type="email" id="acc-email" class="sc-input mono" placeholder="user@gmail.com" />
         </div>
-        <div class="grid grid-cols-2 gap-2">
+
+        <div class="grid-2">
           <div>
-            <label class="block theme-text-muted mb-1">Tier / Pool</label>
-            <select id="input-acc-tier" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
-              <option value="free">Free Daily (50 Pts)</option>
-              <option value="plus">Plus Pool (200 Pts)</option>
-              <option value="pro">Pro Pool (1000 Pts)</option>
-            </select>
+            <label class="sc-label" data-i18n="lbl_acc_name">اسم مميز للحساب (اختياري):</label>
+            <input type="text" id="acc-name" class="sc-input" placeholder="Main Argon / Pro 1" />
           </div>
           <div>
-            <label class="block theme-text-muted mb-1">Browser</label>
-            <select id="input-acc-browser" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
-              <option value="Chrome">Google Chrome</option>
-              <option value="Edge">Microsoft Edge</option>
+            <label class="sc-label" data-i18n="lbl_tier">الباقة (Tier):</label>
+            <select id="acc-tier" class="sc-select">
+              <option value="auto">اكتشاف ذكي تلقائي (Auto-Detect)</option>
+              <option value="free">مجاني فقط (50 نقطة يومياً)</option>
+              <option value="plus">Plus (200 نقطة شهرية + 50 يومياً)</option>
+              <option value="pro">Pro (1000 نقطة شهرية + 50 يومياً)</option>
             </select>
           </div>
         </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 text-xs">
-        <button onclick="closeModal('modal-add-account')" class="px-4 py-2 rounded-xl border theme-border theme-subtle theme-text-sub">Cancel</button>
-        <button onclick="submitAddAccount()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold">Save Account</button>
+
+        <div class="grid-2">
+          <div>
+            <label class="sc-label" data-i18n="lbl_renewal_day">يوم تجديد الاشتراك الشهري (1-31):</label>
+            <input type="number" id="acc-renewal-day" class="sc-input mono" value="24" min="1" max="31" />
+          </div>
+          <div>
+            <label class="sc-label" data-i18n="lbl_monthly_rem">الرصيد الشهري المتبقي حالياً (اختياري):</label>
+            <input type="number" id="acc-monthly-rem" class="sc-input mono" placeholder="اتركه فارغاً للرصيد الكامل (200 أو 1000)" />
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--muted);">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px;">
+            <input type="checkbox" id="acc-shared-pool" />
+            <span data-i18n="chk_shared_pool">هذا الحساب يتشارك نفس محفظة الكريديت الشهرية (Shared Pool) مع حسابات أخرى من نفس الفئة</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px;">
+            <input type="checkbox" id="acc-primary-argon" />
+            <span data-i18n="chk_primary_argon">تعيين كحساب Argon الأساسي (#1 Primary Brain) للحفاظ على الـ History</span>
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
+          <button class="sc-btn sc-btn-outline" onclick="closeAddAccountModal()" data-i18n="btn_cancel">إلغاء</button>
+          <button class="sc-btn sc-btn-indigo" onclick="submitSaveAccount()" data-i18n="btn_save_account">حفظ الحساب وتحديث الكريديت</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: IMPORT SALES CSV -->
-  <div id="modal-import-csv" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-lg theme-card border theme-border rounded-2xl p-6 space-y-4">
-      <h3 class="text-sm font-bold theme-text-main">Import Contributor Sales CSV</h3>
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block font-mono theme-text-muted mb-1">Platform</label>
-          <select id="input-sales-platform" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main font-mono focus:outline-none">
-            <option value="adobe">Adobe Stock Contributor</option>
-            <option value="freepik">Freepik Contributor</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-mono theme-text-muted mb-1">Paste CSV Content or Upload File</label>
-          <textarea id="input-sales-csv-text" rows="6" placeholder="Asset ID, Filename, Downloads, Royalties..." class="w-full p-3 rounded-xl border theme-border theme-subtle theme-text-main font-mono text-[11px] focus:outline-none focus:border-brand-500"></textarea>
-        </div>
-        <input type="file" id="input-sales-file" accept=".csv,.txt" onchange="handleSalesFile(event)" class="text-xs theme-text-sub">
-      </div>
-      <div class="flex justify-end gap-2 pt-2 text-xs">
-        <button onclick="closeModal('modal-import-csv')" class="px-4 py-2 rounded-xl border theme-border theme-subtle theme-text-sub">Cancel</button>
-        <button onclick="submitImportSalesCSV()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold">Import Sales</button>
-      </div>
-    </div>
-  </div>
+  <div id="toast-box"></div>
 
-  <!-- MODAL: MANUAL DOWNLOAD RECORD -->
-  <div id="modal-manual-download" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="w-full max-w-md theme-card border theme-border rounded-2xl p-6 space-y-4">
-      <h3 class="text-sm font-bold theme-text-main">Record Asset Sale / Download</h3>
-      <div class="space-y-3 text-xs font-mono">
-        <div>
-          <label class="block theme-text-muted mb-1">Asset Filename</label>
-          <input type="text" id="input-manual-filename" placeholder="e.g. Dim_sum_dumplings_in_steamer.jpg" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none focus:border-brand-500">
-        </div>
-        <div class="grid grid-cols-3 gap-2">
-          <div>
-            <label class="block theme-text-muted mb-1">Platform</label>
-            <select id="input-manual-platform" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none">
-              <option value="adobe">Adobe</option>
-              <option value="freepik">Freepik</option>
-            </select>
-          </div>
-          <div>
-            <label class="block theme-text-muted mb-1">Downloads</label>
-            <input type="number" id="input-manual-dl" value="1" min="1" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none">
-          </div>
-          <div>
-            <label class="block theme-text-muted mb-1">Royalties ($)</label>
-            <input type="number" id="input-manual-earn" value="0.99" step="0.01" min="0" class="w-full px-3 py-2 rounded-xl border theme-border theme-subtle theme-text-main focus:outline-none">
-          </div>
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 text-xs">
-        <button onclick="closeModal('modal-manual-download')" class="px-4 py-2 rounded-xl border theme-border theme-subtle theme-text-sub">Cancel</button>
-        <button onclick="submitManualDownload()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold">Save Record</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- JAVASCRIPT CONTROLLER -->
-  <!-- ===================================================================== -->
+  <!-- ========================================================================
+       CLIENT CONTROLLER (RPC BRIDGE, BILINGUAL I18N, CHARTS, & POOL DRILL-DOWN)
+       ======================================================================== -->
   <script>
-    // State Cache
-    let currentTab = 'dashboard';
-    let selectedExportPlatform = 'adobe';
-    let lastStateString = '';
-    let lastChartKey = '';
-    let lastStateData = null;
-    let reviewChart = null;
-    let trendsChart = null;
-    let allVaultAssets = [];
+    let APP_STATE = {};
+    let CURRENT_LANG = 'ar';
+    let pipelineChartInstance = null;
+    let creditsChartInstance = null;
 
-    // Theme Management
-    function initTheme() {
-      const savedTheme = localStorage.getItem('stocknova_theme') || 'dark';
-      applyTheme(savedTheme);
+    const I18N = {
+      ar: {
+        app_subtitle: "محرك الأتمتة الذكي لإنتاج الفيديوهات والصور",
+        sidebar_nav_label: "القائمة الرئيسية",
+        btn_ai_audit: "فحص AI اليومي",
+        btn_add_account: "إضافة حساب",
+        btn_start_shift: "تشغيل الوردية الآن",
+        tab_dashboard: "لوحة القيادة والملخص",
+        tab_pools: "الحسابات وطابور الكريديت",
+        tab_review: "مراجعة الفيديوهات والـ SEO",
+        tab_freepik: "بوابة Freepik 150",
+        tab_settings: "الإعدادات والمجلد الخارجي",
+        lbl_prod_scope: "نطاق الإنتاج:",
+        opt_videos_only: "فيديوهات فقط (بدون صور)",
+        opt_both_media: "فيديوهات + صور (2x)",
+        opt_images_only: "صور فقط (2x)",
+        btn_pick_folder: "مجلد خارجي",
+        auditor_title: "تقرير وتقييم الذكاء الاصطناعي اليومي قبل بدء العمل (Pre-Shift AI Flow Auditor)",
+        btn_recheck: "تحديث التقييم ↻",
+        kpi_shift_progress: "تقدم وردية اليوم",
+        kpi_acceptance_rate: "معدل القبول والرفض",
+        kpi_upload_pipeline: "حالة الرفع والمراجعة",
+        kpi_total_credits: "إجمالي الكريديت المتاح فعلياً",
+        pools_section_title: "محافظ الكريديت الديناميكية (اضغط على أي باقة لعرض الحسابات: مين خلص ومين عليه الدور)",
+        pools_section_desc: "الأرقام تُحسب ديناميكياً من الإيميلات التي تدخلها فقط — الأولوية #1 للـ 50 المجانية، ثم Plus 200، ثم Pro 1000.",
+        btn_test_turn: "تجربة سحب 15 نقطة ⚡",
+        btn_reset_50: "تصفير الـ 50 اليومية ↻",
+        priority_1_badge: "الأولوية #1 يومياً",
+        priority_2_badge: "الأولوية #2 (بعد المجاني)",
+        priority_3_badge: "الأولوية #3 (حسب التجديد)",
+        pool_free_title: "رصيد الـ 50 نقطة المجانية اليومية",
+        pool_plus_title: "باقة Plus الشهرية (200 نقطة)",
+        pool_pro_title: "باقة Pro الشهرية (1000 نقطة)",
+        click_for_queue: "عرض الحسابات والطابور ←",
+        chart_pipeline_title: "تحليل الإنتاج والرفع والقبول (Adobe Stock & Freepik)",
+        chart_pipeline_desc: "مقارنة الملفات المعتمدة، المرفوعة، المقبولة، والمرفوضة",
+        chart_credits_title: "توزيع واستهلاك الكريديت عبر الباقات المسجلة",
+        chart_credits_desc: "المستهلك مقابل المتبقي الفعلي في Free 50 و Plus 200 و Pro 1000",
+        per_account_bars_title: "شريط التقدم واستهلاك الكريديت لكل حساب مسجل",
+        per_account_bars_desc: "يوضح الحساب الأساسي لـ Argon، ومن أنهى حصته اليوم، ومن عليه الدور الآن",
+        accounts_mgmt_title: "إدارة حسابات Gemini / Argon وتحديد الحساب الأساسي (#1 Primary Brain)",
+        accounts_mgmt_desc: "أضف إيميلاتك وسيحدد النظام تلقائياً الباقة، وهل الرصيد مشترك أم منفصل، وأفضل موديل فيديو متاح.",
+        btn_auto_detect: "اكتشاف من المتصفح 🔍",
+        review_title: "فحص الفيديوهات (تقييم تقني 40% + استمرارية الحركة 60%) وعناوين SEO المزدوجة",
+        review_desc: "يتم استبعاد موديل الـ 100 نقطة تلقائياً، وتوليد عنوانين منفصلين لـ Adobe Stock و Freepik",
+        btn_benchmark_models: "اختيار أفضل موديل فيديو 🏆",
+        fp_title: "بوابة Freepik 150 الذكية (فحص SHA-256 بدون تكرار)",
+        fp_desc: "اختر مجلداً خارجياً ليقوم النظام بفرز أفضل 150 صورة بدقة 4MP+ بدون إعادة فحص الصور القديمة",
+        ext_folder_title: "المجلد الخارجي للعمل (خارج ملفات المشروع)",
+        ext_folder_desc: "احفظ الفيديوهات والصور في مجلد مستقل على جهازك لمنع أي لخبطة داخل ملفات الكود",
+        btn_close: "إغلاق",
+        btn_cancel: "إلغاء",
+        btn_save_account: "حفظ الحساب وتحديث الكريديت"
+      },
+      en: {
+        app_subtitle: "Autonomous Multi-Account Stock Video & Media Engine",
+        sidebar_nav_label: "Navigation",
+        btn_ai_audit: "Daily AI Audit",
+        btn_add_account: "Add Account",
+        btn_start_shift: "Start Daily Shift",
+        tab_dashboard: "Executive Dashboard",
+        tab_pools: "Accounts & Credit Queues",
+        tab_review: "Video QC & Dual SEO",
+        tab_freepik: "Freepik 150 Gate",
+        tab_settings: "Settings & External Folder",
+        lbl_prod_scope: "Production Scope:",
+        opt_videos_only: "Videos Only (No Images)",
+        opt_both_media: "Videos + Images (2x)",
+        opt_images_only: "Images Only (2x)",
+        btn_pick_folder: "External Folder",
+        auditor_title: "Daily Pre-Shift AI Flow & System Auditor",
+        btn_recheck: "Re-Run Audit ↻",
+        kpi_shift_progress: "Today's Shift Progress",
+        kpi_acceptance_rate: "Acceptance vs. Rejection",
+        kpi_upload_pipeline: "Upload & Review Pipeline",
+        kpi_total_credits: "Actual Available Credits",
+        pools_section_title: "Dynamic Credit Pools (Click any pool card to inspect accounts: Exhausted vs. Next in Turn)",
+        pools_section_desc: "100% dynamically computed from your entered emails — Priority #1: Free 50/day -> Plus 200 -> Pro 1000.",
+        btn_test_turn: "Simulate 15-pt Spend ⚡",
+        btn_reset_50: "Reset Daily 50s ↻",
+        priority_1_badge: "Priority #1 Daily",
+        priority_2_badge: "Priority #2 (Fast Burn)",
+        priority_3_badge: "Priority #3 (Renewal Paced)",
+        pool_free_title: "Daily Free 50 Credits Pool",
+        pool_plus_title: "Monthly Plus 200 Pool",
+        pool_pro_title: "Monthly Pro 1000 Pool",
+        click_for_queue: "Inspect Queue →",
+        chart_pipeline_title: "Pipeline, Upload & Acceptance Breakdown (Adobe Stock & Freepik)",
+        chart_pipeline_desc: "Comparison of Approved, Uploaded, Accepted, and Rejected assets",
+        chart_credits_title: "Credit Consumption & Remaining Quota by Tier",
+        chart_credits_desc: "Used vs. Remaining credits across registered Free 50, Plus 200, and Pro 1000 accounts",
+        per_account_bars_title: "Per-Account Credit Consumption & Live Queue Order",
+        per_account_bars_desc: "Shows Primary Argon Brain, exhausted accounts, and which account is Next in Turn",
+        accounts_mgmt_title: "Gemini / Argon Account Manager & Primary Brain Selector",
+        accounts_mgmt_desc: "Add your emails and the engine dynamically resolves tiers, shared vs. individual pools, and optimal models.",
+        btn_auto_detect: "Auto-Detect Browser 🔍",
+        review_title: "Dual-Score Video QC (40% Technical + 60% Motion Continuity) & Dual-Platform SEO",
+        review_desc: "Strictly excludes 100-credit Quality modes and generates distinct Adobe (<70) & Freepik (<100) titles",
+        btn_benchmark_models: "Benchmark Video Models 🏆",
+        fp_title: "Stateful Freepik 150 Gate (Zero Re-Inspection SHA-256 Ledger)",
+        fp_desc: "Select an external candidate folder to curate 150 4MP+ images without re-checking old files",
+        ext_folder_title: "External Workspace Folder (Outside Project Directory)",
+        ext_folder_desc: "Keep all generated videos, images, and exports in a clean user folder outside the application code",
+        btn_close: "Close",
+        btn_cancel: "Cancel",
+        btn_save_account: "Save Account & Sync Pools"
+      }
+    };
+
+    async function callBridge(method, ...args) {
+      if (window.pywebview && window.pywebview.api && typeof window.pywebview.api[method] === 'function') {
+        const raw = await window.pywebview.api[method](...args);
+        return typeof raw === 'string' ? JSON.parse(raw) : raw;
+      }
+      const res = await fetch(`/api/pywebview/${method}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ args })
+      });
+      const data = await res.json();
+      return typeof data === 'string' ? JSON.parse(data) : data;
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById('toast-box');
+      const el = document.createElement('div');
+      el.className = 'sc-toast';
+      el.textContent = msg;
+      box.appendChild(el);
+      setTimeout(() => el.remove(), 3800);
+    }
+
+    function toggleSidebar() {
+      const sb = document.getElementById('app-sidebar');
+      if (sb) sb.classList.toggle('collapsed');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.shadcn-tab-trigger').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `tab-${tabId}`);
+      });
+      const titleKeyMap = {
+        dashboard: 'tab_dashboard',
+        pools: 'tab_pools',
+        review: 'tab_review',
+        freepik: 'tab_freepik',
+        settings: 'tab_settings'
+      };
+      const titleEl = document.getElementById('current-view-title');
+      if (titleEl && titleKeyMap[tabId]) {
+        const key = titleKeyMap[tabId];
+        titleEl.setAttribute('data-i18n', key);
+        const dict = I18N[CURRENT_LANG] || {};
+        if (dict[key]) titleEl.textContent = dict[key];
+      }
     }
 
     function toggleTheme() {
-      const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      applyTheme(newTheme);
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      updateCharts(APP_STATE);
     }
 
-    function applyTheme(theme) {
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-        document.getElementById('theme-icon').textContent = '☀️';
-        document.getElementById('theme-label').textContent = 'Light';
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        document.getElementById('theme-icon').textContent = '🌙';
-        document.getElementById('theme-label').textContent = 'Dark';
-      }
-      localStorage.setItem('stocknova_theme', theme);
-
-      // Smooth chart recolor without redraw animation
-      if (reviewChart && trendsChart && lastStateData) {
-        lastChartKey = ''; // force re-skinning
-        updateCharts(
-          lastStateData.metrics.accepted_count,
-          lastStateData.metrics.rejected_count,
-          lastStateData.metrics.pending_review
-        );
-      }
-    }
-
-    // Tab Switching
-    function switchTab(tabId) {
-      currentTab = tabId;
-      const tabs = ['dashboard', 'vault', 'export', 'freepik', 'accounts', 'copilot', 'harmony'];
-      tabs.forEach(t => {
-        const el = document.getElementById('tab-' + t);
-        const nav = document.getElementById('nav-' + t);
-        if (t === tabId) {
-          if (el) el.classList.remove('hidden');
-          if (nav) nav.className = "tab-active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition duration-150";
-        } else {
-          if (el) el.classList.add('hidden');
-          if (nav) nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl theme-text-sub hover:theme-text-main hover:bg-slate-100 dark:hover:bg-slate-800 transition duration-150";
-        }
+    function toggleLanguage() {
+      CURRENT_LANG = CURRENT_LANG === 'ar' ? 'en' : 'ar';
+      document.documentElement.lang = CURRENT_LANG;
+      document.documentElement.dir = CURRENT_LANG === 'ar' ? 'rtl' : 'ltr';
+      const dict = I18N[CURRENT_LANG];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
       });
-      const titles = {
-        dashboard: 'Live Executive Dashboard',
-        vault: 'Central Asset Vault',
-        export: 'CSV & Export Studio',
-        freepik: 'Freepik 150 Golden Gate',
-        accounts: 'Accounts & API Keys Manager',
-        copilot: 'Argon 4 Strategic Copilot',
-        harmony: 'Tri-Model AI Architecture'
-      };
-      document.getElementById('top-title').textContent = titles[tabId] || 'StockNova AI';
+      renderAll(APP_STATE);
     }
 
-    // Modal Helpers
-    function openModal(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('hidden');
-      if (el) el.classList.add('flex');
-    }
-    function closeModal(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('hidden');
-      if (el) el.classList.remove('flex');
-    }
-
-    // Core Heartbeat State Sync
     async function refreshState() {
-      if (!window.pywebview || !window.pywebview.api) return;
-
       try {
-        const raw = await window.pywebview.api.get_full_state();
-        if (raw === lastStateString) {
-          return; // State completely unchanged, SKIP all DOM work!
-        }
-        lastStateString = raw;
-        const d = JSON.parse(raw);
-        lastStateData = d;
-
-        // 1. Live Activity & Ops Center
-        if (d.live_activity) {
-          const act = d.live_activity;
-          document.getElementById('ops-stage-badge').textContent = act.stage_code || 'IDLE';
-          document.getElementById('ops-stage-title').textContent = act.stage_title_en || 'System Standing By';
-          document.getElementById('ops-active-file').textContent = act.file && act.file !== 'None' ? `Processing: ${act.file}` : (act.is_finished_today ? 'Daily run complete' : 'Standing by for new media in 0_Raw_Downloads');
-          document.getElementById('ops-speed').textContent = act.upload_speed || 'Idle';
-          const pct = Math.round(act.percentage || 0);
-          document.getElementById('ops-progress-pct').textContent = pct + '%';
-          document.getElementById('ops-progress-bar').style.width = pct + '%';
-        }
-
-        // 2. Core KPIs
-        const totalReviewed = d.metrics.reviewed_total || 0;
-        if (totalReviewed === 0) {
-          document.getElementById('kpi-acceptance').textContent = '0.0%';
-          document.getElementById('kpi-acceptance-sub').textContent = '0 Reviewed (0 Acc / 0 Rej)';
-        } else {
-          const accPct = (d.metrics.acceptance_rate * 100).toFixed(1);
-          document.getElementById('kpi-acceptance').textContent = accPct + '%';
-          document.getElementById('kpi-acceptance-sub').textContent = `${d.metrics.accepted_count} Acc / ${d.metrics.rejected_count} Rej`;
-        }
-
-        // Accounts & Pools
-        const accounts = d.accounts || [];
-        const proAcc = accounts.find(a => a.tier === 'pro');
-        const plusAcc = accounts.find(a => a.tier === 'plus');
-        const freeAccs = accounts.filter(a => a.tier === 'free');
-
-        const proPool = (d.credit_pools || []).find(p => (p.tier || '').toLowerCase() === 'pro');
-        const plusPool = (d.credit_pools || []).find(p => (p.tier || '').toLowerCase() === 'plus');
-
-        if (proAcc && proPool && proPool.total_credits > 0) {
-          document.getElementById('kpi-pro-pts').textContent = `${proPool.remaining_credits} pts`;
-          document.getElementById('kpi-pro-sub').textContent = proAcc.account_name;
-        } else {
-          document.getElementById('kpi-pro-pts').textContent = '0 pts';
-          document.getElementById('kpi-pro-sub').textContent = 'Not Configured';
-        }
-
-        if (plusAcc && plusPool && plusPool.total_credits > 0) {
-          document.getElementById('kpi-plus-pts').textContent = `${plusPool.remaining_credits} pts`;
-          document.getElementById('kpi-plus-sub').textContent = plusAcc.account_name;
-        } else {
-          document.getElementById('kpi-plus-pts').textContent = '0 pts';
-          document.getElementById('kpi-plus-sub').textContent = 'Not Configured';
-        }
-
-        document.getElementById('kpi-free-accs').textContent = `${freeAccs.length} Accounts`;
-        document.getElementById('kpi-free-sub').textContent = freeAccs.length > 0 ? `${freeAccs.length * 50} pts daily` : '0 / 0 pts daily';
-
-        // Freepik Gate
-        const fpCurated = d.freepik_gate ? d.freepik_gate.curated : 0;
-        document.getElementById('kpi-fp-gate').textContent = `${fpCurated} / 150`;
-        document.getElementById('fp-gate-large').textContent = `${fpCurated} / 150`;
-        const fpPct = Math.min(100, (fpCurated / 150 * 100)).toFixed(0);
-        document.getElementById('fp-gate-progress-bar').style.width = fpPct + '%';
-
-        // API Keys
-        const keys = d.gemini_keys || [];
-        document.getElementById('kpi-keys-count').textContent = `${keys.length} Active`;
-        let totalReq = 0;
-        keys.forEach(k => { totalReq += (k.requests_today || 0); });
-        document.getElementById('kpi-keys-sub').textContent = `${totalReq} req today`;
-
-        // 3. Commercial Sales
-        if (d.downloads_analytics) {
-          const a = d.downloads_analytics;
-          document.getElementById('sales-total-downloads').textContent = a.total_downloads_all || 0;
-          document.getElementById('sales-dl-breakdown').textContent = `Adobe: ${a.adobe.downloads} | Freepik: ${a.freepik.downloads}`;
-          document.getElementById('sales-best-sellers').textContent = `${a.monetized_assets_count || 0} items`;
-          document.getElementById('sales-zero-sub').textContent = `Zero Downloads: ${a.zero_download_assets_count || 0}`;
-          document.getElementById('sales-monetization-rate').textContent = `${a.monetization_rate_pct || 0}%`;
-          document.getElementById('sales-royalties').textContent = `$${(a.total_earnings_usd || 0).toFixed(2)}`;
-          document.getElementById('sales-earnings-breakdown').textContent = `Adobe: $${a.adobe.earnings.toFixed(2)} | Freepik: $${a.freepik.earnings.toFixed(2)}`;
-        }
-
-        // 4. Folder Pipeline Counts
-        if (d.folders) {
-          document.getElementById('count-raw').textContent = d.folders.raw || 0;
-          document.getElementById('count-qc1').textContent = d.folders.qc1_approved || 0;
-          document.getElementById('count-upscaled').textContent = d.folders.upscaled || 0;
-          document.getElementById('count-qc2').textContent = d.folders.qc2_approved || 0;
-          document.getElementById('count-batched').textContent = `${d.folders.batched || 0} batches`;
-          document.getElementById('count-uploaded').textContent = `${d.folders.awaiting_submit || 0} batches`;
-          document.getElementById('top-workspace-path').textContent = d.folders.workspace_path || '';
-        }
-
-        // 5. Update Charts Smartly (ZERO Flicker)
-        updateCharts(
-          d.metrics.accepted_count || 0,
-          d.metrics.rejected_count || 0,
-          d.metrics.pending_review || 0
-        );
-
-        // 6. Platform Alerts
-        renderPlatformAlerts(d.platform_alerts || []);
-
-        // 7. Accounts & Keys Tables
-        renderAccountsTable(accounts);
-        renderKeysTable(keys);
-
-        // 8. Vault Grid
-        allVaultAssets = d.recent_assets || [];
-        renderVaultGrid(allVaultAssets);
-
+        const state = await callBridge('get_full_state');
+        APP_STATE = state || {};
+        renderAll(APP_STATE);
       } catch (err) {
-        console.error('Error refreshing state:', err);
+        console.error('State refresh error:', err);
       }
     }
 
-    // Flicker-Free Smart Charts Controller
-    function updateCharts(accepted, rejected, pending) {
-      const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#94a3b8' : '#475569';
-      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
-      const emptyColor = isDark ? '#1e293b' : '#e2e8f0';
+    function renderAll(state) {
+      if (!state || !state.credit_pools_summary) return;
+      const isAr = CURRENT_LANG === 'ar';
+      const pools = state.credit_pools_summary;
+      const freeP = pools.free_daily || {};
+      const plusP = pools.plus_200 || {};
+      const proP = pools.pro_1000 || {};
+      const prefs = state.production_preferences || {};
+      const audit = state.pre_shift_audit || {};
+      const dual = state.dual_breakdown || {};
+      const shift = (state.agent_shift && state.agent_shift.shift) || {};
 
-      const totalReviews = accepted + rejected;
-      const currentKey = `${accepted}_${rejected}_${pending}_${isDark}`;
+      // Sync quick production scope bar
+      const modeSel = document.getElementById('quick-gen-mode');
+      if (modeSel && prefs.generation_mode) modeSel.value = prefs.generation_mode;
+      const adChk = document.getElementById('quick-adobe-en');
+      if (adChk && prefs.adobe_enabled !== undefined) adChk.checked = !!prefs.adobe_enabled;
+      const fpChk = document.getElementById('quick-freepik-en');
+      if (fpChk && prefs.freepik_enabled !== undefined) fpChk.checked = !!prefs.freepik_enabled;
 
-      if (currentKey === lastChartKey) {
-        return; // Zero work needed
-      }
-      lastChartKey = currentKey;
+      // 1. Render Pre-Shift AI Auditor Banner
+      const statusBadge = document.getElementById('audit-status-badge');
+      const st = audit.flow_status || 'healthy';
+      statusBadge.textContent = st === 'healthy'
+        ? (isAr ? `الفلو سليم (${audit.health_score || 100}%)` : `Flow Healthy (${audit.health_score || 100}%)`)
+        : (st === 'warning' ? (isAr ? 'تنبيه تحسين' : 'Optimization Advisory') : (isAr ? 'يتطلب إجراء' : 'Action Required'));
+      statusBadge.className = 'sc-badge ' + (st === 'healthy' ? 'sc-badge-emerald' : (st === 'warning' ? 'sc-badge-amber' : 'sc-badge-rose'));
+      document.getElementById('audit-timestamp').textContent = audit.timestamp || '';
+      document.getElementById('audit-ai-note').textContent = isAr ? (audit.ai_note_ar || '') : (audit.ai_note_en || '');
 
-      // 1. DOUGHNUT CHART (Review Distribution)
-      const ctxRev = document.getElementById('chart-reviews').getContext('2d');
-      const revLabels = totalReviews > 0 ? ['Accepted', 'Rejected', 'Awaiting'] : ['No Reviews Yet'];
-      const revData = totalReviews > 0 ? [accepted, rejected, pending] : [1];
-      const revColors = totalReviews > 0 ? ['#10b981', '#ef4444', '#6366f1'] : [emptyColor];
+      const recContainer = document.getElementById('audit-recommendations-list');
+      recContainer.innerHTML = '';
+      (audit.recommendations || []).forEach(r => {
+        const div = document.createElement('div');
+        div.style.cssText = 'padding:6px 10px; border-radius:6px; background:var(--secondary); font-size:11.5px; display:flex; align-items:center; justify-content:space-between; gap:8px;';
+        div.innerHTML = `<span>💡 ${isAr ? r.action_ar : r.action_en}</span>`;
+        recContainer.appendChild(div);
+      });
 
-      if (!reviewChart) {
-        reviewChart = new Chart(ctxRev, {
-          type: 'doughnut',
-          data: {
-            labels: revLabels,
-            datasets: [{
-              data: revData,
-              backgroundColor: revColors,
-              borderWidth: 0
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: { color: textColor, font: { family: 'Plus Jakarta Sans', size: 10, weight: '600' } }
-              }
-            }
-          }
-        });
-      } else {
-        reviewChart.data.labels = revLabels;
-        reviewChart.data.datasets[0].data = revData;
-        reviewChart.data.datasets[0].backgroundColor = revColors;
-        reviewChart.options.plugins.legend.labels.color = textColor;
-        reviewChart.update('none'); // Update without animation flicker!
-      }
+      // 2. Render Top 4 KPIs
+      const vDone = shift.completed_videos || 0;
+      const vPlan = shift.target_videos || 0;
+      document.getElementById('kpi-shift-videos').textContent = `${vDone} / ${vPlan}`;
+      document.getElementById('kpi-shift-sub').textContent = isAr
+        ? `فيديوهات مكتملة اليوم | صور: ${shift.completed_images || 0}`
+        : `Videos done today | Images: ${shift.completed_images || 0}`;
+      document.getElementById('kpi-shift-bar').style.width = `${vPlan > 0 ? Math.min(100, Math.round(vDone / vPlan * 100)) : 0}%`;
 
-      // 2. LINE TREND CHART (Acceptance Velocity)
-      const ctxTrend = document.getElementById('chart-trends').getContext('2d');
-      const trendLabels = totalReviews > 0 ? ['Historical', 'Current'] : ['Baseline'];
-      const currentRate = totalReviews > 0 ? Math.round((accepted / totalReviews) * 100) : 0;
-      const trendData = totalReviews > 0 ? [currentRate, currentRate] : [0];
+      const accCount = (dual.adobe_accepted || 0) + (dual.freepik_accepted || 0);
+      const rejCount = (dual.adobe_rejected || 0) + (dual.freepik_rejected || 0);
+      const totDecided = accCount + rejCount;
+      const accPct = totDecided > 0 ? Math.round((accCount / totDecided) * 100) : 0;
+      document.getElementById('kpi-acceptance-pct').textContent = `${accPct}%`;
+      document.getElementById('kpi-acceptance-counts').textContent = isAr
+        ? `مقبول: ${accCount} | مرفوض: ${rejCount}`
+        : `Accepted: ${accCount} | Rejected: ${rejCount}`;
+      document.getElementById('kpi-acceptance-bar').style.width = `${accPct}%`;
+      document.getElementById('kpi-win-model-badge').textContent = (state.models && state.models.video) || 'omni flash';
 
-      if (!trendsChart) {
-        trendsChart = new Chart(ctxTrend, {
-          type: 'line',
-          data: {
-            labels: trendLabels,
-            datasets: [{
-              label: 'Acceptance Rate %',
-              data: trendData,
-              borderColor: '#10b981',
-              backgroundColor: 'rgba(16, 185, 129, 0.08)',
-              fill: true,
-              tension: 0.3,
-              borderWidth: 2,
-              pointRadius: totalReviews > 0 ? 3 : 0
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
-            scales: {
-              y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } },
-              x: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }
-            },
-            plugins: {
-              legend: { display: false }
-            }
-          }
-        });
-      } else {
-        trendsChart.data.labels = trendLabels;
-        trendsChart.data.datasets[0].data = trendData;
-        trendsChart.data.datasets[0].pointRadius = totalReviews > 0 ? 3 : 0;
-        trendsChart.options.scales.y.grid.color = gridColor;
-        trendsChart.options.scales.x.grid.color = gridColor;
-        trendsChart.options.scales.y.ticks.color = textColor;
-        trendsChart.options.scales.x.ticks.color = textColor;
-        trendsChart.update('none'); // Update without animation flicker!
-      }
+      const upCount = (dual.adobe_uploaded || 0) + (dual.freepik_uploaded || 0);
+      const readyCount = (state.folders && state.folders.qc2_approved) || 0;
+      const borderCount = (state.folders && state.folders.borderline) || 0;
+      document.getElementById('kpi-uploaded-count').textContent = `${upCount}`;
+      document.getElementById('kpi-pipeline-sub').textContent = isAr
+        ? `جاهز للرفع: ${readyCount} | مراجعة سريعة: ${borderCount}`
+        : `Ready: ${readyCount} | Borderline: ${borderCount}`;
+      document.getElementById('kpi-upload-bar').style.width = `${Math.min(100, (readyCount + upCount) * 5)}%`;
+
+      // Total available credits ( strictly 0 when 0 accounts exist! )
+      const totAvail = (freeP.remaining_today || 0) + (plusP.remaining || 0) + (proP.remaining || 0);
+      const totCap = (freeP.total_daily_capacity || 0) + (plusP.total || 0) + (proP.total || 0);
+      const totalAccs = pools.total_registered_accounts || 0;
+      document.getElementById('kpi-total-available-credits').textContent = `${totAvail}`;
+      document.getElementById('kpi-accounts-count-badge').textContent = isAr ? `${totalAccs} حسابات` : `${totalAccs} Accounts`;
+      const sbAccCount = document.getElementById('sidebar-acc-count');
+      if (sbAccCount) sbAccCount.textContent = `${totalAccs}`;
+      const nextAcc = state.agent_shift && state.agent_shift.next_credit_account;
+      document.getElementById('kpi-next-account-hint').textContent = nextAcc
+        ? (isAr ? `الدور الآن: ${nextAcc.email}` : `Next up: ${nextAcc.email}`)
+        : (totalAccs === 0 ? (isAr ? 'أضف حساباً لبدء الحساب' : 'Add an account to start') : (isAr ? 'تم استنفاد الرصيد' : 'All pools exhausted'));
+      document.getElementById('kpi-credits-bar').style.width = `${totCap > 0 ? Math.min(100, Math.round(totAvail / totCap * 100)) : 0}%`;
+
+      // 3. Render 3 Clickable Credit Pool Cards (Zero Fake Numbers!)
+      // Free 50 Pool
+      const fRem = freeP.remaining_today || 0;
+      const fTot = freeP.total_daily_capacity || 0;
+      const fUsed = freeP.used_today || 0;
+      document.getElementById('pool-free-acc-badge').textContent = isAr ? `${freeP.total_accounts || 0} حسابات` : `${freeP.total_accounts || 0} Accounts`;
+      document.getElementById('pool-free-rem').textContent = `${fRem}`;
+      document.getElementById('pool-free-tot').textContent = isAr ? `متبقي من ${fTot}` : `/ ${fTot}`;
+      document.getElementById('pool-free-used').textContent = isAr ? `المستهلك اليوم: ${fUsed}` : `Used today: ${fUsed}`;
+      document.getElementById('pool-free-bar').style.width = `${fTot > 0 ? Math.min(100, Math.round(fUsed / fTot * 100)) : 0}%`;
+      document.getElementById('pool-free-queue-summary').textContent = isAr
+        ? `خلص: ${freeP.accounts_exhausted_today || 0} | متاح في الدور: ${freeP.accounts_remaining_today || 0}`
+        : `Exhausted: ${freeP.accounts_exhausted_today || 0} | In Queue: ${freeP.accounts_remaining_today || 0}`;
+
+      // Plus 200 Pool
+      const plRem = plusP.remaining || 0;
+      const plTot = plusP.total || 0;
+      const plUsed = plusP.used || 0;
+      document.getElementById('pool-plus-acc-badge').textContent = isAr ? `${plusP.total_accounts || 0} حسابات` : `${plusP.total_accounts || 0} Accounts`;
+      document.getElementById('pool-plus-rem').textContent = `${plRem}`;
+      document.getElementById('pool-plus-tot').textContent = isAr ? `متبقي من ${plTot}` : `/ ${plTot}`;
+      document.getElementById('pool-plus-used').textContent = isAr ? `المستهلك: ${plUsed}` : `Used: ${plUsed}`;
+      document.getElementById('pool-plus-bar').style.width = `${plTot > 0 ? Math.min(100, Math.round(plUsed / plTot * 100)) : 0}%`;
+      document.getElementById('pool-plus-queue-summary').textContent = plusP.is_configured
+        ? (isAr
+            ? `خلص: ${plusP.accounts_exhausted || 0} | متاح: ${plusP.accounts_available || 0} (${plusP.is_shared_pool ? 'مشترك' : 'منفصل'})`
+            : `Done: ${plusP.accounts_exhausted || 0} | Avail: ${plusP.accounts_available || 0} (${plusP.is_shared_pool ? 'Shared' : 'Indiv'})`)
+        : (isAr ? 'لا توجد حسابات Plus مسجلة (0)' : 'No Plus accounts added (0)');
+
+      // Pro 1000 Pool
+      const prRem = proP.remaining || 0;
+      const prTot = proP.total || 0;
+      const prUsed = proP.used || 0;
+      document.getElementById('pool-pro-acc-badge').textContent = isAr ? `${proP.total_accounts || 0} حسابات` : `${proP.total_accounts || 0} Accounts`;
+      document.getElementById('pool-pro-rem').textContent = `${prRem}`;
+      document.getElementById('pool-pro-tot').textContent = isAr ? `متبقي من ${prTot}` : `/ ${prTot}`;
+      document.getElementById('pool-pro-used').textContent = isAr ? `المستهلك: ${prUsed}` : `Used: ${prUsed}`;
+      document.getElementById('pool-pro-bar').style.width = `${prTot > 0 ? Math.min(100, Math.round(prUsed / prTot * 100)) : 0}%`;
+      document.getElementById('pool-pro-queue-summary').textContent = proP.is_configured
+        ? (isAr
+            ? `خلص: ${proP.accounts_exhausted || 0} | متاح: ${proP.accounts_available || 0} (التجديد خلال ${proP.days_to_renewal} يوم)`
+            : `Done: ${proP.accounts_exhausted || 0} | Avail: ${proP.accounts_available || 0} (Renews in ${proP.days_to_renewal}d)`)
+        : (isAr ? 'لا توجد حسابات Pro مسجلة (0)' : 'No Pro accounts added (0)');
+
+      // 4. Render Per-Account Progress Bars on Dashboard & Accounts Table
+      renderPerAccountProgressBars(pools, isAr);
+      renderAccountsTable(pools, isAr);
+      renderAssetsReviewTable(state.recent_assets || [], isAr);
+      renderFreepikAndSettings(state, isAr);
+      updateCharts(state);
     }
 
-    // Platform Alerts Render
-    function renderPlatformAlerts(alerts) {
-      const box = document.getElementById('platform-alerts-container');
-      if (!alerts || alerts.length === 0) {
-        box.classList.add('hidden');
+    function renderPerAccountProgressBars(pools, isAr) {
+      const container = document.getElementById('dashboard-accounts-bars');
+      const freeQueue = (pools.free_daily && pools.free_daily.accounts_queue) || [];
+      if (freeQueue.length === 0) {
+        container.innerHTML = `
+          <div style="padding:18px; text-align:center; border:1px dashed var(--border); border-radius:8px; color:var(--muted-foreground);">
+            ${isAr
+              ? 'لا توجد حسابات مسجلة حالياً — اضغط على "إضافة حساب" لإدخال إيميلاتك (Free / Plus 200 / Pro 1000) وعرض شريط استهلاك كل حساب.'
+              : 'No accounts registered yet — Click "Add Account" to enter your emails and track per-account credit consumption.'}
+          </div>`;
         return;
       }
-      box.classList.remove('hidden');
-      box.innerHTML = alerts.map(a => `
-        <div class="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 flex items-start justify-between gap-3 text-xs">
-          <div>
-            <div class="font-bold text-red-600 dark:text-red-400 flex items-center gap-1.5">
-              <span>⚠️</span> Platform Alert: ${a.platform} (${a.account_name || 'System'})
+
+      container.innerHTML = '';
+      freeQueue.forEach(acc => {
+        const statusBadge = acc.queue_status === 'next_up'
+          ? `<span class="sc-badge sc-badge-emerald">${isAr ? '🔥 عليه الدور الآن (Next Up)' : '🔥 Next in Turn'}</span>`
+          : (acc.queue_status === 'exhausted'
+              ? `<span class="sc-badge sc-badge-rose">${isAr ? '✖ خلص الـ 50 اليوم' : '✖ Exhausted Today'}</span>`
+              : `<span class="sc-badge sc-badge-cyan">${isAr ? '⏳ في الطابور (متاح)' : '⏳ Waiting in Queue'}</span>`);
+
+        const primaryBadge = acc.is_primary_argon
+          ? `<span class="sc-badge sc-badge-indigo">${isAr ? '🧠 حساب Argon الأساسي' : '🧠 Primary Argon Brain'}</span>`
+          : '';
+
+        const row = document.createElement('div');
+        row.className = `acc-row ${acc.queue_status === 'next_up' ? 'next-up' : (acc.queue_status === 'exhausted' ? 'exhausted' : '')}`;
+        row.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="mono" style="font-weight:700;">#${acc.queue_position}</span>
+              <span style="font-weight:600;">${acc.email}</span>
+              <span class="sc-badge">${acc.tier.toUpperCase()}</span>
+              ${primaryBadge}
+              ${statusBadge}
             </div>
-            <p class="text-red-700 dark:text-red-300 mt-0.5">${a.error_message}</p>
-            ${a.action_hint ? `<div class="text-[11px] font-mono text-amber-600 dark:text-amber-400 mt-1">Required Action: ${a.action_hint}</div>` : ''}
-          </div>
-          <button onclick="resolveAlert(${a.id})" class="px-2.5 py-1 rounded bg-red-600 hover:bg-red-500 text-white font-mono text-[10px]">Dismiss</button>
-        </div>
-      `).join('');
-    }
-
-    // Accounts Table Render
-    function renderAccountsTable(accounts) {
-      const tbody = document.getElementById('accounts-table-body');
-      if (!accounts || accounts.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center theme-text-muted font-sans">No accounts configured yet. Click "Scan Local Profiles" or "Add Account" to configure.</td></tr>';
-        return;
-      }
-      tbody.innerHTML = accounts.map(a => `
-        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/40 transition">
-          <td class="p-2.5 font-semibold theme-text-main">${a.account_name || a.profile_name}</td>
-          <td class="p-2.5 theme-text-sub">${a.email || 'None'}</td>
-          <td class="p-2.5 theme-text-muted">${a.browser || 'Chrome'} (${a.profile_dir || 'Default'})</td>
-          <td class="p-2.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.tier === 'pro' ? 'bg-indigo-950 text-indigo-400' : (a.tier === 'plus' ? 'bg-amber-950 text-amber-400' : 'bg-emerald-950 text-emerald-400')}">
-              ${(a.tier || 'free').toUpperCase()}
-            </span>
-          </td>
-          <td class="p-2.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.enabled ? 'text-emerald-500' : 'text-gray-400'}">
-              ${a.enabled ? 'ACTIVE' : 'DISABLED'}
-            </span>
-          </td>
-          <td class="p-2.5 text-right">
-            <button onclick="deleteAccount('${a.profile_name}')" class="px-2 py-1 rounded border border-red-500/30 hover:bg-red-500/20 text-red-500 text-[10px]">Delete</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // Keys Table Render
-    function renderKeysTable(keys) {
-      const tbody = document.getElementById('keys-table-body');
-      if (!keys || keys.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center theme-text-muted font-sans">No API keys configured yet.</td></tr>';
-        return;
-      }
-      tbody.innerHTML = keys.map(k => `
-        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/40 transition">
-          <td class="p-2.5 font-semibold theme-text-main">${k.key_alias}</td>
-          <td class="p-2.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${k.status === 'active' ? 'text-emerald-500' : 'text-amber-500'}">
-              ${k.status.toUpperCase()}
-            </span>
-          </td>
-          <td class="p-2.5 theme-text-muted">${k.requests_today || 0} calls</td>
-          <td class="p-2.5 text-right space-x-1">
-            <button onclick="testKey('${k.key_alias}')" class="px-2 py-1 rounded border theme-border theme-subtle hover:bg-slate-200 dark:hover:bg-slate-800 text-[10px] theme-text-main">Test</button>
-            <button onclick="deleteKey('${k.key_alias}')" class="px-2 py-1 rounded border border-red-500/30 hover:bg-red-500/20 text-red-500 text-[10px]">Delete</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // Vault Grid Render
-    function renderVaultGrid(assets) {
-      const container = document.getElementById('vault-grid');
-      if (!assets || assets.length === 0) {
-        container.innerHTML = '<div class="col-span-full p-8 text-center theme-text-muted font-sans">No assets in vault yet.</div>';
-        return;
-      }
-      container.innerHTML = assets.map(a => `
-        <div class="p-2.5 rounded-xl border theme-border theme-card space-y-2 hover:border-brand-500 transition">
-          <div class="w-full h-24 rounded-lg theme-subtle flex items-center justify-center overflow-hidden border theme-border">
-            <span class="text-2xl">${a.asset_type === 'video' ? '🎬' : '🖼️'}</span>
-          </div>
-          <div class="space-y-0.5">
-            <div class="text-xs font-semibold theme-text-main truncate" title="${a.filename}">${a.filename}</div>
-            <div class="flex items-center justify-between text-[10px] font-mono theme-text-muted">
-              <span>${a.category || 'Food (7)'}</span>
-              <span class="text-emerald-500 font-bold">4K 2x</span>
+            <div class="mono" style="font-size:11.5px;">
+              ${isAr ? `الـ 50 اليومية: مستهلك ${acc.used} / متبقي ${acc.remaining}` : `Daily 50: Used ${acc.used} / Left ${acc.remaining}`}
             </div>
           </div>
-        </div>
-      `).join('');
-    }
-
-    function filterVault() {
-      const query = (document.getElementById('vault-search-input').value || '').toLowerCase();
-      const statusFilter = document.getElementById('vault-filter-status').value;
-      const filtered = allVaultAssets.filter(a => {
-        const matchesQuery = !query || (a.filename || '').toLowerCase().includes(query);
-        const matchesStatus = statusFilter === 'ALL' || a.status === statusFilter;
-        return matchesQuery && matchesStatus;
+          <div class="sc-progress">
+            <div class="sc-progress-bar" style="width:${acc.usage_pct}%; background:${acc.queue_status === 'exhausted' ? '#f43f5e' : '#10b981'};"></div>
+          </div>
+        `;
+        container.appendChild(row);
       });
-      renderVaultGrid(filtered);
     }
 
-    // Export Platform Selection
-    function selectExportPlatform(platform) {
-      selectedExportPlatform = platform;
-      document.getElementById('radio-platform-adobe').checked = (platform === 'adobe');
-      document.getElementById('radio-platform-freepik').checked = (platform === 'freepik');
-    }
+    // ==========================================================================
+    // INTERACTIVE POOL DRILL-DOWN MODAL (SHOWS EXHAUSTED, NEXT UP, WAITING)
+    // ==========================================================================
+    function openPoolDrilldownModal(poolKey) {
+      const isAr = CURRENT_LANG === 'ar';
+      const pools = (APP_STATE && APP_STATE.credit_pools_summary) || {};
+      const poolData = pools[poolKey] || {};
+      const queue = poolData.accounts_queue || [];
 
-    // Generate CSV
-    async function generateCSV() {
-      const btn = document.getElementById('btn-generate-csv');
-      btn.disabled = true;
-      btn.innerText = 'Generating CSV...';
-      try {
-        const batchChoice = document.getElementById('export-batch-select').value;
-        const resRaw = await window.pywebview.api.export_batch_csv(selectedExportPlatform, batchChoice);
-        const res = JSON.parse(resRaw);
-
-        if (res.status === 'success') {
-          document.getElementById('csv-preview-badge').textContent = `${res.total_exported} rows (${selectedExportPlatform.toUpperCase()})`;
-          document.getElementById('csv-file-path').textContent = res.path;
-
-          const tbody = document.getElementById('csv-preview-body');
-          tbody.innerHTML = res.rows.map(r => `
-            <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/40 transition">
-              <td class="p-2.5 font-semibold theme-text-main truncate max-w-[150px]">${r.filename}</td>
-              <td class="p-2.5 theme-text-sub truncate max-w-[180px]" title="${r.title}">${r.title}</td>
-              <td class="p-2.5 whitespace-nowrap">
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${selectedExportPlatform === 'adobe' ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'}">
-                  ${selectedExportPlatform === 'adobe' ? (r.category || 'Cat 7: Food') : 'Photos (AI)'}
-                </span>
-              </td>
-              <td class="p-2.5 theme-text-muted truncate max-w-xs" title="${r.keywords}">${r.keywords}</td>
-              <td class="p-2.5 whitespace-nowrap">
-                <span class="text-[10px] font-mono ${selectedExportPlatform === 'adobe' ? 'text-emerald-500' : 'text-amber-500'}">
-                  ${selectedExportPlatform === 'adobe' ? 'Adobe (,)' : 'Freepik (;)'}
-                </span>
-              </td>
-            </tr>
-          `).join('');
-
-          alert(`✓ ${selectedExportPlatform.toUpperCase()} CSV Generated Successfully!\nPath: ${res.path}`);
-        } else {
-          alert('Export Error: ' + res.message);
-        }
-      } catch (err) {
-        alert('Exception: ' + err);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<span>📥</span> Generate Platform CSV';
-      }
-    }
-
-    // Backend Actions
-    async function openFolder(type) {
-      if (window.pywebview && window.pywebview.api) {
-        await window.pywebview.api.open_folder_in_explorer(type);
-      }
-    }
-
-    async function runPipelineCycle() {
-      const btn = document.getElementById('btn-run-pipeline');
-      btn.disabled = true;
-      btn.innerText = 'Starting...';
-      try {
-        await window.pywebview.api.run_pipeline_cycle();
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<span>⚡</span> Run Pipeline';
-        setTimeout(refreshState, 1000);
-      }
-    }
-
-    async function detectBrowserAccounts() {
-      if (window.pywebview && window.pywebview.api) {
-        const res = await window.pywebview.api.auto_detect_browser_accounts();
-        alert('Scan Complete: ' + JSON.parse(res).message);
-        refreshState();
-      }
-    }
-
-    async function submitAddAccount() {
-      const name = document.getElementById('input-acc-name').value.trim();
-      const email = document.getElementById('input-acc-email').value.trim();
-      const tier = document.getElementById('input-acc-tier').value;
-      const browser = document.getElementById('input-acc-browser').value;
-      if (!name) return alert('Please enter an account name.');
-      await window.pywebview.api.save_google_account({
-        profile_name: name.replace(/\s+/g, '_'),
-        account_name: name,
-        email: email,
-        tier: tier,
-        browser: browser,
-        profile_dir: 'Default',
-        enabled: true
-      });
-      closeModal('modal-add-account');
-      refreshState();
-    }
-
-    async function deleteAccount(profileName) {
-      if (!confirm(`Delete account ${profileName}?`)) return;
-      await window.pywebview.api.delete_google_account(profileName);
-      refreshState();
-    }
-
-    async function submitAddKey() {
-      const alias = document.getElementById('input-key-alias').value.trim();
-      const key = document.getElementById('input-api-key').value.trim();
-      if (!alias || !key) return alert('Please fill in both key alias and API key.');
-      await window.pywebview.api.add_gemini_key(alias, key);
-      closeModal('modal-add-key');
-      refreshState();
-    }
-
-    async function testKey(alias) {
-      const resRaw = await window.pywebview.api.test_gemini_key(alias);
-      alert('Key Test Result: ' + JSON.parse(resRaw).message);
-      refreshState();
-    }
-
-    async function deleteKey(alias) {
-      if (!confirm(`Delete key ${alias}?`)) return;
-      await window.pywebview.api.delete_gemini_key(alias);
-      refreshState();
-    }
-
-    async function resolveAlert(alertId) {
-      await window.pywebview.api.resolve_alert(alertId);
-      refreshState();
-    }
-
-    async function submitImportSalesCSV() {
-      const platform = document.getElementById('input-sales-platform').value;
-      const csvText = document.getElementById('input-sales-csv-text').value.trim();
-      if (!csvText) return alert('Please paste CSV content.');
-      const resRaw = await window.pywebview.api.import_sales_report_csv(platform, csvText);
-      alert(JSON.parse(resRaw).message);
-      closeModal('modal-import-csv');
-      refreshState();
-    }
-
-    function handleSalesFile(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.getElementById('input-sales-csv-text').value = evt.target.result;
+      const titleMap = {
+        free_daily: isAr ? 'طابور حسابات الـ 50 نقطة المجانية اليومية' : 'Daily Free 50-Point Pool Queue',
+        plus_200: isAr ? 'طابور حسابات باقة Plus الشهرية (200 نقطة)' : 'Monthly Plus 200-Point Pool Queue',
+        pro_1000: isAr ? 'طابور حسابات باقة Pro الشهرية (1000 نقطة)' : 'Monthly Pro 1000-Point Pool Queue'
       };
-      reader.readAsText(file);
-    }
 
-    async function submitManualDownload() {
-      const filename = document.getElementById('input-manual-filename').value.trim();
-      const platform = document.getElementById('input-manual-platform').value;
-      const dl = parseInt(document.getElementById('input-manual-dl').value) || 1;
-      const earn = parseFloat(document.getElementById('input-manual-earn').value) || 0.0;
-      if (!filename) return alert('Please specify filename.');
-      await window.pywebview.api.record_manual_downloads(filename, platform, dl, earn);
-      closeModal('modal-manual-download');
-      refreshState();
-    }
+      document.getElementById('modal-pool-title').textContent = titleMap[poolKey] || poolKey;
+      document.getElementById('modal-pool-subtitle').textContent = poolKey === 'free_daily'
+        ? (isAr ? 'يفتح النظام كل الحسابات بالترتيب لإنهاء الـ 50 نقطة اليومية أولاً قبل الانتقال للباقات الشهرية' : 'The engine consumes 50 daily free points across all accounts in order before touching monthly pools')
+        : (isAr
+            ? `نوع المحفظة: ${poolData.is_shared_pool ? 'رصيد مشترك بين الإيميلات (Shared Pool)' : 'رصيد منفصل لكل إيميل (Individual Quota)'}`
+            : `Pool Mode: ${poolData.is_shared_pool ? 'Shared Pool across emails' : 'Individual Quota per email'}`);
 
-    // =========================================================================
-    // INTERACTIVE ONBOARDING TOUR CONTROLLER
-    // =========================================================================
-    let currentTourStep = 1;
-    const tourSteps = [
-      {
-        step: 1,
-        icon: '🚀',
-        tag: 'Step 1 of 6: Overview',
-        title: 'How StockNova AI Works',
-        desc: 'StockNova AI is your automated stock media pipeline. It bridges the gap between AI generation and contributor portals by automating visual QC inspection, 2x upscaling, anti-similarity batching, and official CSV generation.',
-        tipTitle: 'What the engine does:',
-        tipDesc: 'You don\'t need to manually rename files, tag SEO keywords, or calculate aspect ratios. Drop raw media in and let the engine automate the workflow.',
-        actionTab: 'dashboard'
-      },
-      {
-        step: 2,
-        icon: '🔑',
-        tag: 'Step 2 of 6: API Keys & Accounts',
-        title: 'Where to Add Your Google AI Studio Key',
-        desc: 'StockNova uses Google Gemini models for visual inspection (QC) and generating 45-50 commercial SEO keywords and titles. Add at least one free Gemini API key to begin.',
-        tipTitle: 'How to add your key:',
-        tipDesc: 'Go to the "Accounts & Keys" tab, click "+ Add API Key", paste your key (AIzaSy...), and click Save. You can also link your browser profiles.',
-        actionTab: 'accounts'
-      },
-      {
-        step: 3,
-        icon: '📥',
-        tag: 'Step 3 of 6: Ingestion Zone',
-        title: 'Where to Place Your Raw Generated Media',
-        desc: 'When you generate images or 10-second videos with ImageFX, Midjourney, or Veo, save them in workspace/0_Raw_Downloads.',
-        tipTitle: 'Filenames are auto-sanitized:',
-        tipDesc: 'Do not worry about messy timestamps or hashes. The engine automatically sanitizes names into clean commercial stock titles (e.g. modern_villa_exterior.jpg).',
-        actionTab: 'dashboard'
-      },
-      {
-        step: 4,
-        icon: '🔬',
-        tag: 'Step 4 of 6: Quality Control & 2x 4K Upscale',
-        title: 'Strict Quality Standards (2x 4K Standard)',
-        desc: 'Stage 1 checks visual coherence before upscaling. Then Upscayl CLI performs a strict 2x upscale to produce optimal ~17 MP commercial 4K files without file bloat. Stage 2 checks 100% crop sharpness.',
-        tipTitle: 'Why 2x instead of 4x?',
-        tipDesc: '2x scaling creates crisp 16-17 MP files (8-14 MB). 4x causes file bloat (>50 MB) and AI interpolation blur, which leads to commercial rejection.',
-        actionTab: 'vault'
-      },
-      {
-        step: 5,
-        icon: '📋',
-        tag: 'Step 5 of 6: Multi-Platform CSV Studio',
-        title: 'Exporting Compliant Metadata for Adobe & Freepik',
-        desc: 'Both platforms have completely different CSV specifications. StockNova handles them with 1-click late binding:',
-        tipTitle: 'The differences handled for you:',
-        tipDesc: '• Adobe Stock: Comma-delimited (,) with official numeric Category IDs (1-21).\n• Freepik: Semicolon-delimited (;) with mandatory _ai_generated tag and photo-only filtering.',
-        actionTab: 'export'
-      },
-      {
-        step: 6,
-        icon: '📈',
-        tag: 'Step 6 of 6: Commercial Demand & Sales Tracking',
-        title: 'Track Downloads, Royalties & Buyer Demand',
-        desc: 'Once your assets are accepted on Adobe Stock or Freepik, export your contributor sales report CSV and click "Import Sales CSV" on the Dashboard.',
-        tipTitle: 'Self-Evolving Strategy:',
-        tipDesc: 'The dashboard will evaluate which niches are your Best Sellers vs Zero Downloads and advise you which subjects to double down on.',
-        actionTab: 'dashboard'
-      }
-    ];
+      const rem = poolKey === 'free_daily' ? (poolData.remaining_today || 0) : (poolData.remaining || 0);
+      const doneCnt = poolKey === 'free_daily' ? (poolData.accounts_exhausted_today || 0) : (poolData.accounts_exhausted || 0);
+      const availCnt = poolKey === 'free_daily' ? (poolData.accounts_remaining_today || 0) : (poolData.accounts_available || 0);
 
-    function startOnboardingTour(stepNumber = 1) {
-      currentTourStep = stepNumber;
-      renderTourStep(currentTourStep);
-      openModal('modal-onboarding');
-    }
+      document.getElementById('modal-pool-rem').textContent = `${rem}`;
+      document.getElementById('modal-pool-done').textContent = `${doneCnt}`;
+      document.getElementById('modal-pool-avail').textContent = `${availCnt}`;
 
-    function renderTourStep(stepNum) {
-      const stepData = tourSteps.find(s => s.step === stepNum) || tourSteps[0];
-      document.getElementById('tour-step-counter').textContent = `Step ${stepData.step} of ${tourSteps.length}`;
-      document.getElementById('tour-icon').textContent = stepData.icon;
-      document.getElementById('tour-highlight-tag').textContent = stepData.tag;
-      document.getElementById('tour-title').textContent = stepData.title;
-      document.getElementById('tour-desc').textContent = stepData.desc;
-      document.getElementById('tour-tip-title').textContent = stepData.tipTitle;
-      document.getElementById('tour-tip-desc').textContent = stepData.tipDesc;
+      const listEl = document.getElementById('modal-pool-accounts-list');
+      listEl.innerHTML = '';
 
-      // Update Dots
-      const dotsContainer = document.getElementById('tour-dots');
-      dotsContainer.innerHTML = tourSteps.map(s => `
-        <span class="w-2.5 h-2.5 rounded-full transition-colors ${s.step === stepNum ? 'bg-brand-500 scale-110' : 'bg-slate-300 dark:bg-slate-700'}"></span>
-      `).join('');
-
-      // Controls
-      document.getElementById('tour-prev-btn').disabled = (stepNum === 1);
-      const nextBtn = document.getElementById('tour-next-btn');
-      if (stepNum === tourSteps.length) {
-        nextBtn.innerHTML = '<span>Finish Tour</span> <span>✓</span>';
+      if (queue.length === 0) {
+        listEl.innerHTML = `
+          <div style="padding:20px; text-align:center; border:1px dashed var(--border); border-radius:8px; color:var(--muted-foreground);">
+            ${isAr
+              ? 'لا توجد حسابات مسجلة في هذه الباقة حتى الآن (الرصيد الفعلي = 0). اضغط على زر إضافة حساب بالأسفل لإدخال إيميلاتك.'
+              : 'No accounts registered in this pool yet (Actual balance = 0). Click Add Account below to register your emails.'}
+          </div>`;
       } else {
-        nextBtn.innerHTML = '<span>Next</span> <span>→</span>';
+        queue.forEach(item => {
+          const stBadge = item.queue_status === 'next_up'
+            ? `<span class="sc-badge sc-badge-emerald">${isAr ? '🔥 عليه الدور الآن (Next Up)' : '🔥 Next in Turn'}</span>`
+            : (item.queue_status === 'exhausted'
+                ? `<span class="sc-badge sc-badge-rose">${isAr ? '✖ خلص رصيده (Exhausted)' : '✖ Exhausted'}</span>`
+                : `<span class="sc-badge sc-badge-cyan">${isAr ? '⏳ منتظر في الدور (Waiting)' : '⏳ Waiting in Queue'}</span>`);
+
+          const sharedTag = item.is_shared_pool !== undefined
+            ? `<span class="sc-badge">${item.is_shared_pool ? (isAr ? 'مشترك Shared' : 'Shared') : (isAr ? 'منفصل Individual' : 'Individual')}</span>`
+            : '';
+
+          const renewalTag = item.days_to_renewal
+            ? `<span class="sc-card-desc mono">${isAr ? `يتجدد يوم ${item.renewal_day} (باقي ${item.days_to_renewal} يوم)` : `Renews day ${item.renewal_day} (${item.days_to_renewal}d left)`}</span>`
+            : '';
+
+          const card = document.createElement('div');
+          card.className = `acc-row ${item.queue_status === 'next_up' ? 'next-up' : (item.queue_status === 'exhausted' ? 'exhausted' : '')}`;
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="mono" style="font-weight:700;">#${item.queue_position}</span>
+                <span style="font-weight:600;">${item.email}</span>
+                ${sharedTag}
+                ${stBadge}
+              </div>
+              <div class="mono" style="font-weight:600;">
+                ${isAr ? `متبقي: ${item.remaining} من ${item.limit} (مستهلك: ${item.used})` : `Remaining: ${item.remaining} / ${item.limit} (Used: ${item.used})`}
+              </div>
+            </div>
+            <div class="sc-progress">
+              <div class="sc-progress-bar" style="width:${item.usage_pct}%; background:${item.queue_status === 'exhausted' ? '#f43f5e' : '#10b981'};"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;" class="sc-card-desc">
+              <span>${isAr ? 'أفضل موديلات مدعومة:' : 'Best Models:'} ${(item.detected_models || []).join(', ')}</span>
+              ${renewalTag}
+            </div>
+          `;
+          listEl.appendChild(card);
+        });
       }
 
-      // Auto-switch to relevant tab in the background to show context
-      if (stepData.actionTab) {
-        switchTab(stepData.actionTab);
+      document.getElementById('pool-drilldown-modal').classList.add('open');
+    }
+
+    function closePoolModal() {
+      document.getElementById('pool-drilldown-modal').classList.remove('open');
+    }
+
+    function openAddAccountModal() {
+      document.getElementById('add-account-modal').classList.add('open');
+    }
+
+    function closeAddAccountModal() {
+      document.getElementById('add-account-modal').classList.remove('open');
+    }
+
+    async function submitSaveAccount() {
+      const email = document.getElementById('acc-email').value.trim();
+      const name = document.getElementById('acc-name').value.trim();
+      const tier = document.getElementById('acc-tier').value;
+      const renewalDay = parseInt(document.getElementById('acc-renewal-day').value || '24', 10);
+      const monthlyRem = document.getElementById('acc-monthly-rem').value.trim();
+      const isShared = document.getElementById('acc-shared-pool').checked;
+      const isPrimary = document.getElementById('acc-primary-argon').checked;
+
+      if (!email) {
+        showToast(CURRENT_LANG === 'ar' ? 'يرجى إدخال البريد الإلكتروني أولاً' : 'Please enter an email address');
+        return;
+      }
+
+      const res = await callBridge('save_google_account', {
+        email,
+        account_name: name || email.split('@')[0],
+        tier,
+        renewal_day: renewalDay,
+        monthly_remaining: monthlyRem !== '' ? parseInt(monthlyRem, 10) : null,
+        is_shared_pool: isShared,
+        is_primary_argon: isPrimary
+      });
+      showToast(res.message || 'Account saved');
+      closeAddAccountModal();
+      document.getElementById('acc-email').value = '';
+      document.getElementById('acc-name').value = '';
+      document.getElementById('acc-monthly-rem').value = '';
+      await refreshState();
+    }
+
+    function renderAccountsTable(pools, isAr) {
+      const tbody = document.getElementById('accounts-table-body');
+      const accs = pools.accounts || [];
+      if (accs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:18px; color:var(--muted-foreground);">${isAr ? 'لم يتم إضافة أي حسابات بعد.' : 'No accounts added yet.'}</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = '';
+      accs.forEach(a => {
+        const tr = document.createElement('tr');
+        const lim50 = a.daily_video_credits_limit || 50;
+        const used50 = a.daily_video_credits_used || 0;
+        const mLim = a.monthly_credits_limit || 0;
+        const mRem = a.monthly_credits_remaining || 0;
+        tr.innerHTML = `
+          <td>
+            <div style="font-weight:600;">${a.email || a.profile_name}</div>
+            ${a.is_primary_argon ? `<span class="sc-badge sc-badge-indigo">${isAr ? 'الأساسي #1 Argon' : '#1 Primary Argon'}</span>` : ''}
+          </td>
+          <td><span class="sc-badge">${(a.tier || 'free').toUpperCase()}</span></td>
+          <td>${a.is_shared_pool ? (isAr ? 'مشترك (Shared)' : 'Shared Pool') : (isAr ? 'منفصل (Individual)' : 'Individual')}</td>
+          <td class="mono">${Math.max(0, lim50 - used50)} / ${lim50}</td>
+          <td class="mono">${mLim > 0 ? `${mRem} / ${mLim}` : '—'}</td>
+          <td class="mono">${mLim > 0 ? (isAr ? `يوم ${a.renewal_day || 24}` : `Day ${a.renewal_day || 24}`) : '—'}</td>
+          <td style="font-size:11px;">${a.detected_models || 'omni flash'}</td>
+          <td>
+            <div style="display:flex; gap:4px;">
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="setPrimaryArgon('${a.profile_name}')">${isAr ? 'تعيين كأساسي' : 'Set Primary'}</button>
+              <button class="sc-btn sc-btn-ghost sc-btn-sm" style="color:#f43f5e;" onclick="removeAccount('${a.profile_name}')">✕</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAssetsReviewTable(assets, isAr) {
+      const tbody = document.getElementById('assets-review-tbody');
+      if (!assets || assets.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted-foreground);">${isAr ? 'لا توجد فيديوهات أو ملفات مفحوصة بعد.' : 'No inspected assets in database yet.'}</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = '';
+      assets.slice(0, 25).forEach(item => {
+        const tech = item.technical_score !== undefined && item.technical_score !== null ? item.technical_score : (item.qc_score || 85);
+        const motion = item.motion_continuity_score !== undefined && item.motion_continuity_score !== null ? item.motion_continuity_score : (item.qc_score || 85);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="mono" style="font-weight:600;">${item.filename}</td>
+          <td>
+            <span class="sc-badge">${item.asset_type}</span>
+            <span class="sc-card-desc mono">${item.model_used || 'omni flash'}</span>
+          </td>
+          <td class="mono">
+            Tech: <b>${tech}</b> | Motion: <b>${motion}</b>
+          </td>
+          <td style="max-width:210px;">${item.adobe_title || item.seo_title || '—'}</td>
+          <td style="max-width:220px;">${item.freepik_title || item.seo_title || '—'}</td>
+          <td>
+            <div style="display:flex; gap:4px; align-items:center;">
+              <span class="sc-badge ${item.qc_tier === 'approved' ? 'sc-badge-emerald' : (item.qc_tier === 'borderline' ? 'sc-badge-amber' : 'sc-badge-rose')}">${item.qc_tier || item.status}</span>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="overrideAsset('${item.filename}', 'approve')">✓</button>
+              <button class="sc-btn sc-btn-outline sc-btn-sm" onclick="overrideAsset('${item.filename}', 'reject')">✕</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderFreepikAndSettings(state, isAr) {
+      const fp = state.freepik_gate || {};
+      document.getElementById('fp-curated-num').textContent = `${fp.curated || 0} / ${fp.target || 150}`;
+      document.getElementById('fp-inspected-num').textContent = `${fp.total_ever_inspected || 0}`;
+      document.getElementById('fp-folder-label').textContent = fp.source_folder || '--';
+
+      const wsInput = document.getElementById('settings-ws-path');
+      if (wsInput && state.folders && state.folders.workspace_path && document.activeElement !== wsInput) {
+        wsInput.value = state.folders.workspace_path;
+      }
+
+      const keysList = document.getElementById('api-keys-list');
+      keysList.innerHTML = '';
+      (state.gemini_keys || []).forEach(k => {
+        const d = document.createElement('div');
+        d.style.cssText = 'display:flex; justify-content:space-between; padding:6px 10px; border:1px solid var(--border); border-radius:6px;';
+        d.innerHTML = `<span class="mono"><b>${k.key_alias}</b> (${k.api_key})</span><span class="sc-badge sc-badge-emerald">${k.status}</span>`;
+        keysList.appendChild(d);
+      });
+    }
+
+    // ==========================================================================
+    // SMART CHARTS (CHART.JS)
+    // ==========================================================================
+    function updateCharts(state) {
+      if (!window.Chart || !state || !state.credit_pools_summary) return;
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#a1a1aa' : '#52525b';
+      const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+      const isAr = CURRENT_LANG === 'ar';
+
+      const dual = state.dual_breakdown || {};
+      const pools = state.credit_pools_summary || {};
+      const freeP = pools.free_daily || {};
+      const plusP = pools.plus_200 || {};
+      const proP = pools.pro_1000 || {};
+
+      // Chart 1: Pipeline & Acceptance
+      const ctx1 = document.getElementById('pipelineChart');
+      if (ctx1) {
+        const labels1 = isAr
+          ? ['معتمد جاهز', 'مرفوع Adobe', 'مقبول Adobe', 'مرفوض Adobe', 'مقبول Freepik']
+          : ['Ready Vault', 'Adobe Uploaded', 'Adobe Accepted', 'Adobe Rejected', 'Freepik Accepted'];
+        const data1 = [
+          dual.adobe_pending_ready || 0,
+          dual.adobe_uploaded || 0,
+          dual.adobe_accepted || 0,
+          dual.adobe_rejected || 0,
+          dual.freepik_accepted || 0
+        ];
+        if (pipelineChartInstance) pipelineChartInstance.destroy();
+        pipelineChartInstance = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: labels1,
+            datasets: [{
+              label: isAr ? 'عدد الملفات' : 'Assets',
+              data: data1,
+              backgroundColor: ['#6366f1', '#06b6d4', '#10b981', '#f43f5e', '#f59e0b'],
+              borderRadius: 5
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
+              y: { beginAtZero: true, ticks: { color: textColor, precision: 0 }, grid: { color: gridColor } }
+            }
+          }
+        });
+      }
+
+      // Chart 2: Credit Pools Used vs Remaining
+      const ctx2 = document.getElementById('creditsChart');
+      if (ctx2) {
+        const labels2 = ['Free 50/day', 'Plus 200', 'Pro 1000'];
+        const remData = [freeP.remaining_today || 0, plusP.remaining || 0, proP.remaining || 0];
+        const usedData = [freeP.used_today || 0, plusP.used || 0, proP.used || 0];
+        if (creditsChartInstance) creditsChartInstance.destroy();
+        creditsChartInstance = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labels2,
+            datasets: [
+              {
+                label: isAr ? 'المتبقي الفعلي' : 'Remaining',
+                data: remData,
+                backgroundColor: '#10b981',
+                borderRadius: 5
+              },
+              {
+                label: isAr ? 'المستهلك' : 'Used',
+                data: usedData,
+                backgroundColor: '#6366f1',
+                borderRadius: 5
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+            scales: {
+              x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
+              y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: gridColor } }
+            }
+          }
+        });
       }
     }
 
-    function nextTourStep() {
-      if (currentTourStep < tourSteps.length) {
-        currentTourStep++;
-        renderTourStep(currentTourStep);
-      } else {
-        closeOnboardingTour();
+    // ==========================================================================
+    // ACTIONS & RPC HANDLERS
+    // ==========================================================================
+    async function runPreShiftAuditNow() {
+      const res = await callBridge('run_pre_shift_audit');
+      if (res && res.audit) {
+        APP_STATE.pre_shift_audit = res.audit;
+        renderAll(APP_STATE);
+        showToast(CURRENT_LANG === 'ar' ? 'تم تحديث التقييم الذكي اليومي للفلو' : 'Daily Pre-Shift AI Audit updated');
       }
     }
 
-    function prevTourStep() {
-      if (currentTourStep > 1) {
-        currentTourStep--;
-        renderTourStep(currentTourStep);
+    async function saveQuickProductionScope() {
+      const mode = document.getElementById('quick-gen-mode').value;
+      const adobeEn = document.getElementById('quick-adobe-en').checked;
+      const freepikEn = document.getElementById('quick-freepik-en').checked;
+      const res = await callBridge('update_production_preferences', {
+        generation_mode: mode,
+        adobe_enabled: adobeEn,
+        freepik_enabled: freepikEn
+      });
+      showToast(res.message || 'Preferences updated');
+      await refreshState();
+    }
+
+    async function pickExternalWorkspace() {
+      const res = await callBridge('select_external_folder', 'workspace', '');
+      if (res && res.folder) {
+        showToast((CURRENT_LANG === 'ar' ? 'تم اختيار المجلد الخارجي: ' : 'External folder set: ') + res.folder);
+        await refreshState();
       }
     }
 
-    function closeOnboardingTour() {
-      closeModal('modal-onboarding');
-      localStorage.setItem('stocknova_tour_seen', 'true');
+    async function saveManualWorkspacePath() {
+      const val = document.getElementById('settings-ws-path').value.trim();
+      if (!val) return;
+      const res = await callBridge('select_external_folder', 'workspace', val);
+      showToast(res.message || 'Workspace updated');
+      await refreshState();
     }
 
-    // Startup Initialization
+    async function pickExternalFreepikFolder() {
+      const res = await callBridge('select_external_folder', 'freepik_source', '');
+      if (res && res.folder) {
+        showToast(res.message || 'Freepik folder updated');
+        await refreshState();
+      }
+    }
+
+    async function startDailyShiftNow() {
+      const res = await callBridge('start_daily_employee_shift');
+      showToast(res.message || 'Shift started');
+      await refreshState();
+    }
+
+    async function simulateCreditStep() {
+      const res = await callBridge('simulate_credit_step', 15);
+      showToast(res.message || 'Simulated');
+      await refreshState();
+    }
+
+    async function resetDailyFreeCredits() {
+      const res = await callBridge('reset_daily_free_credits');
+      showToast(res.message || 'Reset complete');
+      await refreshState();
+    }
+
+    async function setPrimaryArgon(profileName) {
+      const res = await callBridge('set_primary_argon_account', profileName);
+      showToast(res.message || 'Updated');
+      await refreshState();
+    }
+
+    async function removeAccount(profileName) {
+      const res = await callBridge('delete_google_account', profileName);
+      showToast(res.message || 'Removed');
+      await refreshState();
+    }
+
+    async function autoDetectBrowserAccounts() {
+      const res = await callBridge('auto_detect_browser_accounts');
+      showToast(res.message || 'Checked browser profiles');
+      await refreshState();
+    }
+
+    async function benchmarkVideoModels() {
+      const res = await callBridge('benchmark_video_models_now');
+      showToast(res.message || 'Benchmark complete');
+      await refreshState();
+    }
+
+    async function overrideAsset(filename, decision) {
+      const res = await callBridge('override_asset_qc', filename, decision);
+      showToast(res.message || 'Updated');
+      await refreshState();
+    }
+
+    async function runFreepikCurationNow() {
+      const res = await callBridge('curate_freepik_golden', '');
+      showToast(res.status === 'success' ? 'Freepik 150 curation complete' : (res.message || 'Done'));
+      await refreshState();
+    }
+
+    async function addGeminiApiKey() {
+      const alias = document.getElementById('new-key-alias').value.trim() || `key_${Date.now()}`;
+      const val = document.getElementById('new-key-val').value.trim();
+      if (!val) return;
+      const res = await callBridge('add_gemini_key', alias, val);
+      showToast(res.message || 'API Key added');
+      document.getElementById('new-key-val').value = '';
+      await refreshState();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      setInterval(refreshState, 2000);
-      setTimeout(refreshState, 300);
-      if (localStorage.getItem('stocknova_tour_seen') !== 'true') {
-        setTimeout(() => startOnboardingTour(1), 600);
-      }
+      refreshState();
+      setInterval(refreshState, 5000);
     });
   </script>
 </body>

@@ -1,10 +1,14 @@
-"""Image and Video processing utilities for Google Dots."""
+"""Image and Video processing utilities for StockNova AI."""
 
 from __future__ import annotations
 
 import io
 from pathlib import Path
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 
 def compress_for_gemini(image_path: Path, max_bytes: int = 150_000) -> bytes:
@@ -13,9 +17,14 @@ def compress_for_gemini(image_path: Path, max_bytes: int = 150_000) -> bytes:
     for fast, low-bandwidth Gemini Vision API inspection.
     Preserves aspect ratio and uses binary search on JPEG quality.
     """
+    if Image is None or image_path.suffix.lower() in {".mp4", ".mov"}:
+        try:
+            return image_path.read_bytes()[:max_bytes]
+        except Exception:
+            return b""
+
     with Image.open(image_path) as img:
         img = img.convert("RGB")
-        # Pre-resize if enormous (e.g. 4K/8K) down to a max 1600px dimension
         max_dim = 1600
         if max(img.size) > max_dim:
             scale = max_dim / max(img.size)
@@ -39,7 +48,6 @@ def compress_for_gemini(image_path: Path, max_bytes: int = 150_000) -> bytes:
                 high = mid - 1
 
         if not best_bytes:
-            # Fallback lowest quality
             buf = io.BytesIO()
             img.save(buf, format="JPEG", quality=15, optimize=True)
             best_bytes = buf.getvalue()
@@ -52,6 +60,9 @@ def extract_100_percent_center_crop(image_path: Path, crop_ratio: float = 0.25) 
     Extracts a 100% resolution center crop (e.g. 25% of image area) without downscaling,
     saving it next to the file for Stage 2 QC upscaling inspection.
     """
+    if Image is None:
+        return image_path
+
     with Image.open(image_path) as img:
         w, h = img.size
         cw = int(w * (crop_ratio ** 0.5))

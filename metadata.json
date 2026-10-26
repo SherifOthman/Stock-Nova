@@ -1,0 +1,6 @@
+{
+  "name": "StockNova AI — Autonomous Stock Media Studio",
+  "description": "Executive dashboard for end-to-end stock media generation, two-stage QC, 2x AI upscaling, anti-similarity batching, and multi-platform publishing (Adobe Stock & Freepik).",
+  "request_feedback": false,
+  "user_facing": true
+}

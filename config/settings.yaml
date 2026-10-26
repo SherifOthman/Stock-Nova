@@ -1,40 +1,66 @@
-# StockNova AI Master Configuration
+# StockNova AI — Default Configuration Template
+# Note: User-specific overrides, database, and encrypted keys are stored per user
+# so every machine/user has a 100% isolated environment.
+
 project:
   name: "StockNova AI"
-  version: "2.0.0"
+  version: "3.0.0"
+  auto_pilot_on_launch: true
 
 paths:
-  workspace_root: "d:\\Stock Automation\\workspace"
-  database: "d:\\Stock Automation\\data\\google_dots.db"
-  logs_dir: "d:\\Stock Automation\\data\\logs"
-  screenshots_dir: "d:\\Stock Automation\\screenshots"
-  exiftool: "d:\\Stock Automation\\tools\\exiftool.exe"
-  
+  workspace_root: ""
+  database: ""
+  logs_dir: ""
+  screenshots_dir: "screenshots"
+  exiftool: "tools/exiftool.exe"
+
 models:
   image: "nano banana pro"
   video: "omni flash"
-  supported_video_models: ["omni flash", "veo fast", "viewpoint 1"]
-  max_video_credit_per_generation: 20
+  supported_video_models:
+    - "omni flash"
+    - "veo fast"
+    - "kling standard"
+    - "hailuo minimax"
+    - "wan 2.1"
+  excluded_video_modes:
+    - "quality"
+    - "quality_100"
+    - "100_credit"
+  max_video_credit_per_generation: 25
   video_duration_seconds: 10
   thinking_budget:
     daily_qc: "low"
-    weekly_strategy: "medium"
+    weekly_strategy: "high"
+
+credit_strategy:
+  free_daily_credits_per_account: 50
+  plus_monthly_credits: 200
+  pro_monthly_credits: 1000
+  plus_target_days: 7
+  pro_target_min_days: 10
+  pro_target_max_days: 20
 
 upscayl:
-  bin_path: "C:\\Program Files\\Upscayl\\resources\\bin\\upscayl-bin.exe"
-  models_dir: "C:\\Program Files\\Upscayl\\resources\\models"
+  bin_path: ""
+  models_dir: ""
   default_model: "high-fidelity-4x"
-  default_scale: 2 # Fixed 2x (Optimal 4K / ~17MP standard across all aspect ratios)
+  candidate_models:
+    - "high-fidelity-4x"
+    - "ultramix_balanced"
+    - "remacri"
+  default_scale: 2
+  strict_2x_only: true
   timeout_seconds: 600
 
 chrome:
-  user_data_dir: "C:\\Users\\eleml\\AppData\\Local\\Google\\Chrome\\User Data"
+  user_data_dir: ""
 
 gemini:
-  strategic_model: "gemini-4-argon"
-  agent_orchestrator: "gemini-3.8-flash"
-  qc_fast_model: "gemini-3.5-flash-lite"
-  model: "gemini-3.8-flash"
+  strategic_model: "gemini-2.5-pro"
+  agent_orchestrator: "gemini-2.5-flash"
+  qc_fast_model: "gemini-2.5-flash"
+  model: "gemini-2.5-flash"
   temperature: 0.1
   max_retries: 3
   rate_limit_cooldown_seconds: 60
@@ -42,21 +68,30 @@ gemini:
 
 qc:
   stage1:
-    max_image_bytes: 150000
-    min_confidence: 0.7
+    max_image_bytes: 160000
+    min_confidence: 0.72
   stage2:
     min_sharpness: 100.0
+    borderline_sharpness: 82.0
     max_noise: 15.0
     max_banding: 0.3
     center_crop_ratio: 0.25
     downscale_max_dim: 1024
+  video:
+    num_storyboard_frames: 8
+    strip_audio_mandatory: true
+
+metadata:
+  embed_iptc_in_files: false
+  export_separate_csvs: true
 
 batching:
   max_batch_size: 30
   similarity_threshold: 12
   micro_batch_per_concept: 8
+  image_buffer_surplus_ratio: 1.25
+  default_weekly_image_prediction: 100
 
-# Contributor Endpoints (Real passwords & API keys are encrypted in local SQLite database)
 ftp:
   host: "ftp.contributor.adobestock.com"
   port: 21
@@ -66,22 +101,25 @@ ftp:
   passive_mode: true
   timeout: 30
 
-freepik:
-  ftp_host: "ftp.freepik.com"
-  ftp_port: 21
-  username: ""
-  password: ""
-  mode: "standby"
+platforms:
+  adobe_stock:
+    enabled: true
+    submit_window_open: false
+    contributor_uploads_url: "https://contributor.stock.adobe.com/en/uploads"
+  freepik:
+    enabled: false
+    onboarding_150_mode: true
+    ftp_host: "ftp.freepik.com"
+    ftp_port: 21
+    username: ""
+    password: ""
 
 telegram:
   bot_token: ""
   chat_id: ""
-  
-submission:
-  workflow: "weekly_mode_a"
-  weekly_upload_day: "Sunday"
+  include_submit_link_only_when_open: true
 
 seo:
   max_title_length: 70
   min_keywords: 45
-  max_keywords: 50
+  max_keywords: 49

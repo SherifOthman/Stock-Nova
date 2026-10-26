@@ -28,27 +28,35 @@ class SEOGenerator:
 
     def generate(self, image_path: Path, prompt_context: str = "") -> dict[str, Any]:
         """
-        Generates:
-        - title: concise, strictly <70 characters.
+        Generates dual-platform SEO metadata in a single API call:
+        - adobe_title: strictly <70 characters, literal commercial description.
+        - freepik_title: strictly <100 characters, graphic design/mockup/template oriented.
         - keywords: 45 to 50 keywords ordered by relevance.
         """
         key = self.rotator.get_key()
+        stem_clean = image_path.stem[:35].replace("_", " ").strip()
         if not key:
+            ad_t = f"Commercial stock media {stem_clean}"[:70]
+            fp_t = f"Modern creative design background and mockup template {stem_clean}"[:100]
             return {
-                "title": f"High quality stock photo {image_path.stem[:30]}",
-                "keywords": ["stock", "photo", "creative", "commercial", "modern"] * 10
+                "title": ad_t,
+                "adobe_title": ad_t,
+                "freepik_title": fp_t,
+                "keywords": ["stock", "photo", "creative", "commercial", "modern", "template", "background", "design", "business", "concept"] * 5,
             }
 
         prompt = (
-            "You are a top-tier Stock Photography SEO Specialist for Adobe Stock.\n"
+            "You are a top-tier Stock Media SEO Specialist for both Adobe Stock and Freepik.\n"
             f"Context prompt of generation: '{prompt_context}'\n\n"
-            "Analyze this stock image and generate:\n"
-            "1. 'title': Engaging, highly searchable commercial title under 70 characters (NO filler words like 'photo of' or 'generative ai').\n"
-            "2. 'keywords': Exactly 45 to 50 comma-separated high-volume commercial keywords, ordered from MOST relevant to broad.\n\n"
-            "Respond ONLY with a valid JSON strictly formatted as:\n"
+            "Analyze this stock visual and generate in ONE JSON response:\n"
+            "1. 'adobe_title': Literal, high-converting commercial buyer title strictly under 70 characters (NO filler words like 'photo of' or 'generative ai').\n"
+            "2. 'freepik_title': Design, background, banner, and mockup-oriented title under 100 characters tailored for graphic designers on Freepik.\n"
+            "3. 'keywords': Exactly 45 to 50 comma-separated high-volume commercial keywords, ordered from MOST relevant (first 10 are critical) to broad.\n\n"
+            "Respond ONLY with valid JSON:\n"
             "{\n"
-            '  "title": "Modern Financial Analyst Reviewing Data On Glass Screen",\n'
-            '  "keywords": ["analyst", "finance", "business", "data", "technology", ...]\n'
+            '  "adobe_title": "Modern Financial Analyst Reviewing Data On Glass Screen",\n'
+            '  "freepik_title": "Futuristic Data Analytics Glass Dashboard Concept With Copy Space For Business Presentation",\n'
+            '  "keywords": ["analyst", "finance", "business", "data", "technology"]\n'
             "}"
         )
 
@@ -76,40 +84,44 @@ class SEOGenerator:
             )
 
             data = json.loads(response.text or "{}")
-            title = data.get("title", f"Stock photo {image_path.stem}")[:70]
+            adobe_title = (data.get("adobe_title") or data.get("title") or f"Commercial stock {stem_clean}")[:70]
+            freepik_title = (data.get("freepik_title") or adobe_title)[:100]
             keywords = data.get("keywords", [])
-            # Clean keywords
             keywords = [k.strip().lower() for k in keywords if isinstance(k, str) and k.strip()]
 
-            # Determine official Adobe Category ID (1-21) and Name
             cat_id, cat_name = CategoryClassifier.get_adobe_category_id_and_name(
-                title=title,
+                title=adobe_title,
                 keywords=keywords,
                 explicit_category=data.get("category_id") or data.get("category"),
-                concept=prompt_context
+                concept=prompt_context,
             )
 
             return {
-                "title": title,
+                "title": adobe_title,
+                "adobe_title": adobe_title,
+                "freepik_title": freepik_title,
                 "keywords": keywords,
                 "category_id": cat_id,
-                "category_name": cat_name
+                "category_name": cat_name,
             }
 
         except Exception as e:
             logger.error(f"SEO generation error: {e}")
-            fallback_title = f"Professional stock photo {image_path.stem[:40]}"
+            fallback_title = f"Professional commercial visual {stem_clean}"[:70]
+            fallback_fp = f"Professional creative visual and layout background {stem_clean}"[:100]
             fallback_kws = ["stock", "commercial", "background", "professional", "concept"] * 9
             cat_id, cat_name = CategoryClassifier.get_adobe_category_id_and_name(
                 title=fallback_title,
                 keywords=fallback_kws,
-                concept=prompt_context
+                concept=prompt_context,
             )
             return {
                 "title": fallback_title,
+                "adobe_title": fallback_title,
+                "freepik_title": fallback_fp,
                 "keywords": fallback_kws,
                 "category_id": cat_id,
-                "category_name": cat_name
+                "category_name": cat_name,
             }
 
 

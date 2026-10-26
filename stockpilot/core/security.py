@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import base64
 import ctypes
-from ctypes import wintypes
 import json
 import os
 from pathlib import Path
@@ -21,12 +20,17 @@ logger = get_logger("security_vault")
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 KEY_FILE = PROJECT_ROOT / "data" / ".security.key"
 
+if os.name == "nt":
+    from ctypes import wintypes
 
-class DATA_BLOB(ctypes.Structure):
-    _fields_ = [
-        ("cbData", wintypes.DWORD),
-        ("pbData", ctypes.POINTER(ctypes.c_char)),
-    ]
+    class DATA_BLOB(ctypes.Structure):
+        _fields_ = [
+            ("cbData", wintypes.DWORD),
+            ("pbData", ctypes.POINTER(ctypes.c_char)),
+        ]
+else:
+    class DATA_BLOB(ctypes.Structure):
+        _fields_ = []
 
 
 class SecurityVault:
@@ -62,7 +66,6 @@ class SecurityVault:
                 new_key = Fernet.generate_key()
                 with open(KEY_FILE, "wb") as f:
                     f.write(new_key)
-                # Restrict permissions on Windows if possible
                 try:
                     os.chmod(KEY_FILE, 0o600)
                 except Exception:
@@ -72,7 +75,7 @@ class SecurityVault:
             cls._fernet_instance = Fernet(key)
             return cls._fernet_instance
         except Exception as e:
-            logger.warning(f"Could not initialize Fernet fallback: {e}")
+            logger.debug(f"Fernet optional fallback notice: {e}")
             return None
 
     @classmethod
@@ -81,7 +84,6 @@ class SecurityVault:
         if not plaintext:
             return ""
 
-        # Priority 1: Windows DPAPI (Hardware / Windows User Bound)
         if cls._is_dpapi_supported():
             try:
                 data = plaintext.encode("utf-8")
@@ -103,7 +105,6 @@ class SecurityVault:
             except Exception as e:
                 logger.debug(f"DPAPI encryption fell back to Fernet: {e}")
 
-        # Priority 2: Local Fernet AES Key
         fernet = cls._get_fernet()
         if fernet:
             try:
@@ -112,7 +113,6 @@ class SecurityVault:
             except Exception as e:
                 logger.error(f"Fernet encryption error: {e}")
 
-        # Fallback (Obfuscated base64 with tag if no crypto library available)
         return "b64:" + base64.b64encode(plaintext.encode("utf-8")).decode("ascii")
 
     @classmethod
@@ -121,10 +121,9 @@ class SecurityVault:
         if not ciphertext:
             return ""
 
-        # Check for DPAPI prefix
         if ciphertext.startswith("dpapi:"):
             if not cls._is_dpapi_supported():
-                raise RuntimeError("DPAPI encryption payload cannot be decrypted on non-Windows host.")
+                return ""
             try:
                 raw_b64 = ciphertext[len("dpapi:") :]
                 raw = base64.b64decode(raw_b64.encode("ascii"))
@@ -145,36 +144,31 @@ class SecurityVault:
                 raise RuntimeError("CryptUnprotectData failed.")
             except Exception as e:
                 logger.error(f"Failed to decrypt DPAPI ciphertext: {e}")
-                raise
+                return ""
 
-        # Check for Fernet prefix
         if ciphertext.startswith("fernet:"):
             fernet = cls._get_fernet()
             if not fernet:
-                raise RuntimeError("Fernet key unavailable for decryption.")
+                return ""
             try:
                 token = ciphertext[len("fernet:") :].encode("ascii")
                 return fernet.decrypt(token).decode("utf-8")
             except Exception as e:
                 logger.error(f"Failed to decrypt Fernet ciphertext: {e}")
-                raise
+                return ""
 
-        # Check for obfuscated base64 fallback
         if ciphertext.startswith("b64:"):
             try:
                 return base64.b64decode(ciphertext[len("b64:") :].encode("ascii")).decode("utf-8")
             except Exception:
                 return ciphertext
 
-        # If not encrypted (legacy plaintext), return as-is for backward compatibility
         return ciphertext
 
     @classmethod
     def mask_secret(cls, secret: str, visible_start: int = 4, visible_end: int = 4) -> str:
-        """Returns a safe, masked representation of a secret (e.g. 'AIza••••••••4F2x')."""
         if not secret:
             return "••••••••"
-        # If it's stored encrypted, decrypt first to produce realistic mask
         try:
             plain = cls.decrypt(secret)
         except Exception:
@@ -186,10 +180,7 @@ class SecurityVault:
         return f"{plain[:visible_start]}{'•' * (min(16, length - visible_start - visible_end))}{plain[-visible_end:]}"
 
 
-# --- High-Level Database Credential Helper Functions ---
-
 def init_secure_tables(conn) -> None:
-    """Ensures secure_credentials table exists in SQLite database."""
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS secure_credentials (
@@ -210,7 +201,6 @@ def save_secure_credential(
     secret: str,
     metadata: Optional[dict[str, Any]] = None,
 ) -> bool:
-    """Encrypts secret and stores in local SQLite database."""
     encrypted = SecurityVault.encrypt(secret)
     meta_str = json.dumps(metadata or {})
     with db.get_connection() as conn:
@@ -231,7 +221,6 @@ def save_secure_credential(
 
 
 def get_secure_credential(db, service: str) -> Optional[dict[str, Any]]:
-    """Retrieves and decrypts credential for service from local SQLite database."""
     with db.get_connection() as conn:
         init_secure_tables(conn)
         cursor = conn.cursor()
@@ -246,7 +235,6 @@ def get_secure_credential(db, service: str) -> Optional[dict[str, Any]]:
         if not row:
             return None
 
-        # Decrypt secret
         try:
             secret = SecurityVault.decrypt(row["encrypted_secret"])
         except Exception:
@@ -268,7 +256,6 @@ def get_secure_credential(db, service: str) -> Optional[dict[str, Any]]:
 
 
 def delete_secure_credential(db, service: str) -> bool:
-    """Deletes credential for service from local SQLite database."""
     with db.get_connection() as conn:
         init_secure_tables(conn)
         conn.execute("DELETE FROM secure_credentials WHERE service = ?;", (service,))
